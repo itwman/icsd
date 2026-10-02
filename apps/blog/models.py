@@ -33,7 +33,7 @@ class BlogCategory(models.Model):
 
 class Post(SEOFields, models.Model):
     title = models.CharField("عنوان", max_length=200)
-    slug = models.SlugField("نامک (در آدرس)", unique=True, allow_unicode=True,
+    slug = models.SlugField("نامک (در آدرس)", max_length=200, unique=True, allow_unicode=True,
                             help_text="ترجیحاً انگلیسی — مثل tarahi-site-farsh-kashan")
     category = models.ForeignKey(BlogCategory, verbose_name="دسته‌بندی", on_delete=models.PROTECT, related_name="posts")
     tags = models.ManyToManyField(Tag, verbose_name="برچسب‌ها", blank=True, related_name="posts")

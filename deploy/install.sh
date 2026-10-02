@@ -4,6 +4,9 @@
 # کاربر جدا (icsd)، پوشه‌ی جدا (/srv/icsd)، پایتون/venv جدا، دیتابیس و کاربر پستگرس جدا،
 # سرویس systemd جدا (icsd) با سوکت یونیکس (بدون اشغال پورت)، و یک فایل nginx جدا فقط برای همین دامنه.
 set -euo pipefail
+# apt نباید سرویس‌های سایت‌های دیگر را خودکار ری‌استارت کند (needrestart فقط فهرست بدهد)
+export NEEDRESTART_MODE=l NEEDRESTART_SUSPEND=1 DEBIAN_FRONTEND=noninteractive
+cd /tmp
 DOMAIN="${DOMAIN:?DOMAIN را بدهید، مثلاً DOMAIN=new.icsd.ir}"
 DB_PASS="${DB_PASS:?DB_PASS را بدهید}"
 [[ "$DB_PASS" =~ ^[A-Za-z0-9]{12,}$ ]] || { echo "DB_PASS فقط حروف و عدد انگلیسی و دست‌کم ۱۲ کاراکتر باشد."; exit 1; }
