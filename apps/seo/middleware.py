@@ -1,6 +1,7 @@
 import re
 from urllib.parse import unquote
 
+from django.conf import settings
 from django.db.models import F
 from django.http import HttpResponseGone, HttpResponsePermanentRedirect, HttpResponseRedirect
 
@@ -43,3 +44,20 @@ class RedirectMiddleware:
             except Exception:
                 pass
         return response
+
+
+class CanonicalHostMiddleware:
+    """همه‌ی دامنه‌های فرعی (www.icsd.ir، new.icsd.ir) با ۳۰۱ به دامنه‌ی اصلی می‌روند تا گوگل محتوای تکراری نبیند.
+    دامنه‌ی اصلی از CANONICAL_HOST در .env خوانده می‌شود؛ خالی = غیرفعال."""
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+        self.host = (getattr(settings, "CANONICAL_HOST", "") or "").lower()
+
+    def __call__(self, request):
+        if self.host:
+            host = request.get_host().split(":")[0].lower()
+            if host != self.host and host not in ("127.0.0.1", "localhost"):
+                scheme = "https" if request.is_secure() else "http"
+                return HttpResponsePermanentRedirect(f"{scheme}://{self.host}{request.get_full_path()}")
+        return self.get_response(request)

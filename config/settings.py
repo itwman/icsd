@@ -36,6 +36,8 @@ SECRET_KEY = env("SECRET_KEY", "dev-only-change-me-in-production-9f3k2j1h")
 DEBUG = env_bool("DEBUG", True)
 ALLOWED_HOSTS = [h for h in env("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",") if h]
 CSRF_TRUSTED_ORIGINS = [o for o in env("CSRF_TRUSTED_ORIGINS", "").split(",") if o]
+# دامنه‌ی اصلی؛ بقیه‌ی دامنه‌های ALLOWED_HOSTS با ۳۰۱ به آن می‌روند (مثلاً icsd.ir)
+CANONICAL_HOST = env("CANONICAL_HOST", "")
 
 INSTALLED_APPS = [
     "unfold",
@@ -67,6 +69,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "apps.seo.middleware.CanonicalHostMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",

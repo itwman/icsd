@@ -49,12 +49,14 @@ sudo systemctl restart icsd
 sudo bash /srv/icsd/app/deploy/update.sh
 ```
 
-## جابه‌جایی icsd.ir از وردپرس به جنگو (بعداً)
-1. از وردپرس و دیتابیسش پشتیبان کامل بگیرید.
-2. در `/etc/nginx/sites-available/icsd` به `server_name` مقدار `icsd.ir www.icsd.ir` را اضافه و همان دامنه را از فایل وردپرس حذف کنید → `sudo nginx -t` → `sudo systemctl reload nginx`.
-3. `ALLOWED_HOSTS` و `CSRF_TRUSTED_ORIGINS` در `.env` و «آدرس سایت» در پنل را به icsd.ir تغییر دهید؛ `sudo certbot --nginx -d icsd.ir -d www.icsd.ir`.
-4. ریدایرکت‌های آدرس‌های قدیمی (مقاله‌ها، محصولات، دسته‌ها، فید) از قبل ساخته شده‌اند. در پنل ← سئو ← «نمایشگر ۴۰۴» آدرس‌هایی را که هنوز ۴۰۴ می‌دهند ببینید و برایشان ریدایرکت بگذارید.
-5. sitemap جدید (`/sitemap.xml`) را در سرچ‌کنسول گوگل و وبمستر بینگ ثبت کنید.
+## جابه‌جایی icsd.ir از وردپرس به جنگو
+DNS دامنه در Cloudflare است و وردپرس روی سرور دیگری (185.49.84.236) است؛ آن سرور دست نمی‌خورد و پشتیبان می‌ماند.
+1. روی سرور جدید (DNS هنوز قدیمی):  `sudo DOMAIN=icsd.ir bash /srv/icsd/app/deploy/set_domain.sh`
+   تصاویر وردپرس به `/srv/icsd/media/wp-uploads` کپی می‌شوند (آدرس‌های `/wp-content/uploads/...` زنده می‌مانند) و nginx برای icsd.ir آماده می‌شود.
+2. در Cloudflare رکورد A برای `icsd.ir` و `www` را به 195.88.208.168 تغییر دهید (ابر خاکستری، DNS only). به `mail` و رکوردهای TXT دست نزنید.
+3. یکی دو دقیقه بعد همان دستور مرحله‌ی ۱ را دوباره بزنید: SSL برای icsd.ir، www و new گرفته می‌شود و www و new با ۳۰۱ به icsd.ir می‌روند.
+4. ریدایرکت همه‌ی ۳۸ آدرس sitemap وردپرس از قبل ساخته و آزمایش شده است. در پنل ← سئو ← «نمایشگر ۴۰۴» آدرس‌های جاافتاده را ببینید.
+5. در سرچ‌کنسول (همان property قبلی icsd.ir) `https://icsd.ir/sitemap.xml` را ثبت کنید.
 
 ## عیب‌یابی
 ```bash
