@@ -26,7 +26,7 @@ class SEOMeta(models.Model):
 
 class Redirect(models.Model):
     """ریدایرکت آدرس‌های قدیمی وردپرس به آدرس‌های جدید."""
-    old_path = models.CharField("مسیر قدیمی", max_length=300, unique=True, help_text="بدون دامنه. مثل /category/ai/")
+    old_path = models.CharField("مسیر قدیمی", max_length=300, unique=True, help_text="بدون دامنه. مثل /category/ai/ — با * در انتها (مثل /tutorials/django/*) همه‌ی زیرمسیرها ریدایرکت می‌شوند.")
     new_path = models.CharField("مسیر جدید", max_length=300, blank=True, help_text="خالی = ۴۱۰ (حذف شده)")
     status_code = models.PositiveSmallIntegerField("کد", choices=[(301, "301 دائمی"), (302, "302 موقت"), (410, "410 حذف شده")], default=301)
     hits = models.PositiveIntegerField("تعداد استفاده", default=0)

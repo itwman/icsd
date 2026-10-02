@@ -17,7 +17,7 @@ class SeoConfig(AppConfig):
                 except Exception:
                     pass
 
-        for label in ("blog.Post", "products.Product", "academy.Course", "team.TeamMember", "core.Page"):
+        for label in ("blog.Post", "products.Product", "academy.Course", "team.TeamMember", "core.Page", "library.Book", "games.Game"):
             try:
                 post_save.connect(on_save, sender=label, dispatch_uid=f"indexnow-{label}", weak=False)
             except Exception:

@@ -4,6 +4,8 @@ from django.urls import reverse
 from apps.academy.models import Course
 from apps.blog.models import Post
 from apps.core.models import Page
+from apps.games.models import Game
+from apps.library.models import Book
 from apps.products.models import Product
 from apps.team.models import TeamMember
 
@@ -13,7 +15,7 @@ class StaticSitemap(Sitemap):
     changefreq = "weekly"
 
     def items(self):
-        return ["core:home", "academy:course_list", "products:list", "blog:post_list", "leads:start", "core:customers", "team:list"]
+        return ["core:home", "academy:course_list", "products:list", "blog:post_list", "leads:start", "core:customers", "team:list", "library:list", "games:list"]
 
     def location(self, item):
         return reverse(item)
@@ -74,5 +76,27 @@ class TeamSitemap(Sitemap):
         return obj.updated_at
 
 
+class BookSitemap(Sitemap):
+    changefreq = "monthly"
+    priority = 0.7
+
+    def items(self):
+        return Book.objects.filter(is_published=True, noindex=False)
+
+    def lastmod(self, obj):
+        return obj.updated_at
+
+
+class GameSitemap(Sitemap):
+    changefreq = "monthly"
+    priority = 0.4
+
+    def items(self):
+        return Game.objects.filter(is_active=True, noindex=False)
+
+    def lastmod(self, obj):
+        return obj.updated_at
+
+
 SITEMAPS = {"static": StaticSitemap, "courses": CourseSitemap, "products": ProductSitemap,
-            "posts": PostSitemap, "pages": PageSitemap, "team": TeamSitemap}
+            "posts": PostSitemap, "pages": PageSitemap, "team": TeamSitemap, "library": BookSitemap, "games": GameSitemap}

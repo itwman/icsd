@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block seo %}<title>دسترسی ندارید | {{ site.site_name }}</title><meta name="robots" content="noindex">{% endblock %}
+{% block content %}
+<section class="sec wrap" style="padding-block:80px;text-align:center;max-width:560px">
+  <div class="mono" style="font-size:72px;font-weight:800;color:var(--khesht);line-height:1">403</div>
+  <h1>اجازه‌ی دسترسی به این بخش را ندارید</h1>
+  <p style="color:var(--matn-2)">اگر فکر می‌کنید باید این بخش را ببینید، از مدیر سایت بخواهید نقش مناسب را به حساب شما بدهد.</p>
+  <div class="btns" style="justify-content:center">{% if user.is_staff %}<a class="btn btn--fill" href="/panel/">داشبورد پنل</a>{% endif %}<a class="btn btn--line" href="/">صفحه اصلی</a></div>
+</section>
+{% endblock %}

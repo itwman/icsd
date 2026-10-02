@@ -9,6 +9,7 @@ from apps.academy.views import verify
 from apps.seo.views import indexnow_key, robots_txt
 
 urlpatterns = [
+    path("panel/", include("apps.panel.urls", namespace="panel")),
     path("admin/", admin.site.urls),
     path("ckeditor5/", include("django_ckeditor_5.urls")),
     path("", include("apps.core.urls", namespace="core")),
@@ -17,6 +18,8 @@ urlpatterns = [
     path("products/", include("apps.products.urls", namespace="products")),
     path("blog/", include("apps.blog.urls", namespace="blog")),
     path("team/", include("apps.team.urls", namespace="team")),
+    path("library/", include("apps.library.urls", namespace="library")),
+    path("games/", include("apps.games.urls", namespace="games")),
     path("start-project/", include("apps.leads.urls", namespace="leads")),
     path("pay/", include("apps.payments.urls", namespace="payments")),
     path("api/ac/", include("apps.common.urls", namespace="ac")),

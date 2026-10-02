@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load fa icons seo %}
+{% block content %}
+<section class="sec wrap" style="padding-block:28px 70px">
+  {% breadcrumbs book %}
+  <div class="layout layout--detail">
+    <div>
+      <div class="head">{% edit_btn book %}
+        <span class="kick">{{ book.get_kind_display }}{% if book.category %} · {{ book.category.title }}{% endif %}</span>
+        <h1>{{ book.title }}</h1>
+        {% if book.subtitle %}<p>{{ book.subtitle }}</p>{% elif book.authors %}<p>نوشته‌ی {{ book.authors }}</p>{% endif %}
+      </div>
+      {% if book.excerpt %}<p class="book-lead">{{ book.excerpt }}</p>{% endif %}
+      <div class="prose">{{ book.description|safe }}</div>
+      {% if related %}
+      <h2 class="h5" style="margin:40px 0 14px">کتاب‌های مرتبط</h2>
+      <div class="cards cards--books">{% for b in related %}{% include "includes/book_card.html" %}{% endfor %}</div>
+      {% endif %}
+    </div>
+    <aside>
+      <div class="side__box side__box--sticky">
+        <div class="book-cover book-cover--lg">{% if book.cover %}<img src="{{ book.cover.url }}" alt="{{ book.cover_alt|default:book.title }}" width="300" height="424">{% else %}<span>{{ book.title|slice:":1" }}</span>{% endif %}</div>
+        {% if book.has_download %}
+        <a class="btn btn--fill" style="width:100%;margin-top:16px" href="{{ book.get_download_url }}" rel="nofollow">{% icon "download" 16 %} دانلود رایگان {{ book.get_file_format_display }}{% if book.size_label %} <small class="mono">{{ book.size_label }}</small>{% endif %}</a>
+        {% if book.require_login and not user.is_authenticated %}<small class="d-block text-center" style="color:var(--matn-3);margin-top:6px">برای دانلود، ورود رایگان لازم است.</small>{% endif %}
+        {% endif %}
+        {% if book.preview_url %}<a class="btn btn--line" style="width:100%;margin-top:8px" href="{{ book.preview_url }}" target="_blank" rel="noopener nofollow">پیش‌نمایش / مطالعه‌ی آنلاین</a>{% endif %}
+        <ul class="rinfo" style="margin-top:18px">
+          {% if book.authors %}<li><span>نویسنده</span><b>{{ book.authors }}</b></li>{% endif %}
+          {% if book.translator %}<li><span>مترجم</span><b>{{ book.translator }}</b></li>{% endif %}
+          {% if book.publisher %}<li><span>ناشر</span><b>{{ book.publisher }}</b></li>{% endif %}
+          {% if book.year %}<li><span>سال انتشار</span><b>{{ book.year|fa_num }}</b></li>{% endif %}
+          {% if book.edition %}<li><span>نوبت چاپ</span><b>{{ book.edition }}</b></li>{% endif %}
+          {% if book.pages %}<li><span>تعداد صفحات</span><b>{{ book.pages|fa_num }}</b></li>{% endif %}
+          {% if book.language %}<li><span>زبان</span><b>{{ book.language }}</b></li>{% endif %}
+          {% if book.isbn %}<li><span>شابک</span><b class="mono">{{ book.isbn }}</b></li>{% endif %}
+          <li><span>دانلود</span><b>{{ book.download_count|fa_num }} بار</b></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</section>
+{% endblock %}

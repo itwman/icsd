@@ -116,6 +116,8 @@ class HomeSection(models.Model):
         ("timeline", "خط زمان کاشان"),
         ("academy", "آکادمی"),
         ("blog", "مقالات"),
+        ("library", "کتابخانه دیجیتال"),
+        ("games", "بازی‌ها"),
         ("cta", "فراخوان"),
         ("custom", "بخش سفارشی (متن آزاد)"),
     ]

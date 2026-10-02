@@ -124,6 +124,32 @@ def _schema(obj, request, site, title, desc, img):
         if skills:
             p["knowsAbout"] = skills
         return {"@context": "https://schema.org", "@type": "ProfilePage", "mainEntity": p, "url": url}
+    if name == "Book":
+        d = {"@context": "https://schema.org", "@type": "Book", "name": obj.title, "description": desc, "url": url,
+             "inLanguage": "fa-IR" if (obj.language or "فارسی") == "فارسی" else obj.language,
+             "publisher": {"@type": "Organization", "name": obj.publisher or site.site_name},
+             "isAccessibleForFree": True}
+        if obj.authors:
+            d["author"] = [{"@type": "Person", "name": a.strip()} for a in re.split(r"[،,]", obj.authors) if a.strip()]
+        if obj.translator:
+            d["translator"] = {"@type": "Person", "name": obj.translator}
+        if obj.pages:
+            d["numberOfPages"] = obj.pages
+        if obj.isbn:
+            d["isbn"] = obj.isbn
+        if img:
+            d["image"] = img
+        if obj.published_at:
+            d["datePublished"] = obj.published_at.isoformat()
+        if obj.has_download:
+            d["bookFormat"] = "https://schema.org/EBook"
+            d["offers"] = {"@type": "Offer", "price": "0", "priceCurrency": "IRR", "availability": "https://schema.org/InStock"}
+        return d
+    if name == "Game":
+        return {"@context": "https://schema.org", "@type": "VideoGame", "name": obj.title, "description": desc, "url": url,
+                "inLanguage": "fa-IR", "gamePlatform": "Web browser", "applicationCategory": "Game",
+                "operatingSystem": "Web", "publisher": {"@id": base + "/#org"},
+                "offers": {"@type": "Offer", "price": "0", "priceCurrency": "IRR"}}
     if name == "Page":
         return {"@context": "https://schema.org", "@type": "WebPage", "name": title, "description": desc, "url": url, "inLanguage": "fa-IR"}
     return None
@@ -216,6 +242,13 @@ def _crumbs(obj):
         return c + [(obj.title, obj.get_absolute_url())]
     if name == "TeamMember":
         return [home, ("تیم ما", reverse("team:list")), (obj.name, obj.get_absolute_url())]
+    if name == "Book":
+        c = [home, ("کتابخانه", reverse("library:list"))]
+        if obj.category_id:
+            c.append((obj.category.title, f"{reverse('library:list')}?cat={obj.category.slug}"))
+        return c + [(obj.title, obj.get_absolute_url())]
+    if name == "Game":
+        return [home, ("بازی‌ها", reverse("games:list")), (obj.title, obj.get_absolute_url())]
     if name == "Page":
         return [home, (obj.title, obj.get_absolute_url())]
     return [home]

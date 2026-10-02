@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load fa seo %}
+{% block seo %}{% seo_head None "کتابخانه دیجیتال" "کتاب‌های الکترونیکی رایگان توسعه هوشمند فرش ایرانیان درباره‌ی هوش مصنوعی، برنامه‌نویسی و صنعت فرش؛ دانلود مستقیم PDF." %}{% endblock %}
+{% block content %}
+<section class="sec wrap" style="padding-block:28px 70px">
+  {% breadcrumbs None "کتابخانه دیجیتال" "/library/" %}
+  <div class="head head--row">
+    <div><span class="kick">کتابخانه</span><h1>کتابخانه‌ی دیجیتال ICSD</h1>
+      <p>کتاب‌های الکترونیکی رایگان؛ بخوانید، دانلود کنید و با دیگران به اشتراک بگذارید.</p>{% add_btn "library" "book" "کتاب جدید" %}</div>
+    <form method="get" class="d-flex gap-2" role="search"><input class="form-control" name="q" value="{{ q }}" placeholder="عنوان یا نویسنده…" aria-label="جستجوی کتاب"><button class="btn btn--line btn--sm" type="submit">جستجو</button></form>
+  </div>
+  {% if categories %}<div style="margin-bottom:22px">
+    <a class="tag {% if not cat %}is-on{% endif %}" href="{% url 'library:list' %}">همه</a>
+    {% for c in categories %}<a class="tag {% if cat == c.slug %}is-on{% endif %}" href="?cat={{ c.slug }}">{{ c.title }}</a>{% endfor %}
+  </div>{% endif %}
+  {% if page.object_list %}
+  <div class="cards cards--books">{% for b in page %}{% include "includes/book_card.html" %}{% endfor %}</div>
+  {% if page.has_other_pages %}
+  <nav class="pager">
+    {% if page.has_previous %}<a class="btn btn--line btn--sm" href="?page={{ page.previous_page_number }}{% if q %}&q={{ q }}{% endif %}{% if cat %}&cat={{ cat }}{% endif %}">قبلی</a>{% endif %}
+    <span class="mono">{{ page.number|fa_num }} / {{ page.paginator.num_pages|fa_num }}</span>
+    {% if page.has_next %}<a class="btn btn--line btn--sm" href="?page={{ page.next_page_number }}{% if q %}&q={{ q }}{% endif %}{% if cat %}&cat={{ cat }}{% endif %}">بعدی</a>{% endif %}
+  </nav>
+  {% endif %}
+  {% else %}<div class="empty">{% if q %}کتابی با «{{ q }}» پیدا نشد.{% else %}هنوز کتابی منتشر نشده است.{% endif %}</div>{% endif %}
+</section>
+{% endblock %}

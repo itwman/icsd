@@ -58,6 +58,16 @@ DNS دامنه در Cloudflare است و وردپرس روی سرور دیگری
 4. ریدایرکت همه‌ی ۳۸ آدرس sitemap وردپرس از قبل ساخته و آزمایش شده است. در پنل ← سئو ← «نمایشگر ۴۰۴» آدرس‌های جاافتاده را ببینید.
 5. در سرچ‌کنسول (همان property قبلی icsd.ir) `https://icsd.ir/sitemap.xml` را ثبت کنید.
 
+## به‌روزرسانی ۱۴۰۵/۰۷ — پنل اختصاصی، کتابخانه و بازی‌ها (یک بار)
+```bash
+sudo bash /srv/icsd/app/deploy/update.sh
+sudo -u icsd /srv/icsd/venv/bin/python /srv/icsd/app/manage.py import_wp_books
+sudo -u icsd /srv/icsd/venv/bin/python /srv/icsd/app/manage.py seed_games
+sudo -u icsd /srv/icsd/venv/bin/python /srv/icsd/app/manage.py seed_wp_redirects
+sudo -u icsd /srv/icsd/venv/bin/python /srv/icsd/app/manage.py setup_roles
+```
+پنل: `https://icsd.ir/panel/`
+
 ## عیب‌یابی
 ```bash
 sudo systemctl status icsd

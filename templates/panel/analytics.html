@@ -1,0 +1,23 @@
+{% extends "panel/base.html" %}{% load panel %}
+{% block title %}آمار بازدید{% endblock %}
+{% block content %}
+<div class="ph"><h1>{% pi "bars" 24 %} آمار بازدید</h1>
+  <div class="ph__act">
+    <a class="b {% if days == 7 %}b--p{% endif %}" href="?days=7">۷ روز</a><a class="b {% if days == 30 %}b--p{% endif %}" href="?days=30">۳۰ روز</a>
+    <a class="b {% if days == 90 %}b--p{% endif %}" href="?days=90">۹۰ روز</a><a class="b {% if days == 365 %}b--p{% endif %}" href="?days=365">یک سال</a>
+    <a class="b" href="/panel/r/pageviews/">{% pi "list" 16 %} داده‌ی خام</a></div>
+  <div class="sub">بازدید ربات‌ها جدا شمرده می‌شود. آمار بدون کوکی و بدون ذخیره‌ی IP خام است.</div></div>
+<div class="grid g3 mb-3">
+  <div class="c kpi kpi--sabz"><span class="kpi__i">{% pi "eye" 22 %}</span><div><b>{{ total }}</b><span>بازدید در {{ days|pfa }} روز</span></div></div>
+  <div class="c kpi kpi--firoozeh"><span class="kpi__i">{% pi "users" 22 %}</span><div><b>{{ uniq }}</b><span>بازدیدکننده‌ی یکتا</span></div></div>
+  <div class="c kpi kpi--zaferan"><span class="kpi__i">{% pi "monitor" 22 %}</span><div><b>{{ bots }}</b><span>درخواست ربات‌ها</span></div></div>
+</div>
+<div class="c mb-3"><div class="c__h"><h2>{% pi "chart" %} روند روزانه</h2><span class="muted small ms-auto">بیشینه: {{ peak }}</span></div>
+  <div class="c__b"><div class="chart" style="height:220px">{% for p in series %}<div class="chart__b"><em>{{ p.label }} · {{ p.v|pfa }}</em><i style="height:{{ p.h }}%"></i></div>{% endfor %}</div>
+  <div class="chart__x"><span>{{ series.0.label }}</span><span>امروز</span></div></div></div>
+<div class="grid g3">
+  <div class="c"><div class="c__h"><h3>{% pi "doc" %} صفحات</h3></div><ul class="lst">{% for p in pages %}<li><a class="ltr" href="{{ p.path }}" target="_blank">{{ p.path|truncatechars:40 }}</a><span class="end">{{ p.n }}</span></li>{% empty %}<li class="muted">داده‌ای نیست.</li>{% endfor %}</ul></div>
+  <div class="c"><div class="c__h"><h3>{% pi "link" %} ورودی از سایت‌های دیگر</h3></div><ul class="lst">{% for h, n in refs %}<li><span class="ltr">{{ h }}</span><span class="end">{{ n }}</span></li>{% empty %}<li class="muted">ارجاعی ثبت نشده.</li>{% endfor %}</ul></div>
+  <div class="c"><div class="c__h"><h3>{% pi "phone" %} دستگاه‌ها</h3></div><div class="c__b" style="display:grid;gap:12px">{% for d in devices %}<div><div class="d-flex justify-content-between small"><span>{{ d.name }}</span><span>{{ d.n }} ({{ d.pct|pfa }}٪)</span></div><span class="bar" style="width:100%;height:9px"><i style="width:{{ d.pct }}%"></i></span></div>{% empty %}<div class="muted">داده‌ای نیست.</div>{% endfor %}</div></div>
+</div>
+{% endblock %}

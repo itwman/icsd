@@ -1,0 +1,761 @@
+/* بازی‌های ICSD — منتقل‌شده از قالب وردپرس؛ متغیرهای رنگ به سیستم طراحی «سیلک» وصل شده‌اند (روز/شب). */
+:root {
+  --icsd-primary: var(--sabz); --icsd-primary-light: var(--sabz-2);
+  --icsd-text: var(--matn); --icsd-text-muted: var(--matn-3); --icsd-border: var(--khatt-2);
+  --icsd-surface: var(--card); --icsd-surface-2: var(--bg-2); --icsd-bg-alt: var(--bg-2);
+}
+.icsd-container { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: 24px; }
+.cards--games { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+.gcard { --gc: var(--sabz); }
+.gcard__top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.gcard__emoji { width: 54px; height: 54px; border-radius: 16px; display: grid; place-items: center; font-size: 28px;
+  background: color-mix(in srgb, var(--gc) 16%, transparent); }
+.gcard__lvl { font-size: 12px; padding: 2px 10px; border-radius: 99px; border: 1px solid var(--khatt-2); color: var(--matn-2); }
+.gcard__meta { display: flex; gap: 12px; font-size: 12.5px; color: var(--matn-3); margin-top: 10px; }
+.gcard .card__link { padding: 20px; display: block; }
+.game-desc { margin-top: 30px; }
+
+/* ── games-base.css ── */
+/* ============================================
+   ICSD Games — Base Styles (shared across all games)
+   ============================================ */
+
+:root {
+    --game-color: var(--icsd-primary, #2CA180);
+    --game-color-light: var(--icsd-primary-light, #5DCAA5);
+}
+
+/* === Layout === */
+.icsd-game-page {
+    padding: 0 0 80px;
+    position: relative;
+    z-index: 2;
+}
+
+.icsd-game-breadcrumb {
+    padding: 24px 0 16px;
+    color: var(--icsd-text-muted);
+    font-size: 13px;
+    font-family: var(--mono), var(--fa);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+.icsd-game-breadcrumb a {
+    color: var(--icsd-text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.icsd-game-breadcrumb a:hover {
+    color: var(--game-color);
+}
+.icsd-game-breadcrumb .sep {
+    color: var(--icsd-border);
+}
+.icsd-game-breadcrumb .current {
+    color: var(--icsd-text);
+    font-weight: 500;
+}
+
+/* === Game Hero === */
+.icsd-game-hero {
+    background: var(--icsd-surface);
+    border: 1px solid var(--icsd-border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+}
+.icsd-game-hero-meta {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+.icsd-game-hero-meta .tag {
+    background: var(--icsd-bg-alt);
+    color: var(--game-color);
+    border: 1px solid var(--icsd-border);
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-family: var(--mono), var(--fa);
+    font-size: 11px;
+}
+.icsd-game-hero h1 {
+    margin: 0 0 8px;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--icsd-text);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.icsd-game-hero h1 .icon {
+    font-size: 36px;
+    line-height: 1;
+}
+.icsd-game-hero p {
+    margin: 0;
+    color: var(--icsd-text-muted);
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+/* === Game Layout: Game + Sidebar === */
+.icsd-game-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 24px;
+    align-items: start;
+}
+
+.icsd-game-board-wrap {
+    background: var(--icsd-surface);
+    border: 1px solid var(--icsd-border);
+    border-radius: 16px;
+    padding: 24px;
+    min-width: 0;
+}
+
+/* === Score & Controls Bar === */
+.icsd-game-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+.icsd-game-stats .scores {
+    display: flex;
+    gap: 8px;
+}
+.icsd-game-score-box {
+    background: var(--icsd-bg-alt);
+    border: 1px solid var(--icsd-border);
+    border-radius: 10px;
+    padding: 8px 14px;
+    min-width: 80px;
+    text-align: center;
+}
+.icsd-game-score-box .label {
+    display: block;
+    font-family: var(--fa);
+    font-size: 10px;
+    color: var(--icsd-text-muted);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+.icsd-game-score-box .value {
+    display: block;
+    font-family: var(--mono), var(--fa);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--game-color);
+}
+
+/* === Buttons === */
+.icsd-game-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 16px;
+    border: 1px solid var(--icsd-border);
+    background: var(--icsd-bg-alt);
+    color: var(--icsd-text);
+    border-radius: 10px;
+    font-family: var(--fa);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+.icsd-game-btn:hover {
+    background: var(--icsd-surface-2);
+    border-color: var(--game-color);
+    color: var(--game-color);
+}
+.icsd-game-btn.primary {
+    background: var(--game-color);
+    color: #fff;
+    border-color: var(--game-color);
+}
+.icsd-game-btn.primary:hover {
+    background: var(--game-color-light);
+    color: #fff;
+}
+
+/* === Sidebar (Leaderboard + Personal Best) === */
+.icsd-game-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.icsd-game-card {
+    background: var(--icsd-surface);
+    border: 1px solid var(--icsd-border);
+    border-radius: 12px;
+    padding: 18px 20px;
+}
+.icsd-game-card h3 { font-family: var(--fa) !important; letter-spacing: 0 !important;
+    margin: 0 0 14px;
+    font-size: 14px;
+    color: var(--game-color);
+    font-family: var(--mono), var(--fa);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--icsd-border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Personal Best */
+.icsd-personal-best {
+    text-align: center;
+}
+.icsd-personal-best .pb-value {
+    font-family: var(--mono), var(--fa);
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--game-color);
+    line-height: 1;
+    margin: 8px 0;
+}
+.icsd-personal-best .pb-label {
+    color: var(--icsd-text-muted);
+    font-size: 12px;
+}
+.icsd-personal-best .pb-rank {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--icsd-border);
+    font-size: 12px;
+    color: var(--icsd-text-muted);
+}
+.icsd-personal-best .pb-rank strong {
+    color: var(--game-color);
+    font-family: var(--mono), var(--fa);
+    font-size: 16px;
+}
+
+/* Leaderboard List */
+.icsd-leaderboard-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: lb-counter;
+}
+.icsd-leaderboard-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    transition: background 0.2s;
+    margin-bottom: 2px;
+    font-size: 13px;
+}
+.icsd-leaderboard-list li:hover {
+    background: var(--icsd-bg-alt);
+}
+.icsd-leaderboard-list .rank {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-family: var(--mono), var(--fa);
+    font-size: 12px;
+    font-weight: 700;
+    background: var(--icsd-bg-alt);
+    color: var(--icsd-text-muted);
+}
+.icsd-leaderboard-list li:nth-child(1) .rank {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #fff;
+}
+.icsd-leaderboard-list li:nth-child(2) .rank {
+    background: linear-gradient(135deg, #C0C0C0, #808080);
+    color: #fff;
+}
+.icsd-leaderboard-list li:nth-child(3) .rank {
+    background: linear-gradient(135deg, #CD7F32, #8B4513);
+    color: #fff;
+}
+.icsd-leaderboard-list .player {
+    flex: 1;
+    color: var(--icsd-text);
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.icsd-leaderboard-list .score {
+    color: var(--game-color);
+    font-family: var(--mono), var(--fa);
+    font-weight: 700;
+    font-size: 13px;
+}
+.icsd-leaderboard-empty {
+    text-align: center;
+    color: var(--icsd-text-muted);
+    font-size: 13px;
+    padding: 20px 0;
+}
+
+/* === Game Over Modal === */
+.icsd-game-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 14, 23, 0.85);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    z-index: 10;
+}
+.icsd-game-overlay.is-active {
+    display: flex;
+}
+.icsd-game-overlay-content {
+    background: var(--icsd-surface);
+    border: 1px solid var(--game-color);
+    border-radius: 16px;
+    padding: 30px 36px;
+    text-align: center;
+    max-width: 360px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+.icsd-game-overlay-content h2 {
+    margin: 0 0 6px;
+    font-size: 22px;
+    color: var(--icsd-text);
+}
+.icsd-game-overlay-content .final-score {
+    font-family: var(--mono), var(--fa);
+    font-size: 44px;
+    font-weight: 800;
+    color: var(--game-color);
+    margin: 14px 0;
+    line-height: 1;
+}
+.icsd-game-overlay-content .rank-info {
+    color: var(--icsd-text-muted);
+    font-size: 13px;
+    margin-bottom: 16px;
+}
+.icsd-game-overlay-content .rank-info strong {
+    color: var(--game-color);
+    font-family: var(--mono), var(--fa);
+}
+.icsd-game-overlay-content input[type="text"] {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--icsd-border);
+    border-radius: 8px;
+    background: var(--icsd-bg-alt);
+    color: var(--icsd-text);
+    font-family: var(--fa);
+    font-size: 14px;
+    margin-bottom: 12px;
+    text-align: center;
+    direction: rtl;
+}
+.icsd-game-overlay-content input[type="text"]:focus {
+    outline: none;
+    border-color: var(--game-color);
+}
+.icsd-game-overlay-content .actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+/* Skip submit button */
+.icsd-skip-submit {
+    background: transparent;
+    border: none;
+    color: var(--icsd-text-muted);
+    font-family: var(--fa);
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: 12px;
+    text-decoration: underline;
+}
+.icsd-skip-submit:hover {
+    color: var(--icsd-text);
+}
+
+/* === How to Play Box === */
+.icsd-how-to-play {
+    background: var(--icsd-bg-alt);
+    border: 1px solid var(--icsd-border);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-top: 18px;
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--icsd-text-muted);
+}
+.icsd-how-to-play strong {
+    color: var(--icsd-text);
+}
+.icsd-how-to-play kbd {
+    display: inline-block;
+    background: var(--icsd-surface);
+    border: 1px solid var(--icsd-border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--icsd-text);
+    margin: 0 2px;
+}
+
+/* === Responsive === */
+@media (max-width: 991px) {
+    .icsd-game-layout {
+        grid-template-columns: 1fr;
+    }
+    .icsd-game-sidebar {
+        order: 2;
+    }
+    .icsd-game-board-wrap {
+        order: 1;
+    }
+}
+@media (max-width: 575px) {
+    .icsd-game-hero {
+        padding: 20px 18px;
+    }
+    .icsd-game-hero h1 {
+        font-size: 22px;
+    }
+    .icsd-game-board-wrap {
+        padding: 16px;
+    }
+    .icsd-game-stats {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .icsd-game-stats .scores {
+        justify-content: center;
+    }
+}
+
+/* ── 2048/2048.css ── */
+/* ============================================
+   2048 — Game-specific styles
+   ============================================ */
+
+.game-2048-board {
+    --grid-size: 4;
+    --tile-gap: 10px;
+    background: var(--icsd-bg-alt);
+    border-radius: 12px;
+    padding: var(--tile-gap);
+    position: relative;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 480px;
+    aspect-ratio: 1;
+    user-select: none;
+    touch-action: none;
+    box-sizing: border-box;
+}
+
+/* Grid: نمایش پس‌زمینه‌ی سلول‌ها */
+.game-2048-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-size), 1fr);
+    grid-template-rows: repeat(var(--grid-size), 1fr);
+    gap: var(--tile-gap);
+    width: 100%;
+    height: 100%;
+    direction: rtl; /* RTL: column 1 starts from right */
+}
+
+.game-2048-cell {
+    background: var(--icsd-surface-2);
+    border-radius: 8px;
+}
+
+/* Tiles container: روی grid قرار می‌گیره و tiles داخلش absolute هستن */
+.game-2048-tiles {
+    position: absolute;
+    top: var(--tile-gap);
+    right: var(--tile-gap);
+    bottom: var(--tile-gap);
+    left: var(--tile-gap);
+    pointer-events: none;
+}
+
+/* هر تایل: position در JS با pixel ست می‌شه */
+.game-2048-tile {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-family: var(--mono), var(--fa);
+    font-weight: 800;
+    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+    box-sizing: border-box;
+}
+
+.game-2048-tile.is-new {
+    animation: tile-pop 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.game-2048-tile.is-merged {
+    animation: tile-merge 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 2;
+}
+
+@keyframes tile-pop {
+    0%   { transform: var(--tw, none) scale(0); }
+    100% { transform: var(--tw, none) scale(1); }
+}
+@keyframes tile-merge {
+    0%   { transform: var(--tw, none) scale(1); }
+    50%  { transform: var(--tw, none) scale(1.18); }
+    100% { transform: var(--tw, none) scale(1); }
+}
+
+/* رنگ تایل‌ها بر اساس مقدار */
+.game-2048-tile[data-value="2"]    { background: #EEE4DA; color: #776E65; font-size: clamp(18px, 5vw, 32px); }
+.game-2048-tile[data-value="4"]    { background: #EDE0C8; color: #776E65; font-size: clamp(18px, 5vw, 32px); }
+.game-2048-tile[data-value="8"]    { background: #F2B179; color: #FFF;    font-size: clamp(18px, 5vw, 32px); }
+.game-2048-tile[data-value="16"]   { background: #F59563; color: #FFF;    font-size: clamp(18px, 5vw, 32px); }
+.game-2048-tile[data-value="32"]   { background: #F67C5F; color: #FFF;    font-size: clamp(18px, 5vw, 32px); }
+.game-2048-tile[data-value="64"]   { background: #F65E3B; color: #FFF;    font-size: clamp(18px, 5vw, 32px); }
+.game-2048-tile[data-value="128"]  { background: #EDCF72; color: #FFF;    font-size: clamp(16px, 4.5vw, 28px); }
+.game-2048-tile[data-value="256"]  { background: #EDCC61; color: #FFF;    font-size: clamp(16px, 4.5vw, 28px); }
+.game-2048-tile[data-value="512"]  { background: #EDC850; color: #FFF;    font-size: clamp(16px, 4.5vw, 28px); }
+.game-2048-tile[data-value="1024"] { background: #EDC53F; color: #FFF;    font-size: clamp(14px, 4vw, 24px); }
+.game-2048-tile[data-value="2048"] { background: #EDC22E; color: #FFF;    font-size: clamp(14px, 4vw, 24px); box-shadow: 0 0 30px rgba(237, 194, 46, 0.6); }
+.game-2048-tile[data-value="4096"] { background: #3C3A32; color: #FFF;    font-size: clamp(14px, 4vw, 24px); }
+.game-2048-tile[data-value="8192"] { background: #2C2A24; color: #FFF;    font-size: clamp(14px, 4vw, 24px); }
+
+/* Dark theme adjustments */
+[data-theme="dark"] .game-2048-tile[data-value="2"]  { background: #3D3833; color: #E8E0D8; }
+[data-theme="dark"] .game-2048-tile[data-value="4"]  { background: #4A3E33; color: #E8E0D8; }
+
+/* ── snake/snake.css ── */
+/* ============================================
+   Snake — Game-specific styles
+   ============================================ */
+
+.game-snake-canvas {
+    display: block;
+    margin: 0 auto;
+    background: var(--icsd-bg-alt);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 480px;
+    aspect-ratio: 1;
+    image-rendering: pixelated;
+    touch-action: none;
+}
+
+.game-snake-mobile-controls {
+    display: none;
+    margin-top: 16px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 8px;
+    max-width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.game-snake-mobile-controls button {
+    background: var(--icsd-surface-2);
+    border: 1px solid var(--icsd-border);
+    border-radius: 8px;
+    color: var(--icsd-text);
+    font-size: 18px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.game-snake-mobile-controls button:active {
+    background: var(--game-color);
+    color: #fff;
+    transform: scale(0.95);
+}
+.game-snake-mobile-controls .ctrl-up    { grid-column: 2; grid-row: 1; }
+.game-snake-mobile-controls .ctrl-left  { grid-column: 1; grid-row: 2; }
+.game-snake-mobile-controls .ctrl-right { grid-column: 3; grid-row: 2; }
+.game-snake-mobile-controls .ctrl-down  { grid-column: 2; grid-row: 3; }
+
+@media (max-width: 575px) {
+    .game-snake-mobile-controls {
+        display: grid;
+    }
+}
+
+/* ── wordle-fa/wordle-fa.css ── */
+/* ============================================
+   Wordle فارسی — Game-specific styles
+   ============================================ */
+
+.game-wordle-board {
+    display: grid;
+    grid-template-rows: repeat(6, 1fr);
+    gap: 6px;
+    margin: 0 auto 24px;
+    max-width: 360px;
+    padding: 0 4px;
+}
+
+.game-wordle-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    direction: rtl;
+}
+
+.game-wordle-cell {
+    aspect-ratio: 1;
+    background: var(--icsd-bg-alt);
+    border: 2px solid var(--icsd-border);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--fa);
+    font-size: clamp(22px, 7vw, 32px);
+    font-weight: 700;
+    color: var(--icsd-text);
+    transition: all 0.3s;
+    text-transform: none;
+}
+.game-wordle-cell.filled {
+    border-color: var(--icsd-text-muted);
+    animation: cell-pop 0.15s;
+}
+@keyframes cell-pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
+
+/* States after submit */
+.game-wordle-cell.correct {
+    background: #4CAF50;
+    border-color: #4CAF50;
+    color: #fff;
+}
+.game-wordle-cell.present {
+    background: #FFB300;
+    border-color: #FFB300;
+    color: #fff;
+}
+.game-wordle-cell.absent {
+    background: #555;
+    border-color: #555;
+    color: #fff;
+    opacity: 0.7;
+}
+
+.game-wordle-row.is-revealing .game-wordle-cell {
+    animation: flip 0.5s ease forwards;
+}
+.game-wordle-row.is-revealing .game-wordle-cell:nth-child(1) { animation-delay: 0s; }
+.game-wordle-row.is-revealing .game-wordle-cell:nth-child(2) { animation-delay: 0.15s; }
+.game-wordle-row.is-revealing .game-wordle-cell:nth-child(3) { animation-delay: 0.3s; }
+.game-wordle-row.is-revealing .game-wordle-cell:nth-child(4) { animation-delay: 0.45s; }
+.game-wordle-row.is-revealing .game-wordle-cell:nth-child(5) { animation-delay: 0.6s; }
+
+@keyframes flip {
+    0%   { transform: rotateX(0deg); }
+    50%  { transform: rotateX(90deg); }
+    100% { transform: rotateX(0deg); }
+}
+
+/* Keyboard */
+.game-wordle-keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 540px;
+    margin: 0 auto;
+    padding: 0 4px;
+    direction: rtl;
+}
+.game-wordle-keyboard-row {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+}
+.game-wordle-key {
+    flex: 1;
+    min-width: 0;
+    height: 48px;
+    background: var(--icsd-surface-2);
+    border: 1px solid var(--icsd-border);
+    border-radius: 6px;
+    color: var(--icsd-text);
+    font-family: var(--fa);
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+.game-wordle-key:hover {
+    background: var(--icsd-bg-alt);
+}
+.game-wordle-key:active {
+    transform: scale(0.95);
+}
+.game-wordle-key.wide {
+    flex: 1.6;
+    font-size: 13px;
+}
+.game-wordle-key.correct { background: #4CAF50; color: #fff; border-color: #4CAF50; }
+.game-wordle-key.present { background: #FFB300; color: #fff; border-color: #FFB300; }
+.game-wordle-key.absent  { background: #555; color: #ccc; border-color: #555; }
+
+.game-wordle-message {
+    text-align: center;
+    color: var(--icsd-text-muted);
+    font-size: 13px;
+    min-height: 22px;
+    margin-bottom: 12px;
+    transition: opacity 0.3s;
+}
+.game-wordle-message.error {
+    color: #E74C3C;
+    animation: shake 0.4s;
+}
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+}
+
+@media (max-width: 575px) {
+    .game-wordle-key {
+        height: 42px;
+        font-size: 14px;
+    }
+    .game-wordle-key.wide {
+        font-size: 11px;
+    }
+}

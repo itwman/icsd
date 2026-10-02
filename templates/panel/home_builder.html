@@ -1,0 +1,32 @@
+{% extends "panel/base.html" %}{% load panel %}
+{% block title %}صفحه‌ساز{% endblock %}
+{% block content %}
+<div class="ph">
+  <h1>{% pi "layout" 24 %} صفحه‌ساز صفحه‌ی اصلی</h1>
+  <div class="ph__act"><a class="b" href="{{ settings_url }}">{% pi "settings" 16 %} هیرو، ساعت و کلمات متحرک</a><a class="b" href="/" target="_blank">{% pi "external" 16 %} مشاهده</a></div>
+  <div class="sub">بخش‌ها را بکشید تا ترتیبشان عوض شود، با کلید روشن/خاموش کنید، یا روی «ویرایش» بزنید تا تیتر، متن، دکمه و تعداد آیتم‌ها را تغییر دهید. بالای همه‌ی بخش‌ها همیشه «هیرو» است.</div>
+</div>
+<div class="grid" style="grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);align-items:start">
+  <div>
+    <div class="sb" id="sb" data-reorder="{% url 'panel:reorder' r.key %}">
+      <div class="sb__it" style="border-style:dashed"><span class="kind">{% pi "sparkle" 20 %}</span><div class="tt"><b>هیرو (بالای صفحه)</b><small>تیتر، ساعت آنالوگ و کلمات ذره‌ای — از «تنظیمات سایت»</small></div><a class="b b--sm" href="{{ settings_url }}">{% pi "edit" 14 %}</a></div>
+      {% for s in sections %}
+      <div class="sb__it {% if not s.is_active %}off{% endif %}" data-id="{{ s.pk }}">
+        <span class="grip" draggable="true" title="جابه‌جایی">{% pi "grip" 18 %}</span>
+        <span class="kind">{% pi "layout" 20 %}</span>
+        <div class="tt"><b>{{ s.title|default:"—" }}</b><small>{{ s.get_key_display }}{% if s.items_limit %} · {{ s.items_limit|pfa }} آیتم{% endif %}</small></div>
+        <label class="form-switch m-0" title="روشن/خاموش"><input class="form-check-input js-toggle" type="checkbox" role="switch" data-url="{{ s.toggle }}" data-row-off {% if s.is_active %}checked{% endif %}></label>
+        <a class="b b--sm" href="{{ s.edit }}">{% pi "edit" 14 %} ویرایش</a>
+        {% if can_delete %}<a class="b b--sm b--d" href="{{ s.delete }}" title="حذف">{% pi "trash" 14 %}</a>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% if can_add %}
+    <div class="c mt-3"><div class="c__h"><h3>{% pi "plus" %} افزودن بخش جدید</h3></div>
+      <form method="post" class="c__b">{% csrf_token %}<div class="kinds">{% for k, t in kinds %}<button name="add" value="{{ k }}">{{ t }}</button>{% endfor %}</div>
+      <div class="help mt-2 muted small">«بخش سفارشی» برای متن آزاد با ویرایشگر است؛ بقیه آیتم‌هایشان را خودکار از محصولات، دوره‌ها، مقالات و ... می‌خوانند.</div></form></div>
+    {% endif %}
+  </div>
+  <div class="preview"><div class="preview__bar"><i></i><i></i><i></i> پیش‌نمایش زنده <button class="b b--sm ms-auto" type="button" id="reloadPrev">{% pi "refresh" 14 %}</button></div><iframe id="prev" src="/" title="پیش‌نمایش صفحه‌ی اصلی" loading="lazy"></iframe></div>
+</div>
+{% endblock %}

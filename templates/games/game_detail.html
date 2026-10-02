@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static fa seo %}
+{% block head %}<link rel="stylesheet" href="{% static 'games/games.css' %}">{% endblock %}
+{% block content %}
+<div class="icsd-game-page" style="--game-color: {{ game.color }};">
+  <div class="icsd-container">
+    {% breadcrumbs game %}
+    <div class="icsd-game-hero">{% edit_btn game %}
+      <div class="icsd-game-hero-meta"><span class="tag">⭐ {{ game.get_difficulty_display }}</span><span class="tag mono"># {{ game.engine }}</span></div>
+      <h1>{{ game.emoji }} {{ game.title }}</h1>
+      {% if game.summary %}<p style="color:var(--matn-2)">{{ game.summary }}</p>{% endif %}
+    </div>
+    <div class="icsd-game-layout">
+      <div class="icsd-game-board-wrap" style="position:relative;">
+        <div class="icsd-game-stats">
+          <div class="scores"><div class="icsd-game-score-box"><span class="label">امتیاز</span><span class="value" data-game-score="{{ game.engine }}">۰</span></div></div>
+          <button class="icsd-game-btn primary" data-game-restart="{{ game.engine }}">🔄 شروع مجدد</button>
+        </div>
+        {% if game.engine == "snake" %}
+          <canvas class="game-snake-canvas" width="480" height="480" aria-label="صفحه‌ی بازی مار"></canvas>
+          <div class="game-snake-mobile-controls">
+            <button class="ctrl-up" aria-label="بالا">▲</button><button class="ctrl-left" aria-label="چپ">◀</button>
+            <button class="ctrl-right" aria-label="راست">▶</button><button class="ctrl-down" aria-label="پایین">▼</button>
+          </div>
+        {% elif game.engine == "2048" %}
+          <div class="game-2048-board"><div class="game-2048-grid"></div><div class="game-2048-tiles"></div></div>
+        {% else %}
+          <div class="game-wordle-message"></div><div class="game-wordle-board"></div><div class="game-wordle-keyboard"></div>
+        {% endif %}
+        <div class="icsd-game-overlay" data-game-overlay="{{ game.engine }}"></div>
+        {% if game.how_to %}<div class="icsd-how-to-play"><strong>راهنما:</strong> {{ game.how_to|linebreaksbr }}</div>{% endif %}
+      </div>
+      <aside class="icsd-game-sidebar">
+        <div class="icsd-game-card icsd-personal-best" data-game="{{ game.engine }}">
+          <h3>🏆 رکورد شخصی شما</h3><div class="pb-value">۰</div><div class="pb-label">بهترین امتیاز</div>
+        </div>
+        <div class="icsd-game-card">
+          <h3>🌟 برترین بازیکنان</h3>
+          <ol class="icsd-leaderboard-list" data-game="{{ game.engine }}">
+            {% for s in game.top_scores %}<li><span class="rank">{{ forloop.counter|fa_num }}</span><span class="player">{{ s.player_name }}</span><span class="score">{{ s.score|fa_num }}</span></li>
+            {% empty %}<li class="icsd-leaderboard-empty">هنوز رکوردی ثبت نشده — اولین نفر باش!</li>{% endfor %}
+          </ol>
+        </div>
+        {% if others %}<div class="icsd-game-card"><h3>🎮 بازی‌های دیگر</h3>
+          <ul class="rinfo">{% for o in others %}<li><a href="{{ o.get_absolute_url }}">{{ o.emoji }} {{ o.title }}</a><span>{{ o.get_difficulty_display }}</span></li>{% endfor %}</ul></div>{% endif %}
+      </aside>
+    </div>
+    {% if game.description %}<div class="prose game-desc">{{ game.description|safe }}</div>{% endif %}
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>window.icsdGames = {submitUrl: "{% url 'games:score' game.slug %}", boardUrl: "{% url 'games:leaderboard' game.slug %}", csrf: "{{ csrf_token }}", words: {{ words_json|safe }}};</script>
+<script src="{% static 'games/leaderboard.js' %}"></script>
+{% if game.engine == "snake" %}<script src="{% static 'games/snake.js' %}"></script>{% elif game.engine == "2048" %}<script src="{% static 'games/2048.js' %}"></script>{% else %}<script src="{% static 'games/wordle-fa.js' %}"></script>{% endif %}
+{% endblock %}

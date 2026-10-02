@@ -113,6 +113,19 @@ def jtoday(fmt="%d %B %Y"):
     return jdate(jdatetime.date.today().togregorian(), fmt)
 
 
+def _panel_url(model, obj=None):
+    """آدرس ویرایش/افزودن در پنل اختصاصی (اگر آن مدل در پنل ثبت شده باشد)."""
+    try:
+        from apps.panel.registry import for_model
+        from apps.panel import resources  # noqa: F401
+    except Exception:
+        return ""
+    r = for_model(model)
+    if not r:
+        return ""
+    return r.edit_url(obj) if obj is not None else r.add_url()
+
+
 @register.simple_tag(takes_context=True)
 def edit_btn(context, obj, label="ویرایش"):
     """
@@ -127,10 +140,12 @@ def edit_btn(context, obj, label="ویرایش"):
     perm = f"{ct.app_label}.change_{ct.model}"
     if not user.has_perm(perm):
         return ""
-    try:
-        url = reverse(f"admin:{ct.app_label}_{ct.model}_change", args=[obj.pk])
-    except NoReverseMatch:
-        return ""
+    url = _panel_url(obj.__class__, obj)
+    if not url:
+        try:
+            url = reverse(f"admin:{ct.app_label}_{ct.model}_change", args=[obj.pk])
+        except NoReverseMatch:
+            return ""
     return format_html(
         '<a class="edit-btn" href="{}" target="_blank" rel="noopener" title="ویرایش در پنل مدیریت">'
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
@@ -146,8 +161,9 @@ def add_btn(context, app_label, model, label="افزودن"):
     user = getattr(request, "user", None)
     if not user or not user.is_staff or not user.has_perm(f"{app_label}.add_{model}"):
         return ""
+    from django.apps import apps as _apps
     try:
-        url = reverse(f"admin:{app_label}_{model}_add")
-    except NoReverseMatch:
+        url = _panel_url(_apps.get_model(app_label, model)) or reverse(f"admin:{app_label}_{model}_add")
+    except (LookupError, NoReverseMatch):
         return ""
     return format_html('<a class="edit-btn edit-btn--add" href="{}" target="_blank" rel="noopener">+ {}</a>', url, label)

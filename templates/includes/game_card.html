@@ -1,0 +1,10 @@
+{% load fa %}
+<article class="card gcard" style="--gc:{{ g.color }}">
+  {% edit_btn g %}
+  <a href="{{ g.get_absolute_url }}" class="card__link">
+    <div class="gcard__top"><span class="gcard__emoji">{{ g.emoji }}</span><span class="gcard__lvl">{{ g.get_difficulty_display }}</span></div>
+    <h3>{{ g.title }}</h3>
+    {% if g.summary %}<p style="color:var(--matn-2);font-size:14px;margin-top:6px">{{ g.summary }}</p>{% endif %}
+    <div class="gcard__meta"><span>{{ g.play_count|fa_num }} بازی ثبت‌شده</span><span class="mono">/games/{{ g.slug }}</span></div>
+  </a>
+</article>

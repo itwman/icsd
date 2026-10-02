@@ -23,6 +23,14 @@ def home(request):
         elif s.key == "team":
             from apps.team.models import TeamMember
             s.items = s.limit(TeamMember.objects.filter(is_active=True))
+        elif s.key == "library":
+            from apps.library.models import Book
+            qs = Book.objects.filter(is_published=True).select_related("category")
+            featured = qs.filter(is_featured=True)
+            s.items = s.limit(featured if featured.exists() else qs)
+        elif s.key == "games":
+            from apps.games.models import Game
+            s.items = s.limit(Game.objects.filter(is_active=True))
         elif s.key == "timeline":
             s.items = TimelineEvent.objects.filter(is_active=True)
         else:

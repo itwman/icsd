@@ -1,0 +1,13 @@
+{% load fa %}
+<article class="card card--book">
+  {% edit_btn b %}
+  <a href="{{ b.get_absolute_url }}" class="card__link">
+    <div class="book-cover">{% if b.cover %}<img src="{{ b.cover.url }}" alt="{{ b.cover_alt|default:b.title }}" loading="lazy" decoding="async" width="300" height="424">{% else %}<span>{{ b.title|slice:":1" }}</span>{% endif %}</div>
+    <div class="card__body">
+      <div class="card__meta" style="margin-bottom:6px"><span class="book-kind">{{ b.get_kind_display }}</span>{% if b.category %}<span>{{ b.category.title }}</span>{% endif %}</div>
+      <h3>{{ b.title }}</h3>
+      {% if b.authors %}<p class="book-by">{{ b.authors }}</p>{% endif %}
+      <div class="card__meta mono">{% if b.pages %}<span>{{ b.pages|fa_num }} صفحه</span>{% endif %}<span>{{ b.download_count|fa_num }} دانلود</span></div>
+    </div>
+  </a>
+</article>

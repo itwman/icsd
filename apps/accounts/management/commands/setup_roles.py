@@ -13,8 +13,11 @@ ROLES = {
         "academy": ["category", "course", "module", "lesson", "enrollment", "quiz", "question", "choice", "attempt", "certificate"],
         "products": ["product", "productimage", "productfeature", "producttutorial"],
         "blog": ["post", "tag", "blogcategory"],
-        "core": ["homesection", "timelineevent", "page", "navlink"],
-        "seo": ["seometa", "redirect"],
+        "core": ["homesection", "timelineevent", "page", "navlink", "customer"],
+        "seo": ["seometa", "redirect", "notfoundlog"],
+        "team": ["teammember", "education", "experience", "publication", "skill", "sociallink"],
+        "library": ["book", "bookcategory"],
+        "games": ["game", "score"],
     },
     "مدرس": {
         "academy": ["course", "module", "lesson", "quiz", "question", "choice"],

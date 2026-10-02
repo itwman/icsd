@@ -4,7 +4,7 @@ from datetime import date
 
 from django.conf import settings
 
-SKIP_PREFIXES = ("/admin", "/static", "/media", "/api/", "/ckeditor5", "/sitemap", "/robots", "/favicon")
+SKIP_PREFIXES = ("/admin", "/panel", "/static", "/media", "/api/", "/ckeditor5", "/sitemap", "/robots", "/favicon")
 BOT_HINTS = ("bot", "crawl", "spider", "slurp", "curl", "wget", "python-requests", "headless")
 
 

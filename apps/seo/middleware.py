@@ -25,6 +25,15 @@ class RedirectMiddleware:
         for p in list(candidates):
             candidates.add(p.rstrip("/") + "/" if not p.endswith("/") else p.rstrip("/") or "/")
         r = Redirect.objects.filter(old_path__in=candidates, is_active=True).first()
+        if not r:
+            # ریدایرکت گروهی: مسیر قدیمی با * در انتها همه‌ی زیرمسیرها را می‌گیرد (طولانی‌ترین تطابق)
+            p = unquote(raw).rstrip("/")
+            prefixes = []
+            while p:
+                prefixes.append(p + "/*")
+                p = p.rsplit("/", 1)[0]
+            r = max(Redirect.objects.filter(old_path__in=prefixes, is_active=True),
+                    key=lambda x: len(x.old_path), default=None)
         if r:
             Redirect.objects.filter(pk=r.pk).update(hits=F("hits") + 1)
             if r.status_code == 410 or not r.new_path:

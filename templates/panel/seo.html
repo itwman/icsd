@@ -1,0 +1,34 @@
+{% extends "panel/base.html" %}{% load panel %}
+{% block title %}مرکز سئو{% endblock %}
+{% block content %}
+<div class="ph"><h1>{% pi "target" 24 %} مرکز سئو</h1>
+  <div class="ph__act">
+    <a class="b" href="/sitemap.xml" target="_blank">{% pi "globe" 16 %} نقشه‌ی سایت</a>
+    <a class="b" href="/robots.txt" target="_blank">{% pi "doc" 16 %} robots.txt</a>
+    <form method="post">{% csrf_token %}<button class="b b--p" name="act" value="indexnow">{% pi "send" 16 %} ارسال همه به Bing/Yandex</button></form>
+  </div>
+  <div class="sub">امتیاز سئوی همه‌ی صفحات محتوایی سایت؛ از ضعیف‌ترین به قوی‌ترین. روی هر ردیف بزنید تا با پیش‌نمایش زنده‌ی گوگل اصلاحش کنید.</div>
+</div>
+<div class="grid g4 mb-3">
+  <div class="c kpi" style="justify-content:center"><div class="ring" style="--v:{{ avg }};--c:{% if avg >= 75 %}var(--ok){% elif avg >= 50 %}var(--warn){% else %}var(--bad){% endif %}"><div><b>{{ avg|pfa }}</b><span>میانگین از ۱۰۰</span></div></div></div>
+  <div class="c kpi kpi--sabz"><span class="kpi__i">{% pi "check" 22 %}</span><div><b>{{ buckets.ok|pfa }}</b><span>صفحه‌ی خوب (۷۵+)</span></div></div>
+  <div class="c kpi kpi--zaferan"><span class="kpi__i">{% pi "alert" 22 %}</span><div><b>{{ buckets.mid|pfa }}</b><span>نیاز به بهبود</span></div></div>
+  <div class="c kpi kpi--golab"><span class="kpi__i">{% pi "x" 22 %}</span><div><b>{{ buckets.bad|pfa }}</b><span>ضعیف (زیر ۵۰)</span></div></div>
+</div>
+<div class="grid g3 mb-3">
+  <a class="c kpi" href="/panel/r/redirects/"><span class="kpi__i" style="background:var(--p-soft);color:var(--p)">{% pi "redirect" 22 %}</span><div><b>{{ redirects|pfa }}</b><span>ریدایرکت فعال</span></div></a>
+  <a class="c kpi" href="/panel/r/404/?f_resolved=0"><span class="kpi__i" style="background:var(--p-soft);color:var(--p)">{% pi "alert" 22 %}</span><div><b>{{ nf|pfa }}</b><span>آدرس ۴۰۴ حل‌نشده</span></div></a>
+  <a class="c kpi" href="/panel/r/seo-meta/"><span class="kpi__i" style="background:var(--p-soft);color:var(--p)">{% pi "target" 22 %}</span><div><b>متا</b><span>عنوان و توضیح صفحات خاص (مثل /courses/)</span></div></a>
+</div>
+<div class="c">
+  <form class="tools-bar" method="get"><select class="form-select" name="type" style="width:auto" onchange="this.form.submit()"><option value="">همه‌ی انواع ({{ n|pfa }})</option>{% for k, t in types %}<option value="{{ k }}" {% if type == k %}selected{% endif %}>{{ t }}</option>{% endfor %}</select></form>
+  <div class="tw"><table class="t"><thead><tr><th>امتیاز</th><th>صفحه</th><th>نوع</th><th>کلیدواژه</th><th>مهم‌ترین مشکل‌ها</th><th></th></tr></thead><tbody>
+  {% for x in rows %}<tr><td><span class="score score--{{ x.tone }}" style="font-size:16px">{{ x.score|pfa }}</span></td>
+    <td class="title-cell"><a href="{{ x.edit }}">{{ x.obj|truncatechars:60 }}</a>{% if x.noindex %} <span class="pill">noindex</span>{% endif %}</td>
+    <td><span class="pill">{{ x.r.title_single }}</span></td><td>{{ x.kw|default:"—" }}</td>
+    <td><ul class="seo-row-issues">{% for i in x.issues %}<li>• {{ i }}</li>{% empty %}<li style="color:var(--ok)">بدون مشکل جدی</li>{% endfor %}</ul></td>
+    <td class="act"><a class="b b--sm" href="{{ x.edit }}">{% pi "edit" 14 %} اصلاح</a></td></tr>
+  {% empty %}<tr><td colspan="6" class="empty">موردی نیست.</td></tr>{% endfor %}
+  </tbody></table></div>
+</div>
+{% endblock %}

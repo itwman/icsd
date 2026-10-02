@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static fa seo %}
+{% block seo %}{% seo_head None "بازی‌ها" "بازی‌های ساده و سرگرم‌کننده‌ی آنلاین (مار، ۲۰۴۸ و حدس کلمه‌ی فارسی) با جدول امتیازات؛ رکوردت را ثبت کن!" %}{% endblock %}
+{% block head %}<link rel="stylesheet" href="{% static 'games/games.css' %}">{% endblock %}
+{% block content %}
+<section class="sec wrap" style="padding-block:28px 70px">
+  {% breadcrumbs None "بازی‌ها" "/games/" %}
+  <div class="head"><span class="kick">بازی کن</span><h1>بازی‌ها</h1>
+    <p>بازی‌های ساده و اعتیادآور که در مرورگر اجرا می‌شوند. رکوردت را ثبت کن و در جدول امتیازات بدرخش!</p>{% add_btn "games" "game" "بازی جدید" %}</div>
+  {% if games %}<div class="cards cards--games">{% for g in games %}{% include "includes/game_card.html" %}{% endfor %}</div>
+  {% else %}<div class="empty">فعلاً بازی فعالی نیست.</div>{% endif %}
+</section>
+{% endblock %}

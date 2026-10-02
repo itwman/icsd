@@ -65,6 +65,9 @@ INSTALLED_APPS = [
     "apps.payments",
     "apps.analytics",
     "apps.seo",
+    "apps.library",
+    "apps.games",
+    "apps.panel",
 ]
 
 MIDDLEWARE = [
@@ -129,6 +132,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.User"
 AUTHENTICATION_BACKENDS = ["apps.accounts.backends.MobileOrEmailBackend"]
 LOGIN_URL = "accounts:login"
+X_FRAME_OPTIONS = "SAMEORIGIN"  # پیش‌نمایش صفحه‌ساز پنل
 LOGIN_REDIRECT_URL = "accounts:dashboard"
 LOGOUT_REDIRECT_URL = "core:home"
 

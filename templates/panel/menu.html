@@ -1,0 +1,38 @@
+{% extends "panel/base.html" %}{% load panel %}
+{% block title %}منو و فوتر{% endblock %}
+{% block content %}
+<div class="ph"><h1>{% pi "menu" 24 %} منو و فوتر</h1>
+  <div class="sub">آیتم‌های منوی بالای سایت را بکشید تا ترتیبشان عوض شود. صفحاتی که «نمایش در فوتر» دارند پایین سایت لینک می‌شوند. متن و شبکه‌های اجتماعی فوتر در «تنظیمات سایت» است.</div></div>
+<div class="grid g2" style="align-items:start">
+  <div class="c">
+    <div class="c__h"><h2>{% pi "menu" %} منوی اصلی</h2></div>
+    <form method="post" class="c__b" style="display:block">{% csrf_token %}<input type="hidden" name="act" value="save">
+      <div class="sb" id="sb" data-reorder="{% url 'panel:reorder' r.key %}">
+        {% for l in links %}<div class="sb__it {% if not l.is_active %}off{% endif %}" data-id="{{ l.pk }}" style="flex-wrap:wrap">
+          <span class="grip" draggable="true">{% pi "grip" 18 %}</span>
+          <input class="form-control form-control-sm" name="title_{{ l.pk }}" value="{{ l.title }}" style="flex:1;min-width:110px" aria-label="عنوان">
+          <input class="form-control form-control-sm ltr" name="url_{{ l.pk }}" value="{{ l.url }}" style="flex:1.3;min-width:130px" aria-label="آدرس">
+          <label class="small d-flex align-items-center gap-1 mb-0"><input type="checkbox" class="form-check-input m-0" name="tab_{{ l.pk }}" {% if l.new_tab %}checked{% endif %}> تب جدید</label>
+          <label class="form-switch m-0" title="فعال"><input class="form-check-input js-toggle" type="checkbox" role="switch" data-url="{{ l.toggle }}" data-row-off {% if l.is_active %}checked{% endif %}></label>
+          <button class="b b--sm b--d" type="submit" form="del{{ l.pk }}" title="حذف">{% pi "trash" 14 %}</button>
+        </div>{% empty %}<div class="muted">منو خالی است.</div>{% endfor %}
+      </div>
+      {% if links %}<button class="b b--p mt-3" type="submit">{% pi "check" 16 %} ذخیره‌ی تغییرات متن‌ها</button>{% endif %}
+    </form>
+    {% for l in links %}<form id="del{{ l.pk }}" method="post" onsubmit="return confirm('این آیتم حذف شود؟')">{% csrf_token %}<input type="hidden" name="act" value="delete"><input type="hidden" name="pk" value="{{ l.pk }}"></form>{% endfor %}
+    <form method="post" class="c__b" style="border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px;align-items:center">{% csrf_token %}<input type="hidden" name="act" value="add">
+      <b class="w-100">افزودن آیتم</b>
+      <input class="form-control" name="title" placeholder="عنوان" required style="flex:1;min-width:120px">
+      <input class="form-control ltr" name="url" placeholder="/library/" required style="flex:1;min-width:140px" list="urls">
+      <datalist id="urls">{% for t, u in suggest %}<option value="{{ u }}">{{ t }}</option>{% endfor %}</datalist>
+      <label class="small d-flex gap-1 align-items-center mb-0"><input type="checkbox" class="form-check-input m-0" name="new_tab"> تب جدید</label>
+      <button class="b b--p" type="submit">{% pi "plus" 16 %} افزودن</button>
+    </form>
+  </div>
+  <div class="c">
+    <div class="c__h"><h2>{% pi "doc" %} صفحات فوتر</h2><a class="more" href="/panel/r/pages/add/">+ صفحه‌ی جدید</a></div>
+    <ul class="lst">{% for p in pages %}<li><label class="form-switch m-0"><input class="form-check-input js-toggle" type="checkbox" role="switch" data-url="{{ p.toggle }}" {% if p.show_in_footer %}checked{% endif %} aria-label="نمایش در فوتر"></label><a href="{{ p.edit }}">{{ p.title }}</a><span class="end ltr">/p/{{ p.slug }}/</span></li>{% empty %}<li class="muted">صفحه‌ای نیست.</li>{% endfor %}</ul>
+    <div class="c__b"><a class="b" href="{{ settings_url }}">{% pi "settings" 16 %} متن فوتر، تماس و شبکه‌های اجتماعی</a></div>
+  </div>
+</div>
+{% endblock %}

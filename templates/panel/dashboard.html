@@ -1,0 +1,48 @@
+{% extends "panel/base.html" %}{% load panel %}
+{% block title %}داشبورد{% endblock %}
+{% block content %}
+<div class="c hello mb-3"><h2>{{ greet }}، {{ user.first_name|default:"مدیر" }} 👋</h2><p>{{ today }} — همه‌ی بخش‌های سایت از همین‌جا قابل مدیریت است.</p></div>
+
+<div class="grid g4 mb-3">
+  {% for k in kpis %}{% if k.url %}<a href="{{ k.url }}" class="c kpi kpi--{{ k.c }}">{% else %}<div class="c kpi kpi--{{ k.c }}">{% endif %}
+    <span class="kpi__i">{% pi k.i 22 %}</span><div><b>{{ k.v }}</b><span>{{ k.t }}</span></div>
+  {% if k.url %}</a>{% else %}</div>{% endif %}{% endfor %}
+</div>
+
+<div class="grid g-main mb-3">
+  <div class="c">
+    <div class="c__h"><h2>{% pi "bars" %} بازدید ۳۰ روز اخیر</h2>{% if can.analytics %}<a class="more" href="{% url 'panel:analytics' %}">آمار کامل ←</a>{% endif %}</div>
+    <div class="c__b">
+      <div class="chart">{% for p in series %}<div class="chart__b"><em>{{ p.label }} · {{ p.v|pfa }}</em><i style="height:{{ p.h }}%"></i></div>{% endfor %}</div>
+      <div class="chart__x"><span>{{ series.0.label }}</span><span>بیشینه: {{ peak }}</span><span>امروز</span></div>
+    </div>
+  </div>
+  <div class="c">
+    <div class="c__h"><h2>{% pi "sparkle" %} دسترسی سریع</h2></div>
+    <div class="c__b"><div class="quick">{% for q in quick %}<a href="{{ q.url }}">{% pi "plus" 16 %} {{ q.t }}</a>{% endfor %}
+      {% if can.builder %}<a href="{% url 'panel:home_builder' %}">{% pi "layout" 16 %} چینش صفحه‌ی اصلی</a>{% endif %}
+      <a href="{% url 'panel:media' %}">{% pi "image" 16 %} رسانه‌ها</a></div></div>
+  </div>
+</div>
+
+<div class="grid g3">
+  <div class="c">
+    <div class="c__h"><h2>{% pi "check" %} کارهای پیشنهادی</h2></div>
+    <ul class="lst">{% for t, u in todo %}<li>{% pi "alert" 16 %}<a href="{{ u }}">{{ t }}</a></li>{% empty %}<li>{% pi "check" 16 %} همه‌چیز مرتب است.</li>{% endfor %}</ul>
+    <div class="c__h" style="border-top:1px solid var(--line)"><h3>{% pi "box" %} محتوای سایت</h3></div>
+    <ul class="lst">{% for c in content %}<li><a href="{{ c.url }}">{{ c.t }}</a><span class="end">{{ c.v }}</span></li>{% endfor %}</ul>
+  </div>
+  {% if can.leads %}<div class="c">
+    <div class="c__h"><h2>{% pi "inbox" %} آخرین درخواست‌ها</h2><a class="more" href="/panel/r/leads/">همه ←</a></div>
+    <ul class="lst">{% for l in leads %}<li><a href="/panel/r/leads/{{ l.pk }}/"><b>{{ l.full_name }}</b> <small class="muted">{{ l.company }}</small></a><span class="end"><span class="pill pill--{{ l.status }}">{{ l.get_status_display }}</span></span></li>
+    {% empty %}<li class="muted">درخواستی ثبت نشده.</li>{% endfor %}</ul>
+  </div>{% endif %}
+  <div class="c">
+    <div class="c__h"><h2>{% pi "eye" %} پربازدیدترین صفحات</h2></div>
+    <ul class="lst">{% for p in top_pages %}<li><a class="ltr" href="{{ p.path }}" target="_blank">{{ p.path|truncatechars:38 }}</a><span class="end">{{ p.n }}</span></li>
+    {% empty %}<li class="muted">هنوز آماری نیست.</li>{% endfor %}</ul>
+    {% if activity %}<div class="c__h" style="border-top:1px solid var(--line)"><h3>{% pi "history" %} آخرین تغییرات</h3><a class="more" href="{% url 'panel:activity' %}">همه ←</a></div>
+    <ul class="lst hist">{% for e in activity %}<li><span>{{ e.user.get_full_name|default:e.user }} · {{ e.object_repr|truncatechars:30 }}</span><span class="end">{{ e.action_time|pdate }}</span></li>{% endfor %}</ul>{% endif %}
+  </div>
+</div>
+{% endblock %}

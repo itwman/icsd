@@ -181,6 +181,32 @@
   </section>
   {% endif %}
 
+  {% elif s.key == "library" %}
+  {% if s.items %}
+  <section class="sec wrap" id="library" style="padding-top:0">
+    <div class="head rise head--row">{% edit_btn s %}
+      <div><span class="kick">{{ s.kicker }}</span><h2>{{ s.title }}</h2>{% if s.subtitle %}<p>{{ s.subtitle }}</p>{% endif %}</div>
+      <a class="btn btn--line btn--sm" href="{{ s.button_url|default:'/library/' }}">{{ s.button_text|default:"همه‌ی کتاب‌ها ←" }}</a>
+    </div>
+    <div class="cards cards--books rise">
+      {% for b in s.items %}{% include "includes/book_card.html" %}{% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% elif s.key == "games" %}
+  {% if s.items %}
+  <section class="sec wrap" id="games" style="padding-top:0">
+    <div class="head rise head--row">{% edit_btn s %}
+      <div><span class="kick">{{ s.kicker }}</span><h2>{{ s.title }}</h2>{% if s.subtitle %}<p>{{ s.subtitle }}</p>{% endif %}</div>
+      <a class="btn btn--line btn--sm" href="{{ s.button_url|default:'/games/' }}">{{ s.button_text|default:"همه‌ی بازی‌ها ←" }}</a>
+    </div>
+    <div class="cards cards--games rise">
+      {% for g in s.items %}{% include "includes/game_card.html" %}{% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
   {% elif s.key == "cta" %}
   <section class="sec wrap" id="tamas" style="padding-top:0">
     <div class="cta rise">{% edit_btn s %}
@@ -207,7 +233,7 @@
 {% if user.is_staff %}
 <div class="wrap home-admin">
   {% add_btn "core" "homesection" "افزودن بخش به صفحه‌ی اصلی" %}
-  <a class="edit-btn edit-btn--add" href="/admin/core/homesection/" target="_blank" rel="noopener">چینش و روشن/خاموش بخش‌ها</a>
+  <a class="edit-btn edit-btn--add" href="/panel/home-builder/" target="_blank" rel="noopener">چینش و روشن/خاموش بخش‌ها</a>
 </div>
 {% endif %}
 {% endblock %}
