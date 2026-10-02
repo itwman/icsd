@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # نصب ایزوله‌ی سایت ICSD روی سرور اشتراکی — به سایت‌های دیگر دست نمی‌زند.
-#   sudo DOMAIN=new.icsd.ir DB_PASS='یک-رمز-قوی' bash install.sh
+#   sudo DOMAIN=new.icsd.ir DB_PASS=Abc123xyz789Qw bash install.sh   (رمز فقط حروف و عدد انگلیسی، ۱۲+ کاراکتر)
 # کاربر جدا (icsd)، پوشه‌ی جدا (/srv/icsd)، پایتون/venv جدا، دیتابیس و کاربر پستگرس جدا،
 # سرویس systemd جدا (icsd) با سوکت یونیکس (بدون اشغال پورت)، و یک فایل nginx جدا فقط برای همین دامنه.
 set -euo pipefail
 DOMAIN="${DOMAIN:?DOMAIN را بدهید، مثلاً DOMAIN=new.icsd.ir}"
 DB_PASS="${DB_PASS:?DB_PASS را بدهید}"
+[[ "$DB_PASS" =~ ^[A-Za-z0-9]{12,}$ ]] || { echo "DB_PASS فقط حروف و عدد انگلیسی و دست‌کم ۱۲ کاراکتر باشد."; exit 1; }
 REPO="${REPO:-https://github.com/itwman/icsd.git}"
 BRANCH="${BRANCH:-main}"
 APP_USER=icsd; BASE=/srv/icsd; APP=$BASE/app; VENV=$BASE/venv
@@ -19,15 +20,33 @@ if grep -RqsE "server_name[^;]*\b${DOMAIN//./\\.}\b" /etc/nginx/ && [ ! -f /etc/
   die "دامنه‌ی $DOMAIN قبلاً در nginx تعریف شده. برای امنیت سایت فعلی متوقف شدم."
 fi
 
-say "۱. پایتون ۳.۱۱+ (کنار پایتون سیستم؛ پایتون سیستم عوض نمی‌شود)"
-PY=""
-for p in python3.12 python3.11; do command -v $p >/dev/null && { PY=$p; break; }; done
+say "۱. پایتون ۳.۱۲ (کنار پایتون سیستم؛ python3 سیستم و سایت‌های دیگر دست نمی‌خورند)"
+# python3.11 مخزن اوبونتو ۲۲ نسخه‌ی آزمایشی 3.11.0~rc1 است؛ پس نسخه‌ی نهایی ۳.۱۲ از deadsnakes ترجیح دارد.
+pick_py() {
+  for p in python3.12 python3.11; do
+    command -v $p >/dev/null 2>&1 && $p -c 'import sys; v=sys.version_info; sys.exit(0 if v >= (3, 11) and v.releaselevel == "final" else 1)' 2>/dev/null && { echo $p; return 0; }
+  done
+  return 1
+}
+PY=$(pick_py || true)
 if [ -z "$PY" ]; then
-  apt-get update -qq
-  apt-get install -y -qq python3.11 python3.11-venv python3.11-dev && PY=python3.11
+  # اولویت پایین برای deadsnakes: فقط بسته‌هایی که صریحاً می‌خواهیم از آن نصب می‌شوند و
+  # apt upgrade پایتون‌های فعلی سرور را با نسخه‌ی deadsnakes جایگزین نمی‌کند.
+  printf 'Package: *\nPin: release o=LP-PPA-deadsnakes\nPin-Priority: 100\n' > /etc/apt/preferences.d/icsd-deadsnakes
+  apt-get install -y -qq software-properties-common >/dev/null || true
+  add-apt-repository -y ppa:deadsnakes/ppa >/dev/null 2>&1 || echo "  (مخزن deadsnakes در دسترس نبود)"
+  apt-get update -qq || true
+  apt-get install -y -qq python3.12 python3.12-venv python3.12-dev >/dev/null 2>&1 || true
+  PY=$(pick_py || true)
 fi
-$PY -c 'import sys; assert sys.version_info >= (3, 11)' || die "پایتون ۳.۱۱ نصب نشد."
-$PY -m venv --help >/dev/null 2>&1 || apt-get install -y -qq "${PY}-venv"
+if [ -z "$PY" ]; then
+  echo "  پایتون ۳.۱۲ نصب نشد؛ از python3.11 موجود استفاده می‌شود."
+  command -v python3.11 >/dev/null || apt-get install -y -qq python3.11
+  PY=python3.11
+fi
+$PY -c 'import sys; assert sys.version_info >= (3, 11)' || die "پایتون ۳.۱۱+ پیدا نشد."
+$PY -c 'import ensurepip' 2>/dev/null || apt-get install -y -qq "${PY}-venv"
+echo "  پایتون: $($PY -V)"
 apt-get install -y -qq git libpq5 >/dev/null
 
 say "۲. کاربر و پوشه‌ی جدا"

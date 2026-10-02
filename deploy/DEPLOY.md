@@ -27,7 +27,7 @@ bash /tmp/check.sh new.icsd.ir
 
 ## قدم ۲ — نصب
 ```bash
-sudo DOMAIN=new.icsd.ir DB_PASS='یک-رمز-طولانی-و-قوی' bash -c "$(curl -fsSL https://raw.githubusercontent.com/itwman/icsd/main/deploy/install.sh)"
+sudo DOMAIN=new.icsd.ir DB_PASS=YourStrongPass2026 bash -c "$(curl -fsSL https://raw.githubusercontent.com/itwman/icsd/main/deploy/install.sh)"
 ```
 برای مخزن خصوصی: اول یک Deploy Key یا Personal Access Token در گیت‌هاب بسازید و `REPO=https://TOKEN@github.com/itwman/icsd.git` را هم به دستور اضافه کنید.
 
