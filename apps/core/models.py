@@ -3,6 +3,8 @@ from django.db import models
 from django.urls import reverse
 from django_ckeditor_5.fields import CKEditor5Field
 
+from apps.common.validators import CUSTOMER_LOGO_HELP, validate_customer_logo
+
 
 class SingletonModel(models.Model):
     """فقط یک رکورد — برای تنظیمات سایت."""
@@ -103,7 +105,10 @@ class SiteSettings(SingletonModel):
 class HomeSection(models.Model):
     """بخش‌های صفحه اصلی — قابل چینش، روشن/خاموش، و با متن قابل ویرایش."""
     KEYS = [
+        ("sialk", "منظره‌ی تپه سیلک (نوار تمام‌عرض)"),
+        ("band", "نوار نقش سفال"),
         ("products", "محصولات"),
+        ("customers", "مشتریان"),
         ("timeline", "خط زمان کاشان"),
         ("academy", "آکادمی"),
         ("blog", "مقالات"),
@@ -115,6 +120,10 @@ class HomeSection(models.Model):
     title = models.CharField("تیتر", max_length=150)
     subtitle = models.TextField("زیرتیتر", blank=True)
     body = CKEditor5Field("متن (برای بخش سفارشی)", blank=True, config_name="default")
+    items_limit = models.PositiveSmallIntegerField("حداکثر تعداد آیتم", default=8,
+        help_text="برای محصولات، مشتریان، دوره‌ها و مقالات. ۰ یعنی همه.")
+    button_text = models.CharField("متن دکمه", max_length=40, blank=True, help_text="خالی = دکمه‌ی پیش‌فرض بخش")
+    button_url = models.CharField("آدرس دکمه", max_length=200, blank=True)
     is_active = models.BooleanField("فعال", default=True)
     order = models.PositiveSmallIntegerField("ترتیب", default=0)
 
@@ -125,6 +134,9 @@ class HomeSection(models.Model):
 
     def __str__(self):
         return f"{self.get_key_display()} — {self.title}"
+
+    def limit(self, qs):
+        return qs[: self.items_limit] if self.items_limit else qs
 
 
 class TimelineEvent(models.Model):
@@ -182,3 +194,28 @@ class NavLink(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Customer(models.Model):
+    """مشتریان شرکت — لوگو در صفحه‌ی اصلی (نوار متحرک) و صفحه‌ی «مشتریان»."""
+    name = models.CharField("نام مشتری", max_length=120)
+    logo = models.FileField("لوگو", upload_to="customers/", blank=True,
+                            validators=[validate_customer_logo], help_text=CUSTOMER_LOGO_HELP)
+    website = models.URLField("وب‌سایت", blank=True)
+    city = models.CharField("شهر", max_length=60, blank=True)
+    industry = models.CharField("حوزه‌ی فعالیت", max_length=80, blank=True, help_text="مثل: ریسندگی، فرش ماشینی، بازرگانی")
+    description = models.TextField("توضیح کوتاه همکاری", blank=True, help_text="یک یا دو جمله؛ در صفحه‌ی مشتریان نمایش داده می‌شود.")
+    products = models.ManyToManyField("products.Product", verbose_name="محصولات استفاده‌شده", blank=True, related_name="customers")
+    since = models.CharField("شروع همکاری", max_length=20, blank=True, help_text="مثل ۱۴۰۲")
+    show_on_home = models.BooleanField("نمایش در صفحه اصلی", default=True)
+    is_active = models.BooleanField("فعال", default=True)
+    order = models.PositiveSmallIntegerField("ترتیب", default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["order", "name"]
+        verbose_name = "مشتری"
+        verbose_name_plural = "مشتریان"
+
+    def __str__(self):
+        return self.name

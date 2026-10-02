@@ -46,6 +46,8 @@ UNFOLD = {
                      "link": reverse_lazy("admin:core_sitesettings_changelist")},
                     {"title": "بخش‌های صفحه اصلی", "icon": "view_quilt",
                      "link": reverse_lazy("admin:core_homesection_changelist")},
+                    {"title": "مشتریان (لوگوها)", "icon": "handshake",
+                     "link": reverse_lazy("admin:core_customer_changelist")},
                     {"title": "خط زمان کاشان", "icon": "timeline",
                      "link": reverse_lazy("admin:core_timelineevent_changelist")},
                     {"title": "صفحات", "icon": "description",

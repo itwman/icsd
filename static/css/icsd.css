@@ -387,3 +387,63 @@ h1.big--sm { font-size: clamp(1.3rem, 2.4vw, 1.85rem); line-height: 1.7; }
 .result__score { font-size: 56px; font-weight: 900; line-height: 1; flex: none; }
 .result--ok .result__score { color: var(--sabz); } .result--no .result__score { color: var(--golab); }
 .text-success { color: var(--sabz) !important; font-weight: 700; } .text-danger { color: var(--golab) !important; font-weight: 700; }
+
+/* ═══ لوگوی محصول، وضعیت، مشتریان ═══════════════════════════════════
+   لوگوها همیشه روی کاشی روشن نمایش داده می‌شوند تا لوگوی مشکی/رنگی در حالت شب هم دیده شود. */
+.logo-tile { width: 64px; height: 64px; flex: none; border-radius: 16px; background: #fff; border: 1px solid var(--khatt);
+             display: grid; place-items: center; padding: 9px; box-shadow: 0 8px 20px -14px rgba(18,48,58,.45);
+             transition: transform .35s var(--ease), box-shadow .35s var(--ease); }
+.logo-tile img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.logo-tile__ico { color: var(--c1, var(--sabz)); display: grid; place-items: center; }
+.logo-tile--lg { width: 112px; height: 112px; border-radius: 24px; padding: 14px; }
+[data-mode="shab"] .logo-tile { background: #F4F8F7; border-color: transparent; }
+.card--product:hover .logo-tile { transform: translateY(-3px) rotate(-2deg); box-shadow: 0 16px 30px -16px var(--c1); }
+.pcard__top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+.pcard__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.pcard__ver { font-size: 11px; color: var(--matn-3); background: var(--bg-2); padding: 2px 8px; border-radius: 6px; }
+.st { font-size: 11px; font-weight: 800; padding: 2px 9px; border-radius: 99px; --st: var(--sabz);
+      color: var(--st); background: color-mix(in srgb, var(--st) 12%, transparent); border: 1px solid color-mix(in srgb, var(--st) 25%, transparent); }
+.st--beta { --st: var(--zaferan); } .st--alpha { --st: var(--golab); } .st--dev { --st: var(--firoozeh); }
+.card--product .card__tag { font-family: var(--fa); font-size: 11.5px; }
+.tech-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 16px; }
+.tech-chips span { font-size: 11px; padding: 2px 8px; border-radius: 6px; background: var(--bg-2); color: var(--matn-2); }
+
+/* نوار لوگوی مشتریان: بیش از ۴ لوگو = حرکت بی‌پایان (هاور = توقف)، کمتر = ردیف ثابت وسط‌چین */
+.logos { position: relative; }
+.logos__track { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 18px; }
+.logos--marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+                  mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent); padding-block: 6px; }
+.logos--marquee .logos__track { flex-wrap: nowrap; justify-content: flex-start; width: max-content;
+                                animation: logos-rtl calc(var(--n, 8) * 4.5s) linear infinite; }
+.logos--marquee:hover .logos__track, .logos--marquee:focus-within .logos__track { animation-play-state: paused; }
+@keyframes logos-rtl { from { transform: translateX(0); } to { transform: translateX(calc(50% + 9px)); } }
+.logos--grid .logos__track, .logos--grid { display: flex; flex-wrap: wrap; gap: 14px; }
+.logo-chip { flex: none; height: 92px; min-width: 150px; padding: 16px 24px; display: grid; place-items: center; border-radius: 18px;
+             background: #fff; border: 1px solid var(--khatt); transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
+.logo-chip img { max-height: 58px; max-width: 160px; width: auto; height: auto; object-fit: contain;
+                 filter: grayscale(1) contrast(1.05); opacity: .78; transition: filter .3s, opacity .3s; }
+.logo-chip:hover img, .logo-chip:focus-visible img { filter: none; opacity: 1; }
+a.logo-chip[href]:hover { transform: translateY(-3px); box-shadow: 0 14px 28px -18px rgba(18,48,58,.5); }
+.logo-chip__name { font-weight: 800; color: #12303A; font-size: 15px; white-space: nowrap; }
+[data-mode="shab"] .logo-chip { background: #F4F8F7; border-color: transparent; }
+@media (prefers-reduced-motion: reduce) {
+  .logos--marquee { -webkit-mask-image: none; mask-image: none; }
+  .logos--marquee .logos__track { animation: none; flex-wrap: wrap; justify-content: center; width: auto; }
+  .logos--marquee .logo-chip[aria-hidden="true"] { display: none; }
+}
+
+/* صفحه‌ی مشتریان */
+.cards--customers { grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
+.ccard { padding: 22px; display: flex; flex-direction: column; gap: 16px; }
+.ccard__logo { height: 110px; border-radius: 14px; background: #fff; border: 1px solid var(--khatt); display: grid; place-items: center; padding: 16px; }
+[data-mode="shab"] .ccard__logo { background: #F4F8F7; }
+.ccard__logo img { max-height: 76px; max-width: 80%; object-fit: contain; }
+.ccard__sub { display: block; color: var(--matn-3); font-size: 12.5px; margin-top: -4px; margin-bottom: 8px; }
+.ccard__prods { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.ccard__web { display: inline-block; margin-top: 10px; font-size: 12px; color: var(--firoozeh); }
+
+/* دکمه‌های ویرایش روی نوار سیلک/سفال و ابزار مدیر پایین صفحه */
+.sialk:hover > .edit-btn, .band:hover > .edit-btn { opacity: 1; }
+.band { position: relative; }
+.home-admin { display: flex; gap: 10px; justify-content: center; padding-block: 0 50px; }
+.home-admin .edit-btn { position: static; opacity: 1; }

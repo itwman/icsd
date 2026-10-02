@@ -5,19 +5,22 @@
 from django.core.management.base import BaseCommand
 
 from apps.core.models import HomeSection, NavLink, Page, SiteSettings, TimelineEvent
-from apps.products.models import Product, ProductFeature
 from apps.seo.models import Redirect
 
 NAV = [("محصولات", "/products/"), ("آکادمی", "/courses/"), ("از سیلک تا سرور", "/#kashan"),
        ("مقالات", "/blog/"), ("شروع پروژه", "/start-project/")]
 
 SECTIONS = [
-    ("products", "محصولات", "هشت نرم‌افزار، یک زنجیره", "هر کدام از دل یک توقف واقعی در خط تولید یا یک سفارش گم‌شده در بازار بیرون آمده است."),
+    ("sialk", "TAPPEH SIALK · KASHAN · 33.97°N 51.40°E", "تپه‌های شمالی و جنوبی سیلک — هفت هزار سال لایه، و شبکه‌ای که آن‌ها را می‌خواند", ""),
+    ("band", "", "نوار نقش سفال سیلک", ""),
+    ("products", "محصولات", "نرم‌افزارهایی که می‌سازیم", "هر کدام از دل یک مسئله‌ی واقعی در کارخانه، بازار فرش یا یک سازمان بیرون آمده است."),
+    ("customers", "مشتریان", "کسانی که با ما کار می‌کنند", "کارخانه‌ها، بازرگانان و سازمان‌هایی که نرم‌افزارهای ما هر روز در کارشان است."),
     ("timeline", "از سیلک تا سرور", "کاشان، شهر مهندسان", "این فهرست تبلیغات نیست؛ سابقه‌ی فنی یک شهر است که ما نفر بعدی‌اش هستیم."),
     ("academy", "آکادمی", "آنچه در کارگاه یاد گرفتیم، درس می‌دهیم", "هیچ دوره‌ای اینجا نیست که از دل یک پروژه‌ی واقعی بیرون نیامده باشد."),
     ("blog", "مقالات", "از دفترچه‌ی فنی ما", ""),
     ("cta", "تماس", "مسئله‌تان را بگویید، معماری‌اش را می‌نویسیم", "جلسه‌ی اول رایگان است. اگر راهکار آماده‌ای داشته باشیم همان را پیشنهاد می‌دهیم؛ اگر نه، از صفر می‌سازیم."),
 ]
+SECTION_LIMITS = {"products": 8, "customers": 0, "academy": 6, "blog": 3}
 
 TIMELINE = [
     ("۵۵۰۰ پیش از میلاد", "تپه سیلک", "کهن‌ترین سکونتگاه شناخته‌شده‌ی فلات ایران. سفال نقش‌دار، خشت، و نخستین سازه‌ی پلکانی — هفت هزار سال پیش، همین‌جا.", "#D2623E"),
@@ -27,39 +30,13 @@ TIMELINE = [
     ("۱۳۹۶ تا امروز", "توسعه هوشمند فرش ایرانیان", "همان شهر، همان کار: ساختن سامانه‌ای که بدون سر و صدا، سال‌ها درست کار کند — این بار با کد و هوش مصنوعی.", "#1E9E7B"),
 ]
 
-PRODUCTS = [
-    ("دوک", "doox", "پایش لحظه‌ای خط ریسندگی", "MES · IoT", "#1E9E7B", "memory",
-     "ثبت خودکار توقفات، محاسبه راندمان و گزارش ضایعات به تفکیک شیفت و ماشین.",
-     ["اتصال مستقیم به PLC و سنسورها", "داشبورد زنده‌ی راندمان (OEE)", "ثبت خودکار علت توقف", "گزارش ضایعات هر شیفت"]),
-    ("دیاکو", "diaco", "برنامه‌ریزی تولید و تخصیص سفارش به ماشین", "ERP · PLANNING", "#16A9C7", "account_tree",
-     "تخصیص سفارش به ماشین با احتساب موجودی نخ و زمان تعویض نقشه.",
-     ["برنامه‌ریزی روزانه و هفتگی", "کنترل موجودی نخ و مواد", "پیگیری سفارش تا تحویل", "گزارش مدیریتی"]),
-    ("رادمان", "radman", "نگهداری و تعمیرات", "CMMS", "#D2623E", "build",
-     "تعریف دارایی، برنامه‌ی PM، درخواست کار، انبار قطعات و تاریخچه‌ی خرابی هر ماشین.",
-     ["شناسنامه‌ی هر ماشین", "برنامه‌ی نگهداری پیشگیرانه", "درخواست کار و کارتابل تعمیرکار", "انبار قطعات یدکی"]),
-    ("چله", "cheleh", "مدیریت تار و چله‌کشی", "WARP CALC", "#F2A83B", "straighten",
-     "محاسبه‌ی مصرف نخ بر پایه‌ی شانه و تراکم، پیش از شروع بافت.",
-     ["محاسبه‌ی دقیق مصرف نخ", "برنامه‌ی چله‌کشی", "ثبت مشخصات هر چله", "هشدار کمبود نخ"]),
-    ("فرش‌پلاس", "farshplus", "بازار دیجیتال فرش", "MARKETPLACE", "#F05C7E", "storefront",
-     "کاتالوگ، مدیریت نمایندگان، سفارش‌گیری و تسویه‌ی خودکار.",
-     ["کاتالوگ آنلاین با فیلتر", "پنل نمایندگان و عاملان فروش", "سفارش‌گیری موبایلی", "تسویه و صورت‌حساب خودکار"]),
-    ("نوبان", "noban", "اتوماسیون اداری برای شرکت‌های تولیدی", "AUTOMATION", "#1E9E7B", "mark_email_read",
-     "دبیرخانه، گردش مکاتبات، کارتابل و امضای دیجیتال.",
-     ["دبیرخانه و بایگانی", "کارتابل و گردش کار", "امضای دیجیتال", "جستجوی تمام‌متن"]),
-    ("زال", "zaal", "تبدیل گفتار فارسی به متن", "ASR · AI", "#16A9C7", "mic",
-     "مستندسازی جلسات فنی و تماس‌های فروش با دقت بالا.",
-     ["تشخیص گفتار فارسی", "زمان‌بندی خودکار متن", "خروجی Word و PDF", "API برای اتصال به سامانه‌ها"]),
-    ("دانایار", "danayar", "تحلیل داده‌ی تولید با هوش مصنوعی", "ML · VISION", "#F2A83B", "insights",
-     "پیش‌بینی تقاضا و تشخیص الگوی عیوب بافت از روی تصویر.",
-     ["پیش‌بینی تقاضا", "تشخیص عیب بافت از تصویر", "داشبورد تحلیلی", "هشدار هوشمند"]),
-]
-
 # آدرس‌های قدیمی وردپرس → جدید
 REDIRECTS = [
-    ("/noban/", "/products/noban/", 301), ("/farsh-plus/", "/products/farshplus/", 301),
-    ("/roham/", "/products/", 301), ("/cheleh/", "/products/cheleh/", 301),
-    ("/danayar/", "/products/danayar/", 301), ("/dook/", "/products/doox/", 301),
-    ("/radman/", "/products/radman/", 301), ("/diaco/", "/products/diaco/", 301),
+    ("/noban/", "/products/noban/", 301), ("/farsh-plus/", "/products/farsh-plus/", 301),
+    ("/roham/", "/products/roham/", 301), ("/cheleh/", "/products/chelleh/", 301),
+    ("/danayar/", "/products/danayar/", 301), ("/dook/", "/products/", 301),
+    ("/radman/", "/products/رادمان/", 301), ("/diaco/", "/products/diaco/", 301),
+    ("/rayeshgar/", "/products/رایشگر/", 301), ("/manix/", "/products/manix/", 301),
     ("/courses/", "/courses/", 301), ("/دوره-های-آموزشی/", "/courses/", 301),
     ("/instructors/", "/courses/", 301), ("/instructor/", "/courses/", 301),
     ("/become_a_teacher/", "/start-project/", 301), ("/lp-profile/", "/accounts/dashboard/", 301),
@@ -102,8 +79,9 @@ class Command(BaseCommand):
             self.stdout.write("✓ منو")
 
         if not HomeSection.objects.exists():
-            for i, (k, kick, t, s) in enumerate(SECTIONS):
-                HomeSection.objects.create(key=k, kicker=kick, title=t, subtitle=s, order=i)
+            for i, (k, kick, t, sub) in enumerate(SECTIONS):
+                HomeSection.objects.create(key=k, kicker=kick, title=t, subtitle=sub, order=i * 10,
+                                           items_limit=SECTION_LIMITS.get(k, 8))
             self.stdout.write("✓ بخش‌های صفحه اصلی")
 
         if not TimelineEvent.objects.exists():
@@ -115,20 +93,12 @@ class Command(BaseCommand):
             Page.objects.get_or_create(slug=s, defaults={"title": t, "body": b})
         self.stdout.write("✓ صفحات")
 
-        for i, (name, latin, tag, cat, color, icon, summary, feats) in enumerate(PRODUCTS):
-            p, created = Product.objects.get_or_create(slug=latin, defaults={
-                "name": name, "latin_name": latin, "tagline": tag, "category_label": cat,
-                "color": color, "icon": icon, "summary": summary, "order": i,
-                "description": f"<p>{summary}</p><p>شرح کامل محصول را از پنل مدیریت ← محصولات ویرایش کنید؛ می‌توانید تصویر، آموزش و کاتالوگ اضافه کنید.</p>",
-            })
-            if created:
-                for j, f in enumerate(feats):
-                    ProductFeature.objects.create(product=p, title=f, order=j)
-        self.stdout.write("✓ محصولات")
+        from django.core.management import call_command
+        call_command("seed_products", stdout=self.stdout)
 
         n = 0
         for old, new, code in REDIRECTS:
-            _, created = Redirect.objects.get_or_create(old_path=old, defaults={"new_path": new, "status_code": code})
+            _, created = Redirect.objects.update_or_create(old_path=old, defaults={"new_path": new, "status_code": code})
             n += created
         self.stdout.write(f"✓ {n} ریدایرکت جدید")
         self.stdout.write(self.style.SUCCESS("تمام. حالا: python manage.py seed_geo  و  python manage.py seed_courses"))

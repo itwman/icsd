@@ -1,10 +1,16 @@
 {% load fa icons %}
-<article class="card" style="--c1:{{ p.color }};--c2:{{ p.color }}">
+<article class="card card--product" style="--c1:{{ p.color }};--c2:{{ p.color }}">
   {% edit_btn p %}
   <a href="{{ p.get_absolute_url }}" class="card__link">
-    <div class="card__ico">{% if p.logo %}<img src="{{ p.logo.url }}" alt="">{% else %}{% icon p.icon 22 %}{% endif %}</div>
+    <div class="pcard__top">
+      <div class="logo-tile">{% if p.logo %}<img src="{{ p.logo.url }}" alt="لوگوی {{ p.name }}" loading="lazy" width="64" height="64">{% else %}<span class="logo-tile__ico">{% icon p.icon 26 %}</span>{% endif %}</div>
+      <div class="pcard__meta">
+        <span class="st st--{{ p.status }}">{{ p.get_status_display }}</span>
+        {% if p.version %}<span class="mono pcard__ver">v{{ p.version }}</span>{% endif %}
+      </div>
+    </div>
     <h3>{{ p.name }}{% if p.latin_name %} <small class="mono">{{ p.latin_name }}</small>{% endif %}</h3>
     <p>{{ p.tagline }}</p>
-    {% if p.category_label %}<span class="card__tag mono">{{ p.category_label }}</span>{% endif %}
+    {% if p.category_label %}<span class="card__tag">{{ p.category_label }}</span>{% endif %}
   </a>
 </article>

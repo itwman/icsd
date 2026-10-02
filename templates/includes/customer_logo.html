@@ -1,0 +1,3 @@
+<a class="logo-chip"{% if c.website %} href="{{ c.website }}" target="_blank" rel="noopener nofollow"{% endif %} title="{{ c.name }}"{% if dup %} aria-hidden="true" tabindex="-1"{% endif %}>
+  {% if c.logo %}<img src="{{ c.logo.url }}" alt="{% if not dup %}{{ c.name }}{% endif %}" loading="lazy">{% else %}<span class="logo-chip__name">{{ c.name }}</span>{% endif %}
+</a>

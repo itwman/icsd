@@ -37,6 +37,11 @@
       </ul>
       {% endif %}
 
+      {% with cs=product.customers.all %}{% if cs %}
+      <h2 class="h5" style="margin:36px 0 14px">مشتریانی که از {{ product.name }} استفاده می‌کنند</h2>
+      <div class="logos logos--grid">{% for c in cs %}{% if c.is_active %}{% include "includes/customer_logo.html" %}{% endif %}{% endfor %}</div>
+      {% endif %}{% endwith %}
+
       {% if product.related_courses.exists %}
       <h2 class="h5" style="margin:36px 0 14px">دوره‌های مرتبط</h2>
       <div class="cards">{% for c in product.related_courses.all %}{% include "includes/course_card.html" %}{% endfor %}</div>
@@ -45,9 +50,14 @@
 
     <aside>
       <div class="side__box side__box--sticky">
-        <div class="card__ico" style="--c1:{{ product.color }}">{% if product.logo %}<img src="{{ product.logo.url }}" alt="">{% else %}{% icon product.icon 22 %}{% endif %}</div>
+        <div class="logo-tile logo-tile--lg">{% if product.logo %}<img src="{{ product.logo.url }}" alt="لوگوی {{ product.name }}">{% else %}<span class="logo-tile__ico">{% icon product.icon 34 %}</span>{% endif %}</div>
+        <div class="pcard__meta" style="margin:14px 0 10px">
+          <span class="st st--{{ product.status }}">{{ product.get_status_display }}</span>
+          {% if product.version %}<span class="mono pcard__ver">v{{ product.version }}</span>{% endif %}
+          {% if product.license_label %}<span class="pcard__ver">{{ product.license_label }}</span>{% endif %}
+        </div>
         <div class="price" style="font-size:16px">{{ product.price_note }}</div>
-        {% if product.tech_stack %}<small class="mono" style="color:var(--matn-3);display:block;margin-bottom:12px">{{ product.tech_stack }}</small>{% endif %}
+        {% if product.tech_list %}<div class="tech-chips">{% for t in product.tech_list %}<span class="mono">{{ t }}</span>{% endfor %}</div>{% endif %}
         <a class="btn btn--fill" style="width:100%" href="{% url 'leads:start' %}?product={{ product.pk }}">درخواست دمو / استعلام قیمت</a>
         <a class="btn btn--line" style="width:100%;margin-top:8px" href="{% url 'products:catalog' product.slug %}" target="_blank">{% icon "download" 16 %} کاتالوگ</a>
         {% if product.demo_url %}<a class="btn btn--line btn--sm" style="width:100%;margin-top:8px" href="{{ product.demo_url }}" target="_blank" rel="noopener">دموی آنلاین</a>{% endif %}

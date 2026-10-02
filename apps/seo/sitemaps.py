@@ -12,7 +12,7 @@ class StaticSitemap(Sitemap):
     changefreq = "weekly"
 
     def items(self):
-        return ["core:home", "academy:course_list", "products:list", "blog:post_list", "leads:start"]
+        return ["core:home", "academy:course_list", "products:list", "blog:post_list", "leads:start", "core:customers"]
 
     def location(self, item):
         return reverse(item)

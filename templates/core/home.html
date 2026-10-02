@@ -74,26 +74,51 @@
   </div>
 </section>
 
-<!-- ══════════ تپه سیلک: منظره‌ی تمام‌عرض ══════════ -->
-<section class="sialk" aria-label="تپه سیلک کاشان">
-  <canvas id="sialk" class="sialk__canvas"></canvas>
-  <div class="sialk__cap wrap">
-    <span class="mono">TAPPEH SIALK · KASHAN · 33.97°N 51.40°E</span>
-    <span>تپه‌های شمالی و جنوبی سیلک — هفت هزار سال لایه، و شبکه‌ای که آن‌ها را می‌خواند</span>
-  </div>
-</section>
-<div class="band" aria-hidden="true"><div class="band__in" id="band"></div></div>
-
 {% for s in sections %}
-  {% if s.key == "products" %}
+  {% if s.key == "sialk" %}
+  <!-- ══════════ تپه سیلک: منظره‌ی تمام‌عرض ══════════ -->
+  <section class="sialk" aria-label="{{ s.title }}">{% edit_btn s %}
+    <canvas id="sialk" class="sialk__canvas"></canvas>
+    <div class="sialk__cap wrap">
+      {% if s.kicker %}<span class="mono">{{ s.kicker }}</span>{% endif %}
+      <span>{{ s.title }}</span>
+    </div>
+  </section>
+
+  {% elif s.key == "band" %}
+  <div class="band" aria-hidden="true">{% edit_btn s %}<div class="band__in" id="band"></div></div>
+
+  {% elif s.key == "products" %}
   <section class="sec wrap" id="products">
-    <div class="head rise">{% edit_btn s %}
-      <span class="kick">{{ s.kicker }}</span><h2>{{ s.title }}</h2>{% if s.subtitle %}<p>{{ s.subtitle }}</p>{% endif %}
+    <div class="head rise head--row">{% edit_btn s %}
+      <div><span class="kick">{{ s.kicker }}</span><h2>{{ s.title }}</h2>{% if s.subtitle %}<p>{{ s.subtitle }}</p>{% endif %}</div>
+      <a class="btn btn--line btn--sm" href="{{ s.button_url|default:'/products/' }}">{{ s.button_text|default:"همه‌ی محصولات ←" }}</a>
     </div>
     <div class="cards rise">
-      {% for p in products %}{% include "includes/product_card.html" %}{% endfor %}
+      {% for p in s.items %}{% include "includes/product_card.html" %}{% endfor %}
     </div>
     {% add_btn "products" "product" "افزودن محصول" %}
+  </section>
+
+  {% elif s.key == "customers" %}
+  <section class="sec wrap" id="customers" style="padding-top:0">
+    <div class="head rise head--row">{% edit_btn s %}
+      <div><span class="kick">{{ s.kicker }}</span><h2>{{ s.title }}</h2>{% if s.subtitle %}<p>{{ s.subtitle }}</p>{% endif %}</div>
+      <a class="btn btn--line btn--sm" href="{{ s.button_url|default:'/customers/' }}">{{ s.button_text|default:"همه‌ی مشتریان ←" }}</a>
+    </div>
+    {% with n=s.items|length %}
+    {% if n %}
+    <div class="logos rise{% if n > 4 %} logos--marquee{% endif %}" style="--n:{{ n }}">
+      <div class="logos__track">
+        {% for c in s.items %}{% include "includes/customer_logo.html" %}{% endfor %}
+        {% if n > 4 %}{% for c in s.items %}{% include "includes/customer_logo.html" with dup=1 %}{% endfor %}{% endif %}
+      </div>
+    </div>
+    {% elif user.is_staff %}
+    <div class="empty">هنوز مشتری‌ای ثبت نشده. از پنل ← «مشتریان (لوگوها)» اضافه کنید؛ این پیام فقط برای مدیران دیده می‌شود.</div>
+    {% endif %}
+    {% endwith %}
+    {% add_btn "core" "customer" "افزودن مشتری" %}
   </section>
 
   {% elif s.key == "timeline" %}
@@ -102,34 +127,35 @@
       <span class="kick">{{ s.kicker }}</span><h2>{{ s.title }}</h2>{% if s.subtitle %}<p>{{ s.subtitle }}</p>{% endif %}
     </div>
     <div class="timeline rise">
-      {% for e in timeline %}
+      {% for e in s.items %}
       <div class="ev" style="--dot:{{ e.color }}">{% edit_btn e %}
         <div class="ev__y">{{ e.era }}</div><h3>{{ e.title }}</h3><p>{{ e.text }}</p>
       </div>
       {% endfor %}
     </div>
+    {% add_btn "core" "timelineevent" "افزودن رویداد" %}
   </section>
 
   {% elif s.key == "academy" %}
   <section class="sec wrap" id="academy" style="padding-top:0">
     <div class="head rise head--row">{% edit_btn s %}
       <div><span class="kick">{{ s.kicker }}</span><h2>{{ s.title }}</h2>{% if s.subtitle %}<p>{{ s.subtitle }}</p>{% endif %}</div>
-      <a class="btn btn--line btn--sm" href="{% url 'academy:course_list' %}">همه‌ی دوره‌ها ←</a>
+      <a class="btn btn--line btn--sm" href="{{ s.button_url|default:'/courses/' }}">{{ s.button_text|default:"همه‌ی دوره‌ها ←" }}</a>
     </div>
     <div class="cards rise">
-      {% for c in courses %}{% include "includes/course_card.html" %}{% endfor %}
+      {% for c in s.items %}{% include "includes/course_card.html" %}{% endfor %}
     </div>
   </section>
 
   {% elif s.key == "blog" %}
-  {% if posts %}
+  {% if s.items %}
   <section class="sec wrap" id="blog" style="padding-top:0">
     <div class="head rise head--row">{% edit_btn s %}
       <div><span class="kick">{{ s.kicker }}</span><h2>{{ s.title }}</h2>{% if s.subtitle %}<p>{{ s.subtitle }}</p>{% endif %}</div>
-      <a class="btn btn--line btn--sm" href="{% url 'blog:post_list' %}">همه‌ی مقالات ←</a>
+      <a class="btn btn--line btn--sm" href="{{ s.button_url|default:'/blog/' }}">{{ s.button_text|default:"همه‌ی مقالات ←" }}</a>
     </div>
     <div class="cards rise">
-      {% for post in posts %}{% include "includes/post_card.html" %}{% endfor %}
+      {% for post in s.items %}{% include "includes/post_card.html" %}{% endfor %}
     </div>
   </section>
   {% endif %}
@@ -140,8 +166,8 @@
       <span class="kick" style="justify-content:center">{{ s.kicker }}</span>
       <h2>{{ s.title }}</h2>{% if s.subtitle %}<p>{{ s.subtitle }}</p>{% endif %}
       <div class="btns">
-        <a class="btn btn--fill" href="{% url 'leads:start' %}">درخواست جلسه</a>
-        <a class="btn btn--line" href="{% url 'academy:course_list' %}">دوره‌های آموزشی</a>
+        <a class="btn btn--fill" href="{{ s.button_url|default:'/start-project/' }}">{{ s.button_text|default:"درخواست جلسه" }}</a>
+        <a class="btn btn--line" href="/courses/">دوره‌های آموزشی</a>
       </div>
     </div>
   </section>
@@ -152,9 +178,17 @@
       {% if s.kicker %}<span class="kick">{{ s.kicker }}</span>{% endif %}<h2>{{ s.title }}</h2>{% if s.subtitle %}<p>{{ s.subtitle }}</p>{% endif %}
     </div>
     <div class="prose rise">{{ s.body|safe }}</div>
+    {% if s.button_text and s.button_url %}<p style="margin-top:18px"><a class="btn btn--fill" href="{{ s.button_url }}">{{ s.button_text }}</a></p>{% endif %}
   </section>
   {% endif %}
 {% endfor %}
+
+{% if user.is_staff %}
+<div class="wrap home-admin">
+  {% add_btn "core" "homesection" "افزودن بخش به صفحه‌ی اصلی" %}
+  <a class="edit-btn edit-btn--add" href="/admin/core/homesection/" target="_blank" rel="noopener">چینش و روشن/خاموش بخش‌ها</a>
+</div>
+{% endif %}
 {% endblock %}
 
 {% block scripts %}
