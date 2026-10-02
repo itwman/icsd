@@ -1,0 +1,57 @@
+{% extends "unfold/layouts/base_simple.html" %}
+{% load i18n fa %}
+
+{% block breadcrumbs %}{% endblock %}
+{% block title %}داشبورد | {{ site_header }}{% endblock %}
+
+{% block content %}
+<style>
+  .dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:22px}
+  .dash-kpi{border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:16px 18px;background:#fff}
+  .dark .dash-kpi{background:#111827;border-color:rgba(255,255,255,.08)}
+  .dash-kpi small{display:block;font-size:12px;opacity:.65;margin-bottom:6px}
+  .dash-kpi b{font-size:24px;font-weight:800;color:#1E9E7B}
+  .dash-row{display:grid;grid-template-columns:2fr 1fr;gap:14px}
+  @media(max-width:900px){.dash-row{grid-template-columns:1fr}}
+  .dash-box{border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:18px;background:#fff}
+  .dark .dash-box{background:#111827;border-color:rgba(255,255,255,.08)}
+  .dash-box h3{font-size:14px;font-weight:800;margin:0 0 14px}
+  .chart{display:flex;align-items:flex-end;gap:3px;height:140px}
+  .chart div{flex:1;background:#1E9E7B;border-radius:3px 3px 0 0;min-height:2px;opacity:.85;position:relative}
+  .chart div:hover{opacity:1}
+  .chart div span{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);font-size:10px;white-space:nowrap;display:none;background:#111;color:#fff;padding:2px 6px;border-radius:4px;margin-bottom:3px}
+  .chart div:hover span{display:block}
+  .chart-x{display:flex;justify-content:space-between;font-size:10px;opacity:.6;margin-top:6px;font-family:monospace}
+  .dash-list{list-style:none;padding:0;margin:0}
+  .dash-list li{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid rgba(0,0,0,.06);font-size:13px}
+  .dash-list li span:first-child{direction:ltr;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .dash-list b{color:#1E9E7B}
+</style>
+
+<div class="dash-grid">
+  {% for k in kpis %}<div class="dash-kpi"><small>{{ k.title }}</small><b>{{ k.value }}</b></div>{% endfor %}
+</div>
+
+<div class="dash-row">
+  <div class="dash-box">
+    <h3>بازدید ۳۰ روز اخیر</h3>
+    <div class="chart">
+      {% for p in chart %}<div style="height:{% widthratio p.value chart_peak 100 %}%"><span>{{ p.label }} — {{ p.value|fa_num }}</span></div>{% endfor %}
+    </div>
+    <div class="chart-x"><span>{{ chart.0.label }}</span><span>{{ chart.29.label }}</span></div>
+  </div>
+  <div class="dash-box">
+    <h3>پربازدیدترین صفحات</h3>
+    <ul class="dash-list">{% for p in top_pages %}<li><span>{{ p.path }}</span><b>{{ p.n }}</b></li>{% empty %}<li>هنوز بازدیدی ثبت نشده.</li>{% endfor %}</ul>
+  </div>
+</div>
+
+<div class="dash-box" style="margin-top:14px">
+  <h3>آخرین درخواست‌های پروژه</h3>
+  <ul class="dash-list">
+    {% for l in recent_leads %}
+    <li><span style="direction:rtl;text-align:right"><a href="{% url 'admin:leads_projectrequest_change' l.pk %}">{{ l.full_name }}{% if l.company %} — {{ l.company }}{% endif %}</a></span><span>{{ l.get_topic_display }} · {{ l.get_status_display }} · {{ l.created_at|jdate }}</span></li>
+    {% empty %}<li>درخواستی ثبت نشده.</li>{% endfor %}
+  </ul>
+</div>
+{% endblock %}

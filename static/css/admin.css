@@ -1,0 +1,6 @@
+/* پنل مدیریت — تقویم شمسی و چند اصلاح RTL */
+.jdp-container { font-family: Vazirmatn, Tahoma, sans-serif !important; z-index: 9999 !important; }
+input.jdp { direction: ltr; text-align: left; }
+.ck.ck-editor { direction: rtl; }
+.ck-content { font-family: Vazirmatn, Tahoma, sans-serif; line-height: 2; }
+.ck-content pre { direction: ltr; text-align: left; }

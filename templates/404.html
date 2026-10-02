@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load seo %}
+{% block seo %}<title>صفحه پیدا نشد | {{ site.site_name }}</title><meta name="robots" content="noindex">{% endblock %}
+{% block content %}
+<section class="sec wrap" style="padding-block:80px;text-align:center;max-width:560px">
+  <div class="mono" style="font-size:72px;font-weight:800;color:var(--khesht);line-height:1">404</div>
+  <h1>این صفحه اینجا نیست</h1>
+  <p style="color:var(--matn-2)">شاید آدرس عوض شده باشد. از منو یا جستجوی دوره‌ها استفاده کنید.</p>
+  <div class="btns" style="justify-content:center"><a class="btn btn--fill" href="/">صفحه اصلی</a><a class="btn btn--line" href="/courses/">دوره‌ها</a></div>
+</section>
+{% endblock %}

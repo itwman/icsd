@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load fa %}
+{% block content %}
+<section class="sec wrap" style="padding-block:50px 90px;max-width:520px">
+  <div class="head head--center"><span class="kick">پرداخت</span><h1>تأیید خرید</h1></div>
+  <div class="form-card">
+    <div class="d-flex justify-content-between mb-2"><span>دوره</span><b>{{ course.title }}</b></div>
+    <div class="d-flex justify-content-between mb-3"><span>مبلغ</span><b class="price" style="margin:0">{{ course.price|toman }}</b></div>
+    <form method="post">{% csrf_token %}
+      <button class="btn btn--fill" style="width:100%" type="submit">پرداخت با زرین‌پال</button>
+    </form>
+    <small class="d-block text-center mt-3" style="color:var(--matn-3)">بعد از پرداخت موفق، بلافاصله به دوره دسترسی دارید.</small>
+  </div>
+</section>
+{% endblock %}

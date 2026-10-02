@@ -1,0 +1,21 @@
+{% load fa icons %}
+<article class="card card--course">
+  {% edit_btn c %}
+  <a href="{{ c.get_absolute_url }}" class="card__link">
+    <div class="card__cover" {% if c.cover %}style="background-image:url('{{ c.cover.url }}')"{% endif %}>
+      {% if not c.cover %}{% icon c.category.icon 44 %}{% endif %}
+      <span class="badge-lvl badge-lvl--{{ c.level }}">{{ c.get_level_display }}</span>
+      <span class="badge-free">رایگان</span>
+    </div>
+    <div class="card__body">
+      <span class="kick" style="margin-bottom:6px">{{ c.category.title }}</span>
+      <h3>{{ c.title }}</h3>
+      <p>{{ c.summary }}</p>
+      <div class="card__meta mono">
+        <span>{{ c.lesson_count|fa_num }} درس</span>
+        {% if c.duration_minutes %}<span>{{ c.duration_minutes|minutes_fa }}</span>{% endif %}
+        {% if c.quiz %}<b>آزمون + گواهی</b>{% endif %}
+      </div>
+    </div>
+  </a>
+</article>

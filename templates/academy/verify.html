@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load fa icons seo %}
+{% block seo %}{% seo_head None "استعلام گواهینامه" "بررسی اصالت گواهینامه‌های آکادمی" %}{% endblock %}
+{% block content %}
+<section class="sec wrap" style="padding-block:50px 90px;max-width:640px">
+  <div class="head head--center"><span class="kick">استعلام گواهینامه</span><h1>بررسی اصالت</h1></div>
+  <div class="form-card" style="text-align:center">
+    {% if cert and not cert.is_revoked %}
+      <div class="card__ico" style="margin-inline:auto;--c1:var(--sabz);width:64px;height:64px">{% icon "check_circle" 32 %}</div>
+      <h2 style="font-size:20px;margin-top:12px">این گواهینامه معتبر است</h2>
+      <ul class="side__facts" style="max-width:380px;margin:18px auto 0;text-align:right">
+        <li><b>شماره:</b> <span class="mono">{{ cert.serial }}</span></li>
+        <li><b>نام:</b> {% if cert.user.show_certificates_publicly %}{{ cert.full_name }}{% else %}{{ cert.full_name|slice:":1" }}*** (به درخواست دارنده مخفی است){% endif %}</li>
+        <li><b>دوره:</b> {{ cert.course.title }}</li>
+        <li><b>نمره:</b> {{ cert.score|fa_num }}٪</li>
+        <li><b>تاریخ صدور:</b> {{ cert.issued_at|jdate:"%d %B %Y" }}</li>
+        <li><b>نحوه‌ی برگزاری:</b> کاملاً آنلاین</li>
+      </ul>
+    {% elif cert %}
+      <div class="card__ico" style="margin-inline:auto;--c1:var(--golab);width:64px;height:64px">✕</div>
+      <h2 style="font-size:20px;margin-top:12px">این گواهینامه ابطال شده است</h2>
+    {% else %}
+      <div class="card__ico" style="margin-inline:auto;--c1:var(--golab);width:64px;height:64px">✕</div>
+      <h2 style="font-size:20px;margin-top:12px">گواهینامه‌ای با این کد پیدا نشد</h2>
+      <p style="color:var(--matn-3);font-size:13px" class="mono">{{ code }}</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

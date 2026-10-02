@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load fa %}
+{% block content %}
+<article class="sec wrap" style="padding-block:40px 70px;max-width:860px">
+  <div class="head">{% edit_btn post %}
+    <a class="kick" href="{% url 'blog:post_list' %}?cat={{ post.category.slug }}">{{ post.category.title }}</a>
+    <h1>{{ post.title }}</h1>
+    <div class="card__meta mono" style="margin-top:8px">
+      {% if post.author %}<span>{{ post.author.display_name }}</span>{% endif %}
+      <span>{{ post.published_at|jdate:"%d %B %Y" }}</span>
+      <span>{{ post.read_minutes|fa_num }} دقیقه مطالعه</span>
+      <span>{{ post.views|fa_num }} بازدید</span>
+    </div>
+  </div>
+  {% if post.cover %}<img class="hero-img" src="{{ post.cover.url }}" alt="{{ post.title }}">{% endif %}
+  <div class="prose">{{ post.body|safe }}</div>
+  {% if post.tags.exists %}<div style="margin-top:28px">{% for t in post.tags.all %}<a class="tag" href="{% url 'blog:post_list' %}?tag={{ t.name }}">{{ t.name }}</a>{% endfor %}</div>{% endif %}
+  {% if related %}
+  <div class="head" style="margin-top:56px"><h2 class="h4">نوشته‌های مرتبط</h2></div>
+  <div class="cards">{% for post in related %}{% include "includes/post_card.html" %}{% endfor %}</div>
+  {% endif %}
+</article>
+{% endblock %}

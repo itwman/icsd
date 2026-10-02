@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load fa icons seo %}
+{% block seo %}{% seo_head None "محصولات" "نرم‌افزارهای اختصاصی صنعت فرش و نساجی: MES، ERP، CMMS، بازار دیجیتال، اتوماسیون اداری و هوش مصنوعی." %}{% endblock %}
+{% block content %}
+<section class="sec wrap" style="padding-block:40px 70px">
+  <div class="head"><span class="kick">محصولات</span><h1>نرم‌افزارهایی که می‌سازیم</h1>
+    <p>هر کدام از دل یک مسئله‌ی واقعی در کارخانه و بازار فرش بیرون آمده است.</p>{% add_btn "products" "product" "افزودن محصول" %}</div>
+  <div class="cards">{% for p in products %}{% include "includes/product_card.html" %}{% endfor %}</div>
+</section>
+{% endblock %}

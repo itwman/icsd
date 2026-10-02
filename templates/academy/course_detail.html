@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load fa icons %}
+
+{% block content %}
+<section class="sec wrap" style="padding-block:40px 70px">
+  <div class="layout layout--detail">
+    <div>
+      <div class="head">
+        {% edit_btn course %}
+        <span class="kick">{{ course.category.title }} · {{ course.get_level_display }}</span>
+        <h1>{{ course.title }}</h1>
+        <p>{{ course.summary }}</p>
+        <div class="card__meta mono" style="margin-top:10px">
+          <span>{{ course.lesson_count|fa_num }} درس</span>
+          {% if course.duration_minutes %}<span>{{ course.duration_minutes|minutes_fa }}</span>{% endif %}
+          {% if course.instructor %}<span>مدرس: {{ course.instructor.display_name }}</span>{% endif %}
+          {% if course.published_at %}<span>{{ course.published_at|jdate:"%d %B %Y" }}</span>{% endif %}
+        </div>
+      </div>
+
+      {% if course.description %}<div class="prose">{{ course.description|safe }}</div>{% endif %}
+
+      <h2 class="h5" style="margin:34px 0 14px">سرفصل‌ها</h2>
+      <div class="accordion" id="curr">
+        {% for m in modules %}
+        <div class="accordion-item">
+          <h3 class="accordion-header">
+            <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#m{{ m.pk }}">
+              {{ m.title }} <span class="mono" style="margin-inline-start:auto;font-size:11px;color:var(--matn-3)">{{ m.lessons.count|fa_num }} درس</span>
+            </button>
+          </h3>
+          <div id="m{{ m.pk }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" data-bs-parent="#curr">
+            <div class="accordion-body">
+              <ul class="lessons">
+                {% for l in m.lessons.all %}
+                <li>
+                  {% if l.kind == "video" %}{% icon "play" 16 %}{% else %}{% icon "doc" 16 %}{% endif %}
+                  <a href="{{ l.get_absolute_url }}">{{ l.title }}</a>
+                  <small class="mono">{{ l.minutes|fa_num }}′</small>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      {% if course.tags.exists %}
+      <div style="margin-top:24px">{% for t in course.tags.all %}<a class="tag" href="{% url 'academy:course_list' %}?q={{ t.name }}">{{ t.name }}</a>{% endfor %}</div>
+      {% endif %}
+    </div>
+
+    <aside>
+      <div class="side__box side__box--sticky">
+        {% if course.cover %}<img src="{{ course.cover.url }}" alt="" class="side__cover">{% endif %}
+        <div class="price">رایگان و آزاد</div>
+        <a class="btn btn--fill" style="width:100%" href="{% url 'academy:learn_start' course.slug %}">
+          {% if enrollment %}ادامه‌ی یادگیری{% else %}شروع یادگیری{% endif %}
+        </a>
+        {% if enrollment %}
+          <div class="progress-wrap"><div class="progress-bar-fa" style="width:{{ enrollment.percent }}%"></div></div>
+          <small style="color:var(--matn-3)">{{ enrollment.percent|fa_num }}٪ تکمیل شده</small>
+        {% elif not user.is_authenticated %}
+          <small class="d-block mt-2" style="color:var(--matn-3)">برای ذخیره‌ی پیشرفت و شرکت در آزمون، <a href="{% url 'accounts:login' %}?next={{ request.path }}">وارد شوید</a>.</small>
+        {% else %}
+          <a class="btn btn--line btn--sm" style="width:100%;margin-top:8px" href="{% url 'academy:enroll' course.slug %}">افزودن به دوره‌های من</a>
+        {% endif %}
+
+        {% if quiz %}
+        <div class="quizbox">
+          <div class="quizbox__t">{% icon "check_circle" 18 %} آزمون آنلاین و گواهینامه</div>
+          <p>{{ quiz.questions.count|fa_num }} سؤال · {{ quiz.time_limit_minutes|fa_num }} دقیقه · قبولی {{ quiz.pass_percent|fa_num }}٪</p>
+          {% if certificate %}
+            <a class="btn btn--fill btn--sm" style="width:100%" href="{{ certificate.get_absolute_url }}">دیدن گواهینامه‌ی شما</a>
+          {% else %}
+            <a class="btn btn--line btn--sm" style="width:100%" href="{% url 'academy:quiz_start' course.slug %}">شرکت در آزمون (رایگان)</a>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        <ul class="side__facts">
+          <li>{% icon "play" 16 %} {{ course.lesson_count|fa_num }} درس</li>
+          {% if course.duration_minutes %}<li>{% icon "clock" 16 %} {{ course.duration_minutes|minutes_fa }}</li>{% endif %}
+          <li>{% icon "check_circle" 16 %} بدون نیاز به ثبت‌نام برای مطالعه</li>
+          {% if quiz %}<li>{% icon "doc" 16 %} گواهینامه‌ی آنلاین قابل استعلام</li>{% endif %}
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  {% if related %}
+  <div class="head" style="margin-top:56px"><h2 class="h4">دوره‌های مرتبط</h2></div>
+  <div class="cards">{% for c in related %}{% include "includes/course_card.html" %}{% endfor %}</div>
+  {% endif %}
+</section>
+{% endblock %}

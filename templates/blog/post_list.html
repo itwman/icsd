@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load fa seo %}
+{% block seo %}{% seo_head None "مقالات" "یادداشت‌های فنی درباره‌ی نرم‌افزار صنعت فرش، هوش مصنوعی و اتوماسیون." %}{% endblock %}
+{% block content %}
+<section class="sec wrap" style="padding-block:40px 70px">
+  <div class="head head--row">
+    <div><span class="kick">مقالات</span><h1>از دفترچه‌ی فنی ما</h1>{% add_btn "blog" "post" "نوشته‌ی جدید" %}</div>
+    <form method="get" class="d-flex gap-2"><input class="form-control" name="q" value="{{ q }}" placeholder="جستجو…"><button class="btn btn--line btn--sm" type="submit">جستجو</button></form>
+  </div>
+  <div style="margin-bottom:22px">
+    <a class="tag {% if not cat %}is-on{% endif %}" href="{% url 'blog:post_list' %}">همه</a>
+    {% for c in categories %}<a class="tag {% if cat == c.slug %}is-on{% endif %}" href="?cat={{ c.slug }}">{{ c.title }}</a>{% endfor %}
+  </div>
+  {% if page.object_list %}
+  <div class="cards">{% for post in page %}{% include "includes/post_card.html" %}{% endfor %}</div>
+  {% if page.has_other_pages %}
+  <nav class="pager">
+    {% if page.has_previous %}<a class="btn btn--line btn--sm" href="?page={{ page.previous_page_number }}{% if q %}&q={{ q }}{% endif %}{% if cat %}&cat={{ cat }}{% endif %}">قبلی</a>{% endif %}
+    <span class="mono">{{ page.number|fa_num }} / {{ page.paginator.num_pages|fa_num }}</span>
+    {% if page.has_next %}<a class="btn btn--line btn--sm" href="?page={{ page.next_page_number }}{% if q %}&q={{ q }}{% endif %}{% if cat %}&cat={{ cat }}{% endif %}">بعدی</a>{% endif %}
+  </nav>
+  {% endif %}
+  {% else %}<div class="empty">هنوز نوشته‌ای منتشر نشده است.</div>{% endif %}
+</section>
+{% endblock %}

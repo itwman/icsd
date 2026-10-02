@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load fa icons seo %}
+{% block seo %}{% seo_head None "شروع پروژه" "درخواست جلسه‌ی رایگان — مسئله‌تان را بگویید، معماری‌اش را می‌نویسیم." %}{% endblock %}
+{% block content %}
+<section class="sec wrap" style="padding-block:40px 70px;max-width:820px">
+  <div class="head head--center">
+    <span class="kick">شروع پروژه</span>
+    <h1>مسئله‌تان را بگویید</h1>
+    <p>جلسه‌ی اول رایگان است. این فرم ۲ دقیقه وقت می‌گیرد؛ ظرف یک روز کاری تماس می‌گیریم.</p>
+  </div>
+
+  <form method="post" enctype="multipart/form-data" class="form-card" novalidate>
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+
+    <fieldset class="fs">
+      <legend><span class="fs__n mono">۱</span> مشخصات شما</legend>
+      <div class="row g-3">
+        <div class="col-md-6">{% include "includes/field.html" with f=form.full_name %}</div>
+        <div class="col-md-6">{% include "includes/field.html" with f=form.company %}</div>
+        <div class="col-md-4">{% include "includes/field.html" with f=form.job_title %}</div>
+        <div class="col-md-4">{% include "includes/field.html" with f=form.mobile %}</div>
+        <div class="col-md-4">{% include "includes/field.html" with f=form.phone %}</div>
+        <div class="col-md-12">{% include "includes/field.html" with f=form.email %}</div>
+      </div>
+    </fieldset>
+
+    <fieldset class="fs">
+      <legend><span class="fs__n mono">۲</span> آدرس</legend>
+      <div class="row g-3">
+        <div class="col-md-6">{% include "includes/field.html" with f=form.province %}</div>
+        <div class="col-md-6">{% include "includes/field.html" with f=form.city %}</div>
+        <div class="col-md-9">{% include "includes/field.html" with f=form.address %}</div>
+        <div class="col-md-3">{% include "includes/field.html" with f=form.postal_code %}</div>
+      </div>
+    </fieldset>
+
+    <fieldset class="fs">
+      <legend><span class="fs__n mono">۳</span> پروژه</legend>
+      <div class="row g-3">
+        <div class="col-md-4">{% include "includes/field.html" with f=form.topic %}</div>
+        <div class="col-md-4">{% include "includes/field.html" with f=form.product %}</div>
+        <div class="col-md-4">{% include "includes/field.html" with f=form.budget %}</div>
+        <div class="col-md-5">{% include "includes/field.html" with f=form.preferred_date %}</div>
+        <div class="col-md-7">{% include "includes/field.html" with f=form.attachment %}</div>
+        <div class="col-12">{% include "includes/field.html" with f=form.description %}</div>
+      </div>
+    </fieldset>
+
+    <button class="btn btn--fill" style="width:100%" type="submit">{% icon "check_circle" 18 %} ارسال درخواست</button>
+    <small class="d-block text-center mt-3" style="color:var(--matn-3)">با ارسال این فرم، <a href="/p/privacy/">حریم خصوصی</a> را پذیرفته‌اید.</small>
+  </form>
+</section>
+{% endblock %}

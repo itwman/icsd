@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load fa icons %}
+{% block content %}
+<section class="sec wrap" style="padding-block:40px 70px;--c1:{{ product.color }}">
+  <div class="layout layout--detail">
+    <div>
+      <div class="head">{% edit_btn product %}
+        <span class="kick">{{ product.category_label|default:"محصول" }}</span>
+        <h1>{{ product.name }} {% if product.latin_name %}<small class="mono" style="font-size:.5em;color:var(--matn-3)">{{ product.latin_name }}</small>{% endif %}</h1>
+        <p>{{ product.tagline }}</p>
+      </div>
+      {% if product.cover %}<img class="hero-img" src="{{ product.cover.url }}" alt="{{ product.name }}">{% endif %}
+      <div class="prose">{{ product.description|safe }}</div>
+
+      {% if product.features.exists %}
+      <h2 class="h5" style="margin:36px 0 14px">قابلیت‌ها</h2>
+      <div class="feats">
+        {% for f in product.features.all %}
+        <div class="feat"><div class="feat__i">{% icon f.icon 18 %}</div><div><b>{{ f.title }}</b>{% if f.text %}<p>{{ f.text }}</p>{% endif %}</div></div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% if product.target_audience %}<h2 class="h5" style="margin:36px 0 10px">برای چه کسانی</h2><p>{{ product.target_audience|linebreaksbr }}</p>{% endif %}
+
+      {% if product.images.exists %}
+      <h2 class="h5" style="margin:36px 0 14px">تصاویر</h2>
+      <div class="gallery">{% for im in product.images.all %}<figure><img src="{{ im.image.url }}" alt="{{ im.caption }}" loading="lazy">{% if im.caption %}<figcaption>{{ im.caption }}</figcaption>{% endif %}</figure>{% endfor %}</div>
+      {% endif %}
+
+      {% if tutorials %}
+      <h2 class="h5" style="margin:36px 0 14px">آموزش‌های {{ product.name }}</h2>
+      <ul class="lessons">
+        {% for t in tutorials %}
+        <li>{% icon "doc" 16 %}<a href="{% url 'products:tutorial' product.slug t.pk %}">{{ t.title }}</a>{% if not t.is_public %}<em class="tag-free">اعضا</em>{% endif %}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      {% if product.related_courses.exists %}
+      <h2 class="h5" style="margin:36px 0 14px">دوره‌های مرتبط</h2>
+      <div class="cards">{% for c in product.related_courses.all %}{% include "includes/course_card.html" %}{% endfor %}</div>
+      {% endif %}
+    </div>
+
+    <aside>
+      <div class="side__box side__box--sticky">
+        <div class="card__ico" style="--c1:{{ product.color }}">{% if product.logo %}<img src="{{ product.logo.url }}" alt="">{% else %}{% icon product.icon 22 %}{% endif %}</div>
+        <div class="price" style="font-size:16px">{{ product.price_note }}</div>
+        {% if product.tech_stack %}<small class="mono" style="color:var(--matn-3);display:block;margin-bottom:12px">{{ product.tech_stack }}</small>{% endif %}
+        <a class="btn btn--fill" style="width:100%" href="{% url 'leads:start' %}?product={{ product.pk }}">درخواست دمو / استعلام قیمت</a>
+        <a class="btn btn--line" style="width:100%;margin-top:8px" href="{% url 'products:catalog' product.slug %}" target="_blank">{% icon "download" 16 %} کاتالوگ</a>
+        {% if product.demo_url %}<a class="btn btn--line btn--sm" style="width:100%;margin-top:8px" href="{{ product.demo_url }}" target="_blank" rel="noopener">دموی آنلاین</a>{% endif %}
+      </div>
+    </aside>
+  </div>
+</section>
+{% endblock %}

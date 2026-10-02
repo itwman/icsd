@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load icons %}
+{% block content %}
+<section class="sec wrap" style="padding-block:60px 90px;max-width:640px;text-align:center">
+  <div class="card__ico" style="margin-inline:auto;--c1:var(--sabz);width:64px;height:64px">{% icon "check_circle" 32 %}</div>
+  <h1 style="margin-top:14px">درخواست شما ثبت شد</h1>
+  <p style="color:var(--matn-2);margin-top:10px">ظرف یک روز کاری با شما تماس می‌گیریم. اگر عجله دارید:{% if site.mobile %} <a href="tel:{{ site.mobile }}" dir="ltr">{{ site.mobile }}</a>{% endif %}</p>
+  <div class="btns" style="justify-content:center;margin-top:26px">
+    <a class="btn btn--line" href="{% url 'core:home' %}">صفحه اصلی</a>
+    <a class="btn btn--fill" href="{% url 'academy:course_list' %}">دوره‌های آموزشی</a>
+  </div>
+</section>
+{% endblock %}

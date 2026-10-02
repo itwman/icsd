@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load fa icons seo %}
+{% block seo %}{% seo_head None "دوره‌های آموزشی آکادمی" "دوره‌های پایتون، جنگو، داکر، لینوکس، دیتابیس، اکسل و ورد — از دل پروژه‌های واقعی." %}{% endblock %}
+
+{% block content %}
+<section class="sec wrap" style="padding-block:40px 70px">
+  <div class="head">
+    <span class="kick">آکادمی</span>
+    <h1>دوره‌های آموزشی</h1>
+    <p>{{ courses|length|fa_num }} دوره — همه رایگان و بدون ثبت‌نام. آزمون آنلاین و گواهینامه هم رایگان است؛ فقط برای آزمون به حساب کاربری نیاز دارید.</p>
+    {% add_btn "academy" "course" "افزودن دوره" %}
+  </div>
+
+  <div class="layout">
+    <aside class="side">
+      <form method="get" class="side__box">
+        <label class="lbl" for="q">جستجو</label>
+        <input class="form-control" id="q" name="q" value="{{ q }}" placeholder="نام دوره یا موضوع…">
+        <div class="side__box__sec">
+          <div class="lbl">دسته‌بندی</div>
+          <label class="chip"><input type="radio" name="cat" value="" {% if not cat %}checked{% endif %}> همه</label>
+          {% for c in categories %}<label class="chip"><input type="radio" name="cat" value="{{ c.slug }}" {% if cat == c.slug %}checked{% endif %}> {{ c.title }}</label>{% endfor %}
+        </div>
+        <div class="side__box__sec">
+          <div class="lbl">سطح</div>
+          <label class="chip"><input type="radio" name="level" value="" {% if not level %}checked{% endif %}> همه</label>
+          <label class="chip"><input type="radio" name="level" value="beginner" {% if level == "beginner" %}checked{% endif %}> مقدماتی</label>
+          <label class="chip"><input type="radio" name="level" value="intermediate" {% if level == "intermediate" %}checked{% endif %}> متوسط</label>
+          <label class="chip"><input type="radio" name="level" value="advanced" {% if level == "advanced" %}checked{% endif %}> پیشرفته</label>
+        </div>
+        <button class="btn btn--fill btn--sm" style="width:100%;margin-top:10px" type="submit">اعمال فیلتر</button>
+      </form>
+    </aside>
+
+    <div>
+      {% if courses %}
+      <div class="cards">
+        {% for c in courses %}{% include "includes/course_card.html" %}{% endfor %}
+      </div>
+      {% else %}
+      <div class="empty">دوره‌ای با این فیلتر پیدا نشد.</div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,2 @@
+.ck.ck-editor__editable { direction: rtl; text-align: right; font-family: Vazirmatn, Tahoma, sans-serif; line-height: 2; min-height: 260px; }
+.ck.ck-editor__editable pre, .ck.ck-editor__editable code { direction: ltr; text-align: left; }

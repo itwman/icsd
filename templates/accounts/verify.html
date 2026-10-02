@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load fa %}
+{% block content %}
+<section class="sec wrap" style="padding-block:50px 90px;max-width:420px">
+  <div class="head head--center"><span class="kick">تأیید شماره</span><h1>کد را وارد کنید</h1><p>کد ۶ رقمی به <b dir="ltr">{{ mobile|fa_num }}</b> پیامک شد.</p></div>
+  <div class="form-card">
+    <form method="post">{% csrf_token %}
+      {% include "includes/field.html" with f=form.code %}
+      <button class="btn btn--fill" style="width:100%;margin-top:8px" type="submit">تأیید و ورود</button>
+    </form>
+    <form method="post" action="{% url 'accounts:resend' %}" class="text-center mt-3">{% csrf_token %}
+      <button class="btn btn--line btn--sm" type="submit" id="resend" disabled>ارسال دوباره (<span id="cnt">۶۰</span>)</button>
+      <a class="btn btn--line btn--sm" href="{% url 'accounts:login' %}">تغییر شماره</a>
+    </form>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+(function(){var n=60,b=document.getElementById('resend'),c=document.getElementById('cnt');
+var t=setInterval(function(){n--;c.textContent=icsd.toFa(n);if(n<=0){clearInterval(t);b.disabled=false;b.textContent='ارسال دوباره';}},1000);
+document.getElementById('id_code').addEventListener('input',function(e){var v=icsd.toEn(e.target.value);if(v.length===6)e.target.form.submit();});})();
+</script>
+{% endblock %}

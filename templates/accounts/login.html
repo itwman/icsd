@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load fa seo %}
+{% block seo %}{% seo_head None "ورود / ثبت‌نام" "" %}{% endblock %}
+{% block content %}
+<section class="sec wrap" style="padding-block:50px 90px;max-width:460px">
+  <div class="head head--center"><span class="kick">حساب کاربری</span><h1>ورود یا ثبت‌نام</h1><p>با شماره موبایل وارد شوید؛ اگر حساب ندارید همان لحظه ساخته می‌شود.</p></div>
+
+  <div class="form-card">
+    <ul class="nav nav-pills nav-fill mb-4" role="tablist">
+      <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#t-otp" type="button">کد پیامکی</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#t-pass" type="button">رمز عبور</button></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane fade show active" id="t-otp">
+        <form method="post">{% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.GET.next }}">
+          {% include "includes/field.html" with f=mobile_form.mobile %}
+          <button class="btn btn--fill" style="width:100%;margin-top:8px" name="send_code" type="submit">ارسال کد</button>
+        </form>
+      </div>
+      <div class="tab-pane fade" id="t-pass">
+        <form method="post">{% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.GET.next }}">
+          {% if pass_form.non_field_errors %}<div class="alert alert-danger">{{ pass_form.non_field_errors }}</div>{% endif %}
+          {% include "includes/field.html" with f=pass_form.ident %}
+          {% include "includes/field.html" with f=pass_form.password %}
+          <button class="btn btn--fill" style="width:100%;margin-top:8px" name="with_password" type="submit">ورود</button>
+          <small class="d-block mt-3" style="color:var(--matn-3)">رمز ندارید؟ با کد پیامکی وارد شوید و از پروفایل رمز بگذارید.</small>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

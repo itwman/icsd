@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load fa icons seo %}
+{% block seo %}{% seo_head None "پنل من" "" %}{% endblock %}
+{% block content %}
+<section class="sec wrap" style="padding-block:40px 80px">
+  <div class="head head--row">
+    <div class="d-flex align-items-center gap-3">
+      <div class="iconbtn iconbtn--user" style="width:56px;height:56px;font-size:22px;border-radius:16px">{% if user.avatar %}<img src="{{ user.avatar.url }}" alt="">{% else %}{{ user.display_name|slice:":1" }}{% endif %}</div>
+      <div><span class="kick" style="margin:0">پنل من</span><h1 style="font-size:24px">{{ user.display_name }}</h1>
+        <small style="color:var(--matn-3)">{% if user.job_title %}{{ user.job_title }}{% if user.company %} · {{ user.company }}{% endif %}{% else %}پروفایل خود را کامل کنید{% endif %}</small></div>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+      <a class="btn btn--line btn--sm" href="{% url 'accounts:profile' %}">{% icon "user" 16 %} ویرایش پروفایل</a>
+      {% if user.is_staff %}<a class="btn btn--line btn--sm" href="{% url 'admin:index' %}">پنل مدیریت</a>{% endif %}
+      <a class="btn btn--line btn--sm" href="{% url 'accounts:logout' %}">خروج</a>
+    </div>
+  </div>
+
+  <h2 class="h5" style="margin-bottom:14px">گواهینامه‌های من</h2>
+  {% if certificates %}
+  <div class="cards" style="margin-bottom:40px">
+    {% for c in certificates %}
+    <article class="card" style="--c1:var(--zaferan)">
+      <a href="{{ c.get_absolute_url }}" class="card__link" target="_blank">
+        <div class="card__ico">{% icon "doc" 22 %}</div>
+        <h3>{{ c.course.title }}</h3>
+        <p>نمره {{ c.score|fa_num }}٪ · {{ c.issued_at|jdate }}</p>
+        <span class="card__tag mono">{{ c.serial }}</span>
+      </a>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}<div class="empty" style="margin-bottom:40px">هنوز گواهینامه‌ای ندارید. یک دوره را تمام کنید و در آزمونش شرکت کنید.</div>{% endif %}
+
+  <h2 class="h5" style="margin-bottom:14px">دوره‌های من</h2>
+  {% if enrollments %}
+  <div class="cards" style="margin-bottom:40px">
+    {% for e in enrollments %}
+    <article class="card card--course">
+      <a href="{% url 'academy:learn_start' e.course.slug %}" class="card__link">
+        <div class="card__body">
+          <span class="kick" style="margin-bottom:6px">{{ e.course.category.title }}</span>
+          <h3>{{ e.course.title }}</h3>
+          <div class="progress-wrap"><div class="progress-bar-fa" style="width:{{ e.percent }}%"></div></div>
+          <div class="card__meta mono"><span>{{ e.percent|fa_num }}٪</span><span>{{ e.completed_count|fa_num }} از {{ e.course.lesson_count|fa_num }} درس</span><span>{{ e.created_at|jdate }}</span></div>
+        </div>
+      </a>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}<div class="empty" style="margin-bottom:40px">هنوز دوره‌ای شروع نکرده‌اید. <a href="{% url 'academy:course_list' %}">دوره‌ها را ببینید</a></div>{% endif %}
+
+  {% if attempts %}
+  <h2 class="h5" style="margin-bottom:14px">آزمون‌های اخیر</h2>
+  <ul class="lessons">
+    {% for a in attempts %}
+    <li><span class="{% if a.passed %}text-success{% else %}text-danger{% endif %}">{% if a.passed %}قبول{% else %}رد{% endif %}</span>
+      <a href="{% url 'academy:quiz_result' a.quiz.course.slug a.pk %}">{{ a.quiz.course.title }} — {{ a.score|fa_num }}٪</a>
+      <small class="mono">{{ a.finished_at|jdatetime_fa }}</small></li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load fa icons %}
+{% block content %}
+<section class="sec wrap" style="padding-block:60px 90px;max-width:560px;text-align:center">
+  {% if ok %}
+    <div class="card__ico" style="margin-inline:auto;--c1:var(--sabz);width:64px;height:64px">{% icon "check_circle" 32 %}</div>
+    <h1 style="margin-top:14px">پرداخت موفق</h1>
+    <p style="color:var(--matn-2)">کد پیگیری: <b class="mono">{{ order.ref_id }}</b></p>
+    <a class="btn btn--fill" style="margin-top:20px" href="{% url 'academy:learn_start' order.course.slug %}">شروع دوره‌ی {{ order.course.title }}</a>
+  {% else %}
+    <div class="card__ico" style="margin-inline:auto;--c1:var(--golab);width:64px;height:64px">✕</div>
+    <h1 style="margin-top:14px">پرداخت انجام نشد</h1>
+    <p style="color:var(--matn-2)">{{ reason }}</p>
+    <a class="btn btn--fill" style="margin-top:20px" href="{{ order.course.get_absolute_url }}">تلاش دوباره</a>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% load fa %}
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <div class="mark" style="margin-bottom:12px">{% if site.logo %}<img class="mark__logo" src="{{ site.logo.url }}" alt="">{% else %}{% include "includes/logo_mark.html" %}{% endif %}<b>{{ site.site_name }}</b></div>
+        <p class="footer__text">{{ site.footer_text }}</p>
+        {% if site.address %}<p class="footer__text">{{ site.address }}</p>{% endif %}
+        {% if site.phone or site.mobile %}<p class="footer__text" dir="ltr" style="text-align:right">{{ site.phone|fa_num }} {% if site.mobile %}· {{ site.mobile|fa_num }}{% endif %}</p>{% endif %}
+        {% if site.email %}<p class="footer__text"><a href="mailto:{{ site.email }}">{{ site.email }}</a></p>{% endif %}
+      </div>
+      <div>
+        <h4>سایت</h4>
+        <ul>
+          <li><a href="{% url 'products:list' %}">محصولات</a></li>
+          <li><a href="{% url 'academy:course_list' %}">آکادمی</a></li>
+          <li><a href="{% url 'blog:post_list' %}">مقالات</a></li>
+          <li><a href="{% url 'leads:start' %}">شروع پروژه</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>صفحات</h4>
+        <ul>
+          {% for p in footer_pages %}<li><a href="{{ p.get_absolute_url }}">{{ p.title }}</a></li>{% endfor %}
+          <li><a href="{% url 'accounts:login' %}">ورود / ثبت‌نام</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>شبکه‌ها</h4>
+        <ul>
+          {% if site.instagram %}<li><a href="{{ site.instagram }}" target="_blank" rel="noopener">اینستاگرام</a></li>{% endif %}
+          {% if site.telegram %}<li><a href="{{ site.telegram }}" target="_blank" rel="noopener">تلگرام</a></li>{% endif %}
+          {% if site.linkedin %}<li><a href="{{ site.linkedin }}" target="_blank" rel="noopener">لینکدین</a></li>{% endif %}
+          {% if site.aparat %}<li><a href="{{ site.aparat }}" target="_blank" rel="noopener">آپارات</a></li>{% endif %}
+        </ul>
+        {% if site.enamad_html %}<div class="footer__enamad">{{ site.enamad_html|safe }}</div>{% endif %}
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© {{ site.founded_year|fa_num }}–{% jyear %} {{ site.site_name }}</span>
+      <span class="mono">{{ site.short_name }} · Django</span>
+    </div>
+  </div>
+</footer>

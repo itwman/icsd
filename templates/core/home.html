@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% load static fa seo %}
+{% block seo %}{% seo_head None site.tagline site.default_meta_description %}{% endblock %}
+
+{% block content %}
+<!-- ══════════ قهرمان: تپه سیلک + شبکه‌ی عصبی + ساعت ══════════ -->
+<section class="hero wrap" id="top">
+  {% edit_btn site "ویرایش هیرو" %}
+  <div class="hero__grid">
+    <div>
+      <span class="pill"><i></i>کاشان · زنده و آنلاین</span>
+      {% if site.hero_particles and site.hero_words_list %}
+      <div class="wordfx" id="wordfx" role="img" aria-label="{{ site.hero_words_list|join:'، ' }}"
+           data-words="{{ site.hero_words }}" data-interval="{{ site.hero_words_interval }}"
+           data-logo="{% if site.hero_words_logo %}{% if site.logo %}{{ site.logo.url }}{% else %}{% static 'img/logo.svg' %}{% endif %}{% endif %}">
+        <canvas aria-hidden="true"></canvas>
+        <span class="wordfx__fallback" aria-hidden="true">{{ site.hero_words_list|first }}</span>
+      </div>
+      <h1 class="big big--sm">{{ site.hero_title|highlight:site.hero_highlight }}</h1>
+      {% else %}
+      <h1 class="big">{{ site.hero_title|highlight:site.hero_highlight }}</h1>
+      {% endif %}
+      <p class="hero__sub">{{ site.hero_subtitle|linebreaksbr }}</p>
+      <div class="btns">
+        <a class="btn btn--fill" href="{% url 'leads:start' %}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
+          شروع پروژه
+        </a>
+        <a class="btn btn--line" href="{% url 'academy:course_list' %}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v18H6.5A2.5 2.5 0 0 0 4 21.5M9 3v13"/></svg>
+          دوره‌های آکادمی
+        </a>
+      </div>
+      <div class="figs">
+        <div class="fig"><div class="fig__n">{{ site.stat_1_value }}</div><div class="fig__l">{{ site.stat_1_label }}</div></div>
+        <div class="fig"><div class="fig__n">{{ site.stat_2_value }}</div><div class="fig__l">{{ site.stat_2_label }}</div></div>
+        <div class="fig"><div class="fig__n">{{ site.stat_3_value }}</div><div class="fig__l">{{ site.stat_3_label }}</div></div>
+      </div>
+    </div>
+
+    <div>
+      {% if site.hero_show_clock %}
+      <div class="clock-solo" id="clock">
+        <svg viewBox="0 0 200 200" role="img" aria-label="ساعت عقربه‌ای با نقش سفال سیلک">
+          <defs>
+            <g id="boz" stroke="currentColor" stroke-width="1.25" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M-6 2 L6 2 L3.4 -3 L-3.4 -3 Z" fill="currentColor" stroke="none"/>
+              <path d="M-4.4 2.4v4.2M-1.5 2.4v4.2M1.5 2.4v4.2M4.4 2.4v4.2"/>
+              <path d="M3.4 -2.6 L6.4 -4.6"/><path d="M5.4 -4.8C9.4 -9.6 5.6 -13.8 0.2 -12.2"/>
+            </g>
+          </defs>
+          <circle cx="100" cy="100" r="98" fill="var(--card)" stroke="var(--khatt-2)"/>
+          <circle cx="100" cy="100" r="89" fill="none" stroke="var(--firoozeh)" stroke-width="2.5" opacity=".5"/>
+          <circle cx="100" cy="100" r="70" fill="var(--bg-2)"/>
+          <circle cx="100" cy="100" r="70" fill="none" stroke="var(--khesht)" opacity=".45"/>
+          <g class="frieze" color="var(--khesht)" opacity=".85" id="frieze"></g>
+          <g id="ticks" stroke="var(--matn-3)"></g>
+          <g id="nums" fill="var(--matn)" font-size="15" font-weight="800" text-anchor="middle"></g>
+          <g id="h-hour"><rect x="97" y="48" width="6" height="58" rx="3" fill="var(--matn)"/></g>
+          <g id="h-min"><rect x="98" y="28" width="4" height="78" rx="2" fill="var(--sabz)"/></g>
+          <g id="h-sec"><rect x="99.1" y="22" width="1.8" height="92" rx="1" fill="var(--golab)"/><circle cx="100" cy="34" r="4.5" fill="none" stroke="var(--golab)" stroke-width="1.8"/></g>
+          <circle cx="100" cy="100" r="6" fill="var(--card)" stroke="var(--matn)" stroke-width="2.5"/>
+          <circle cx="100" cy="100" r="1.8" fill="var(--golab)"/>
+        </svg>
+      </div>
+      {% endif %}
+      {% if site.hero_show_clock %}
+      <div class="readout">
+        <div class="readout__t"><span id="t-h"></span><span class="sep">:</span><span id="t-m"></span><span class="sep">:</span><span id="t-s"></span><span class="ms" id="t-ms"></span></div>
+        <div class="readout__d"><span>به وقت کاشان</span><b id="t-date">{% jtoday "%A %d %B %Y" %}</b></div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ تپه سیلک: منظره‌ی تمام‌عرض ══════════ -->
+<section class="sialk" aria-label="تپه سیلک کاشان">
+  <canvas id="sialk" class="sialk__canvas"></canvas>
+  <div class="sialk__cap wrap">
+    <span class="mono">TAPPEH SIALK · KASHAN · 33.97°N 51.40°E</span>
+    <span>تپه‌های شمالی و جنوبی سیلک — هفت هزار سال لایه، و شبکه‌ای که آن‌ها را می‌خواند</span>
+  </div>
+</section>
+<div class="band" aria-hidden="true"><div class="band__in" id="band"></div></div>
+
+{% for s in sections %}
+  {% if s.key == "products" %}
+  <section class="sec wrap" id="products">
+    <div class="head rise">{% edit_btn s %}
+      <span class="kick">{{ s.kicker }}</span><h2>{{ s.title }}</h2>{% if s.subtitle %}<p>{{ s.subtitle }}</p>{% endif %}
+    </div>
+    <div class="cards rise">
+      {% for p in products %}{% include "includes/product_card.html" %}{% endfor %}
+    </div>
+    {% add_btn "products" "product" "افزودن محصول" %}
+  </section>
+
+  {% elif s.key == "timeline" %}
+  <section class="sec wrap" id="kashan" style="padding-top:0">
+    <div class="head rise">{% edit_btn s %}
+      <span class="kick">{{ s.kicker }}</span><h2>{{ s.title }}</h2>{% if s.subtitle %}<p>{{ s.subtitle }}</p>{% endif %}
+    </div>
+    <div class="timeline rise">
+      {% for e in timeline %}
+      <div class="ev" style="--dot:{{ e.color }}">{% edit_btn e %}
+        <div class="ev__y">{{ e.era }}</div><h3>{{ e.title }}</h3><p>{{ e.text }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  {% elif s.key == "academy" %}
+  <section class="sec wrap" id="academy" style="padding-top:0">
+    <div class="head rise head--row">{% edit_btn s %}
+      <div><span class="kick">{{ s.kicker }}</span><h2>{{ s.title }}</h2>{% if s.subtitle %}<p>{{ s.subtitle }}</p>{% endif %}</div>
+      <a class="btn btn--line btn--sm" href="{% url 'academy:course_list' %}">همه‌ی دوره‌ها ←</a>
+    </div>
+    <div class="cards rise">
+      {% for c in courses %}{% include "includes/course_card.html" %}{% endfor %}
+    </div>
+  </section>
+
+  {% elif s.key == "blog" %}
+  {% if posts %}
+  <section class="sec wrap" id="blog" style="padding-top:0">
+    <div class="head rise head--row">{% edit_btn s %}
+      <div><span class="kick">{{ s.kicker }}</span><h2>{{ s.title }}</h2>{% if s.subtitle %}<p>{{ s.subtitle }}</p>{% endif %}</div>
+      <a class="btn btn--line btn--sm" href="{% url 'blog:post_list' %}">همه‌ی مقالات ←</a>
+    </div>
+    <div class="cards rise">
+      {% for post in posts %}{% include "includes/post_card.html" %}{% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% elif s.key == "cta" %}
+  <section class="sec wrap" id="tamas" style="padding-top:0">
+    <div class="cta rise">{% edit_btn s %}
+      <span class="kick" style="justify-content:center">{{ s.kicker }}</span>
+      <h2>{{ s.title }}</h2>{% if s.subtitle %}<p>{{ s.subtitle }}</p>{% endif %}
+      <div class="btns">
+        <a class="btn btn--fill" href="{% url 'leads:start' %}">درخواست جلسه</a>
+        <a class="btn btn--line" href="{% url 'academy:course_list' %}">دوره‌های آموزشی</a>
+      </div>
+    </div>
+  </section>
+
+  {% elif s.key == "custom" %}
+  <section class="sec wrap" style="padding-top:0">
+    <div class="head rise">{% edit_btn s %}
+      {% if s.kicker %}<span class="kick">{{ s.kicker }}</span>{% endif %}<h2>{{ s.title }}</h2>{% if s.subtitle %}<p>{{ s.subtitle }}</p>{% endif %}
+    </div>
+    <div class="prose rise">{{ s.body|safe }}</div>
+  </section>
+  {% endif %}
+{% endfor %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/hero.js' %}"></script>
+{% if site.hero_particles %}<script src="{% static 'js/wordfx.js' %}"></script>{% endif %}
+{% endblock %}

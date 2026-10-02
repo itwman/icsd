@@ -1,0 +1,71 @@
+{% load static fa icons %}<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>گواهینامه {{ cert.serial }} | {{ site.site_name }}</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="{% static 'css/icsd.css' %}">
+<style>
+  body{background:#EDE9DF;color:#12303A;padding:30px 12px}
+  .cert{max-width:1000px;margin:0 auto;background:#FFFDF8;border:2px solid #1E9E7B;border-radius:6px;padding:0;position:relative;overflow:hidden;box-shadow:0 30px 60px -30px rgba(18,48,58,.4)}
+  .cert::before{content:"";position:absolute;inset:14px;border:1px solid #D2623E;border-radius:3px;pointer-events:none;opacity:.6}
+  .cert__band{height:10px;background:linear-gradient(90deg,#D2623E,#F2A83B,#16A9C7,#1E9E7B)}
+  .cert__in{padding:44px 56px 40px}
+  .cert__head{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:26px}
+  .cert__brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:18px}
+  .cert__brand img{height:48px}
+  .cert__serial{font-family:var(--mono);font-size:12px;color:#4A6670;text-align:left;line-height:1.7}
+  .cert__title{text-align:center;font-size:14px;letter-spacing:.2em;color:#D2623E;font-weight:800;margin-bottom:4px}
+  .cert h1{text-align:center;font-size:34px;margin-bottom:26px}
+  .cert__body{text-align:center;font-size:17px;line-height:2.3;max-width:70ch;margin:0 auto}
+  .cert__name{font-size:34px;font-weight:900;color:#1E9E7B;display:block;margin:6px 0}
+  .cert__course{font-size:24px;font-weight:800;display:block;margin:4px 0}
+  .cert__meta{display:flex;justify-content:center;gap:34px;flex-wrap:wrap;margin:26px 0 8px;font-size:14px;color:#4A6670}
+  .cert__meta b{color:#12303A;display:block;font-size:16px}
+  .cert__foot{display:flex;justify-content:space-between;align-items:flex-end;margin-top:34px;padding-top:20px;border-top:1px solid rgba(18,48,58,.15);font-size:12.5px;color:#4A6670}
+  .cert__seal{width:96px;height:96px;border-radius:50%;border:3px double #1E9E7B;display:grid;place-items:center;text-align:center;font-size:11px;font-weight:800;color:#1E9E7B;line-height:1.5;transform:rotate(-8deg)}
+  .cert__online{background:#E4F5EF;color:#157A5F;border-radius:99px;padding:5px 14px;font-size:12.5px;font-weight:700;display:inline-block;margin-top:10px}
+  .actions{max-width:1000px;margin:18px auto 0;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap}
+  @media print{body{background:#fff;padding:0}.actions{display:none}.cert{box-shadow:none;border-radius:0}}
+  @media(max-width:700px){.cert__in{padding:28px 20px}.cert h1{font-size:26px}.cert__name{font-size:26px}}
+</style>
+</head>
+<body>
+<div class="cert">
+  <div class="cert__band"></div>
+  <div class="cert__in">
+    <div class="cert__head">
+      <div class="cert__brand">{% if site.logo %}<img src="{{ site.logo.url }}" alt="">{% else %}<img src="{% static 'img/logo.svg' %}" alt="">{% endif %}<span>{{ site.site_name }}</span></div>
+      <div class="cert__serial">No. {{ cert.serial }}<br>{{ cert.code }}</div>
+    </div>
+    <div class="cert__title">CERTIFICATE OF COMPLETION</div>
+    <h1>گواهینامه‌ی پایان دوره</h1>
+    <div class="cert__body">
+      بدین‌وسیله گواهی می‌شود
+      <span class="cert__name">{{ cert.full_name }}</span>
+      {% if cert.user.national_code %}<span style="font-size:14px;color:#4A6670">کد ملی {{ cert.user.national_code|fa_num }}</span><br>{% endif %}
+      دوره‌ی آموزشی
+      <span class="cert__course">{{ cert.course.title }}</span>
+      را در آکادمی {{ site.site_name }} به پایان رسانده و در آزمون پایانی با نمره‌ی
+      <b>{{ cert.score|fa_num }}٪</b> پذیرفته شده است.
+      <div><span class="cert__online">{% icon "check_circle" 14 %} تمامی مراحل آموزش و آزمون به‌صورت آنلاین برگزار شده است</span></div>
+    </div>
+    <div class="cert__meta">
+      <div>تاریخ صدور<b>{{ cert.issued_at|jdate:"%d %B %Y" }}</b></div>
+      <div>سطح دوره<b>{{ cert.course.get_level_display }}</b></div>
+      <div>مدت دوره<b>{{ cert.course.duration_minutes|minutes_fa|default:"—" }}</b></div>
+      <div>تعداد درس<b>{{ cert.course.lesson_count|fa_num }}</b></div>
+    </div>
+    <div class="cert__foot">
+      <div>استعلام اصالت:<br><span class="mono" dir="ltr">{{ site.site_url }}{{ cert.verify_url }}</span></div>
+      <div class="cert__seal">{{ site.short_name }}<br>آکادمی<br>{{ cert.issued_at|jdate:"%Y" }}</div>
+      <div style="text-align:left">{{ site.site_name }}<br>{{ site.address }}</div>
+    </div>
+  </div>
+</div>
+<div class="actions">
+  <a class="btn btn--line" href="{% url 'accounts:dashboard' %}">بازگشت به پنل</a>
+  <button class="btn btn--fill" onclick="window.print()">{% icon "download" 16 %} چاپ / ذخیره‌ی PDF</button>
+</div>
+</body>
+</html>

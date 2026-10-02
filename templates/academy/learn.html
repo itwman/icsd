@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load fa icons seo %}
+{% block seo %}{% seo_head lesson %}{% endblock %}
+{% block body_class %}learn-page{% endblock %}
+
+{% block content %}
+<div class="learn">
+  <aside class="learn__side">
+    <a class="learn__back" href="{{ course.get_absolute_url }}">{% icon "arrow" 16 %} {{ course.title }}</a>
+    {% if enrollment %}
+    <div class="progress-wrap"><div class="progress-bar-fa" id="pbar" style="width:{{ enrollment.percent }}%"></div></div>
+    <small class="mono" id="ptext">{{ enrollment.percent|fa_num }}٪</small>
+    {% endif %}
+    {% for m in modules %}
+    <div class="learn__mod">
+      <div class="learn__mod__t">{{ m.title }}</div>
+      {% for l in m.lessons.all %}
+      <a class="learn__item {% if l.pk == lesson.pk %}is-active{% endif %} {% if l.pk in done_ids %}is-done{% endif %}" href="{{ l.get_absolute_url }}">
+        <span class="learn__dot"></span>{{ l.title }}<small class="mono">{{ l.minutes|fa_num }}′</small>
+      </a>
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </aside>
+
+  <section class="learn__main">
+    <div class="learn__head">
+      {% edit_btn lesson %}
+      <span class="kick">{{ lesson.module.title }}</span>
+      <h1>{{ lesson.title }}</h1>
+    </div>
+
+    {% if lesson.video_source == "arvan" and lesson.arvan_video_id %}
+      <div class="video-box"><iframe src="{{ lesson.arvan_video_id }}" allowfullscreen loading="lazy" allow="autoplay; fullscreen"></iframe></div>
+    {% elif lesson.video_source == "aparat" and lesson.embed_html %}
+      <div class="video-box">{{ lesson.embed_html|safe }}</div>
+    {% elif lesson.video_source == "upload" and lesson.video_file %}
+      <div class="video-box"><video controls controlsList="nodownload" preload="metadata" src="{{ lesson.video_file.url }}"></video></div>
+    {% endif %}
+
+    <article class="prose">{{ lesson.body|safe }}</article>
+
+    {% if lesson.attachment %}
+    <a class="btn btn--line btn--sm" href="{{ lesson.attachment.url }}" download>{% icon "download" 16 %} دانلود فایل پیوست</a>
+    {% endif %}
+
+    <div class="learn__nav">
+      {% if prev %}<a class="btn btn--line" href="{{ prev.get_absolute_url }}">درس قبلی</a>{% else %}<span></span>{% endif %}
+      {% if user.is_authenticated %}
+        {% if not is_done %}
+          <form method="post" action="{% url 'academy:complete' course.slug lesson.pk %}" id="done-form">{% csrf_token %}
+            {% if next %}<input type="hidden" name="next" value="{{ next.get_absolute_url }}">{% elif quiz %}<input type="hidden" name="next" value="{% url 'academy:quiz_start' course.slug %}">{% endif %}
+            <button class="btn btn--fill" type="submit">{% icon "check_circle" 16 %} این درس را تمام کردم{% if next %} — درس بعدی{% elif quiz %} — برو به آزمون{% endif %}</button>
+          </form>
+        {% elif next %}
+          <a class="btn btn--fill" href="{{ next.get_absolute_url }}">درس بعدی</a>
+        {% elif quiz %}
+          <a class="btn btn--fill" href="{% url 'academy:quiz_start' course.slug %}">شرکت در آزمون و دریافت گواهی</a>
+        {% else %}
+          <a class="btn btn--fill" href="{% url 'accounts:dashboard' %}">دوره تمام شد — پنل من</a>
+        {% endif %}
+      {% else %}
+        {% if next %}<a class="btn btn--fill" href="{{ next.get_absolute_url }}">درس بعدی</a>
+        {% elif quiz %}<a class="btn btn--fill" href="{% url 'academy:quiz_start' course.slug %}">آزمون و گواهینامه</a>
+        {% else %}<a class="btn btn--fill" href="{{ course.get_absolute_url }}">پایان دوره</a>{% endif %}
+      {% endif %}
+    </div>
+    {% if not user.is_authenticated %}
+    <p class="text-center mt-3" style="font-size:13px;color:var(--matn-3)">برای ذخیره‌ی پیشرفت و شرکت در آزمون، <a href="{% url 'accounts:login' %}?next={{ request.path }}">وارد شوید</a> — رایگان است.</p>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

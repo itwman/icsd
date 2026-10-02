@@ -1,0 +1,38 @@
+{% load static fa %}
+<nav class="nav" id="nav">
+  <div class="nav__in">
+    <a class="mark" href="{% url 'core:home' %}">
+      {% if site.logo %}
+        <img class="mark__logo mark__logo--rooz {% if site.logo_dark %}has-dark{% endif %}" src="{{ site.logo.url }}" alt="{{ site.site_name }}">
+        {% if site.logo_dark %}<img class="mark__logo mark__logo--shab" src="{{ site.logo_dark.url }}" alt="">{% endif %}
+      {% else %}
+        {% include "includes/logo_mark.html" %}
+      {% endif %}
+      <b>{{ site.site_name }}</b>
+    </a>
+
+    <div class="links">
+      {% for l in nav_links %}
+        <a href="{{ l.url }}" {% if l.new_tab %}target="_blank" rel="noopener"{% endif %}>{{ l.title }}</a>
+      {% endfor %}
+    </div>
+
+    <button class="iconbtn" id="mode" type="button" aria-label="حالت شب/روز" title="شب / روز">شب</button>
+
+    {% if user.is_authenticated %}
+      <a class="iconbtn iconbtn--user" href="{% url 'accounts:dashboard' %}" title="{{ user.display_name }}">
+        {% if user.avatar %}<img src="{{ user.avatar.url }}" alt="">{% else %}{{ user.display_name|slice:":1" }}{% endif %}
+      </a>
+    {% else %}
+      <a class="btn btn--line btn--sm d-none d-sm-inline-flex" href="{% url 'accounts:login' %}">ورود</a>
+    {% endif %}
+    <a class="btn btn--fill btn--sm d-none d-md-inline-flex" href="{% url 'leads:start' %}">شروع پروژه</a>
+
+    <button class="iconbtn burger" id="burger" type="button" aria-expanded="false" aria-label="منو">☰</button>
+  </div>
+  <div class="mobile-nav" id="mobile-nav">
+    {% for l in nav_links %}<a href="{{ l.url }}">{{ l.title }}</a>{% endfor %}
+    {% if user.is_authenticated %}<a href="{% url 'accounts:dashboard' %}">پنل من</a>{% else %}<a href="{% url 'accounts:login' %}">ورود / ثبت‌نام</a>{% endif %}
+    {% if user.is_staff %}<a href="{% url 'admin:index' %}">پنل مدیریت</a>{% endif %}
+  </div>
+</nav>

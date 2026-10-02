@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load fa icons seo %}
+{% block seo %}{% seo_head None quiz.title course.summary %}{% endblock %}
+{% block content %}
+<section class="sec wrap" style="padding-block:40px 80px;max-width:760px">
+  <div class="head">{% edit_btn quiz %}
+    <a class="kick" href="{{ course.get_absolute_url }}">{{ course.title }}</a>
+    <h1>{{ quiz.title }}</h1>
+    {% if quiz.description %}<p>{{ quiz.description }}</p>{% endif %}
+  </div>
+
+  <div class="form-card">
+    <div class="feats" style="margin-bottom:22px">
+      <div class="feat"><div class="feat__i">{% icon "doc" 18 %}</div><div><b>{{ question_count|fa_num }} سؤال</b><p>چهارگزینه‌ای، از سرفصل‌های همین دوره</p></div></div>
+      <div class="feat"><div class="feat__i">{% icon "clock" 18 %}</div><div><b>{{ quiz.time_limit_minutes|fa_num }} دقیقه</b><p>زمان از لحظه‌ی شروع حساب می‌شود</p></div></div>
+      <div class="feat"><div class="feat__i">{% icon "check_circle" 18 %}</div><div><b>حد نصاب {{ quiz.pass_percent|fa_num }}٪</b><p>در صورت قبولی، گواهینامه‌ی آنلاین صادر می‌شود</p></div></div>
+      <div class="feat"><div class="feat__i">{% icon "user" 18 %}</div><div><b>رایگان</b><p>{% if quiz.max_attempts %}حداکثر {{ quiz.max_attempts|fa_num }} نوبت{% else %}نوبت نامحدود{% endif %}</p></div></div>
+    </div>
+
+    {% if certificate %}
+      <div class="alert alert-success icsd-alert">شما این آزمون را قبلاً با نمره‌ی {{ certificate.score|fa_num }}٪ گذرانده‌اید.
+        <a href="{{ certificate.get_absolute_url }}"><b>دیدن گواهینامه</b></a></div>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+      {% if can_attempt %}
+      <form method="post" action="{% url 'academy:quiz_begin' course.slug %}">{% csrf_token %}
+        <button class="btn btn--fill" style="width:100%" type="submit">{% icon "play" 18 %} شروع آزمون</button>
+      </form>
+      <small class="d-block text-center mt-3" style="color:var(--matn-3)">گواهی به نام «{{ user.get_full_name|default:"—" }}» صادر می‌شود. اشتباه است؟ <a href="{% url 'accounts:profile' %}">ویرایش پروفایل</a></small>
+      {% else %}
+      <div class="alert alert-warning icsd-alert">نوبت‌های مجاز شما برای این آزمون تمام شده است.</div>
+      {% endif %}
+    {% else %}
+      <a class="btn btn--fill" style="width:100%" href="{% url 'accounts:login' %}?next={{ request.path }}">ورود / ثبت‌نام رایگان برای شرکت در آزمون</a>
+      <small class="d-block text-center mt-3" style="color:var(--matn-3)">مطالعه‌ی دوره آزاد است؛ فقط برای آزمون و گواهی به حساب کاربری نیاز دارید.</small>
+    {% endif %}
+  </div>
+
+  {% if attempts %}
+  <h2 class="h5" style="margin:32px 0 12px">نوبت‌های قبلی شما</h2>
+  <ul class="lessons">
+    {% for a in attempts %}
+    <li><span class="{% if a.passed %}text-success{% else %}text-danger{% endif %}">{% if a.passed %}قبول{% else %}رد{% endif %}</span>
+      <a href="{% url 'academy:quiz_result' course.slug a.pk %}">نمره {{ a.score|fa_num }}٪</a>
+      <small class="mono">{{ a.finished_at|jdatetime_fa }}</small></li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</section>
+{% endblock %}

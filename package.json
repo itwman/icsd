@@ -1,0 +1,15 @@
+{
+  "name": "icsd-django-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "دارایی‌های محلی فرانت‌اند ICSD — بدون CDN",
+  "type": "module",
+  "scripts": { "vendor": "node vendor.mjs" },
+  "dependencies": {
+    "@majidh1/jalalidatepicker": "^0.9.6",
+    "bootstrap": "^5.3.3",
+    "tom-select": "^2.4.1",
+    "vazirmatn": "^33.0.3"
+  },
+  "optionalDependencies": { "@fontsource-variable/jetbrains-mono": "^5.1.2" }
+}

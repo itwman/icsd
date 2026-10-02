@@ -1,0 +1,37 @@
+{% load static fa seo %}<!doctype html>
+<html lang="fa" dir="rtl" data-mode="rooz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% block seo %}{% seo_head seo_obj %}{% endblock %}
+{% if site.favicon %}<link rel="icon" href="{{ site.favicon.url }}">{% else %}<link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">{% endif %}
+<link rel="stylesheet" href="{% static 'vendor/bootstrap/bootstrap.rtl.min.css' %}">
+<link rel="stylesheet" href="{% static 'vendor/tom-select/tom-select.css' %}">
+<link rel="stylesheet" href="{% static 'vendor/jalali-datepicker/jalalidatepicker.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/icsd.css' %}">
+<style>:root{--sabz:{{ site.color_primary }};--firoozeh:{{ site.color_accent }};}</style>
+{{ site.head_extra_html|safe }}
+{% block head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+<script>
+/* حالت ذخیره‌شده را قبل از رندر اعمال کن تا صفحه چشمک نزند */
+try{var m=localStorage.getItem('icsd-mode');if(m==='shab'||m==='rooz')document.documentElement.setAttribute('data-mode',m);}catch(e){}
+</script>
+
+{% include "includes/nav.html" %}
+{% include "includes/messages.html" %}
+
+<main id="main">
+{% block content %}{% endblock %}
+</main>
+
+{% include "includes/footer.html" %}
+
+<script src="{% static 'vendor/bootstrap/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'vendor/tom-select/tom-select.complete.min.js' %}"></script>
+<script src="{% static 'vendor/jalali-datepicker/jalalidatepicker.min.js' %}"></script>
+<script src="{% static 'js/icsd.js' %}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

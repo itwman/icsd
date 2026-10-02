@@ -1,0 +1,13 @@
+{% load fa %}
+<article class="card card--post">
+  {% edit_btn post %}
+  <a href="{{ post.get_absolute_url }}" class="card__link">
+    {% if post.cover %}<div class="card__cover" style="background-image:url('{{ post.cover.url }}')"></div>{% endif %}
+    <div class="card__body">
+      <div class="card__meta mono" style="margin-bottom:8px"><span style="color:var(--firoozeh)">{{ post.category.title }}</span><span>{{ post.published_at|jdate:"%d %B %Y" }}</span></div>
+      <h3>{{ post.title }}</h3>
+      <p>{{ post.excerpt }}</p>
+      <div class="card__meta mono"><span>{{ post.read_minutes|fa_num }} دقیقه مطالعه</span></div>
+    </div>
+  </a>
+</article>
