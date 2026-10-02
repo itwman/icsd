@@ -3,9 +3,10 @@ from django.urls import reverse
 from django_ckeditor_5.fields import CKEditor5Field
 
 from apps.common.validators import PRODUCT_LOGO_HELP, validate_product_logo
+from apps.seo.models import SEOFields
 
 
-class Product(models.Model):
+class Product(SEOFields, models.Model):
     STATUS = [("stable", "پایدار"), ("beta", "بتا"), ("alpha", "آلفا"), ("dev", "در حال توسعه")]
 
     name = models.CharField("نام محصول", max_length=100)

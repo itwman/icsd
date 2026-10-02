@@ -20,6 +20,9 @@ def home(request):
             s.items = s.limit(Course.objects.filter(is_published=True).select_related("category"))
         elif s.key == "blog":
             s.items = s.limit(Post.objects.filter(is_published=True).select_related("category"))
+        elif s.key == "team":
+            from apps.team.models import TeamMember
+            s.items = s.limit(TeamMember.objects.filter(is_active=True))
         elif s.key == "timeline":
             s.items = TimelineEvent.objects.filter(is_active=True)
         else:

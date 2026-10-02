@@ -3,6 +3,7 @@ from unfold.admin import ModelAdmin, StackedInline, TabularInline
 
 from apps.common.admin import JalaliAdminMixin
 from .models import Attempt, Category, Certificate, Choice, Course, Enrollment, Lesson, LessonProgress, Module, Question, Quiz
+from apps.seo.admin_mixins import SEOAdminMixin
 
 
 @admin.register(Category)
@@ -22,8 +23,10 @@ class ModuleInline(TabularInline):
 
 
 @admin.register(Course)
-class CourseAdmin(JalaliAdminMixin, ModelAdmin):
-    list_display = ("title", "category", "level", "price", "is_published", "is_featured", "order", "updated_at")
+class CourseAdmin(SEOAdminMixin, JalaliAdminMixin, ModelAdmin):
+    seo_body_field = "description"
+    seo_url_prefix = "/courses/"
+    list_display = ("title", "category", "level", "is_published", "is_featured", "order", "updated_at", "seo_score")
     list_filter = ("category", "level", "is_published", "is_featured")
     list_editable = ("is_published", "is_featured", "order")
     search_fields = ("title", "summary")

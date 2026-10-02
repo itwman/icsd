@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load fa seo %}
+{% block content %}
+<section class="sec wrap resume" style="padding-block:28px 70px">
+  {% breadcrumbs m %}
+  <div class="resume__grid">
+    <aside class="resume__side">
+      <div class="rcard rcard--profile">{% edit_btn m %}
+        <div class="rcard__photo">{% if m.photo %}<img src="{{ m.photo.url }}" alt="{{ m.name }}" width="220" height="220">{% else %}<span>{{ m.name|slice:":1" }}</span>{% endif %}</div>
+        <h1 class="rcard__name">{{ m.name }}</h1>
+        {% if m.name_en %}<div class="rcard__en mono">{{ m.name_en }}</div>{% endif %}
+        <div class="rcard__role">{{ m.role }}</div>
+        {% if m.role_en %}<div class="rcard__en mono">{{ m.role_en }}</div>{% endif %}
+        {% if m.degree %}<span class="tm-card__deg">{{ m.degree }}</span>{% endif %}
+      </div>
+      {% if m.city or m.birth_year and m.show_birth_year %}
+      <div class="rcard"><h2 class="rcard__t">اطلاعات کلی</h2>
+        <ul class="rinfo">
+          {% if m.birth_year and m.show_birth_year %}<li><span>سال تولد</span><b>{{ m.birth_year|fa_num }}</b></li>{% endif %}
+          {% if m.city %}<li><span>محل سکونت</span><b>{{ m.city }}</b></li>{% endif %}
+        </ul>
+      </div>
+      {% endif %}
+      {% if m.show_contact and m.email or m.show_contact and m.phone or m.website %}
+      <div class="rcard"><h2 class="rcard__t">ارتباط</h2>
+        <ul class="rcontact">
+          {% if m.show_contact and m.email %}<li><a href="mailto:{{ m.email }}" class="mono">{{ m.email }}</a></li>{% endif %}
+          {% if m.show_contact and m.phone %}<li><a href="tel:{{ m.phone }}" class="mono" dir="ltr">{{ m.phone }}</a></li>{% endif %}
+          {% if m.website %}<li><a href="{{ m.website }}" class="mono" dir="ltr" target="_blank" rel="noopener">{{ m.website|cut:"https://"|cut:"http://" }}</a></li>{% endif %}
+        </ul>
+      </div>
+      {% endif %}
+      {% if m.socials.all %}
+      <div class="rcard"><h2 class="rcard__t">شبکه‌های اجتماعی</h2>
+        <div class="rsocial">{% for s in m.socials.all %}<a href="{{ s.url }}" target="_blank" rel="noopener me">{{ s.label }}</a>{% endfor %}</div>
+      </div>
+      {% endif %}
+      <button type="button" class="btn btn--line no-print" style="width:100%" onclick="window.print()">دانلود / چاپ رزومه</button>
+    </aside>
+
+    <div class="resume__main">
+      {% if m.about %}<section class="rsec"><h2>درباره</h2><div class="rcard prose">{{ m.about|safe }}</div></section>{% endif %}
+
+      {% if m.education.all %}
+      <section class="rsec"><h2>تحصیلات</h2>
+        <ol class="rtl-timeline">{% for e in m.education.all %}
+          <li><div class="rtl-timeline__head"><h3>{{ e.title }}</h3>{% if e.start or e.end %}<span class="mono">{{ e.start|fa_num }}{% if e.end %} – {{ e.end|fa_num }}{% endif %}</span>{% endif %}</div>
+            {% if e.org %}<div class="rtl-timeline__org">{{ e.org }}</div>{% endif %}{% if e.desc %}<p>{{ e.desc }}</p>{% endif %}</li>
+        {% endfor %}</ol>
+      </section>
+      {% endif %}
+
+      {% if m.experience.all %}
+      <section class="rsec"><h2>سوابق کاری</h2>
+        <ol class="rtl-timeline">{% for e in m.experience.all %}
+          <li><div class="rtl-timeline__head"><h3>{{ e.title }}</h3>{% if e.start or e.end %}<span class="mono">{{ e.start|fa_num }}{% if e.end %} – {{ e.end|fa_num }}{% endif %}</span>{% endif %}</div>
+            {% if e.org %}<div class="rtl-timeline__org">{{ e.org }}</div>{% endif %}{% if e.desc %}<p>{{ e.desc }}</p>{% endif %}</li>
+        {% endfor %}</ol>
+      </section>
+      {% endif %}
+
+      {% if m.publications.all %}
+      <section class="rsec"><h2>مقالات <small>({{ m.publications.count|fa_num }})</small></h2>
+        <ol class="rpubs">{% for p in m.publications.all %}
+          <li><h3>{% if p.url %}<a href="{{ p.url }}" target="_blank" rel="noopener">{{ p.title }}</a>{% else %}{{ p.title }}{% endif %}</h3>
+            <div class="rpubs__meta">{% if p.authors %}<span>{{ p.authors }}</span>{% endif %}{% if p.venue %}<em>{{ p.venue }}</em>{% endif %}{% if p.year %}<span class="mono">{{ p.year|fa_num }}</span>{% endif %}</div></li>
+        {% endfor %}</ol>
+      </section>
+      {% endif %}
+
+      {% if m.skills.all %}
+      <section class="rsec"><h2>مهارت‌ها</h2>
+        <div class="rskills">{% for group, items in m.skill_groups %}
+          <div class="rcard"><h3 class="rcard__t">{{ group }}</h3>
+            {% for s in items %}<div class="rskill"><div class="rskill__h"><span>{{ s.name }}</span><b class="mono">{{ s.level|fa_num }}٪</b></div>
+              <div class="rskill__bar"><i style="width:{{ s.level }}%"></i></div></div>{% endfor %}
+          </div>
+        {% endfor %}</div>
+      </section>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -3,6 +3,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django_ckeditor_5.fields import CKEditor5Field
+from apps.seo.models import SEOFields
 
 
 class Tag(models.Model):
@@ -30,7 +31,7 @@ class BlogCategory(models.Model):
         return self.title
 
 
-class Post(models.Model):
+class Post(SEOFields, models.Model):
     title = models.CharField("عنوان", max_length=200)
     slug = models.SlugField("نامک (در آدرس)", unique=True, allow_unicode=True,
                             help_text="ترجیحاً انگلیسی — مثل tarahi-site-farsh-kashan")
@@ -40,7 +41,9 @@ class Post(models.Model):
                                on_delete=models.SET_NULL, related_name="posts")
     excerpt = models.CharField("خلاصه", max_length=300, blank=True)
     body = CKEditor5Field("متن", config_name="default")
-    cover = models.ImageField("تصویر شاخص", upload_to="blog/", blank=True)
+    cover = models.ImageField("تصویر شاخص", upload_to="blog/", blank=True,
+                              help_text="پیشنهاد: ۱۲۰۰×۶۳۰ پیکسل (نسبت شبکه‌های اجتماعی)، JPG یا WebP زیر ۲۰۰ کیلوبایت.")
+    cover_alt = models.CharField("متن جایگزین تصویر شاخص", max_length=200, blank=True, help_text="برای نابینایان و گوگل؛ خالی = عنوان نوشته.")
     read_minutes = models.PositiveSmallIntegerField("زمان مطالعه (دقیقه)", default=5)
     is_published = models.BooleanField("منتشر شده", default=True)
     published_at = models.DateTimeField("تاریخ انتشار", default=timezone.now)

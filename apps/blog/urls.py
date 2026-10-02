@@ -1,10 +1,12 @@
 from django.urls import path
 
 from . import views
+from .feeds import LatestPostsFeed
 
 app_name = "blog"
 
 urlpatterns = [
     path("", views.post_list, name="post_list"),
-    path("<slug:slug>/", views.post_detail, name="post_detail"),
+    path("feed/", LatestPostsFeed(), name="feed"),
+    path("<str:slug>/", views.post_detail, name="post_detail"),
 ]

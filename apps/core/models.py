@@ -4,6 +4,7 @@ from django.urls import reverse
 from django_ckeditor_5.fields import CKEditor5Field
 
 from apps.common.validators import CUSTOMER_LOGO_HELP, validate_customer_logo
+from apps.seo.models import SEOFields
 
 
 class SingletonModel(models.Model):
@@ -83,6 +84,8 @@ class SiteSettings(SingletonModel):
     default_og_image = models.ImageField("تصویر پیش‌فرض اشتراک‌گذاری", upload_to="brand/", blank=True)
     head_extra_html = models.TextField("کد اضافی در head", blank=True, help_text="مثلاً کد تأیید سرچ کنسول. فقط مدیر ارشد.")
     enamad_html = models.TextField("کد اینماد", blank=True)
+    indexnow_key = models.CharField("کلید IndexNow", max_length=64, blank=True,
+                                    help_text="اختیاری؛ ۸ تا ۶۴ حرف و عدد. خالی = غیرفعال.")
 
     # درگاه و پیامک (اگر خالی باشد از .env خوانده می‌شود)
     zarinpal_merchant_id = models.CharField("مرچنت زرین‌پال", max_length=64, blank=True)
@@ -109,6 +112,7 @@ class HomeSection(models.Model):
         ("band", "نوار نقش سفال"),
         ("products", "محصولات"),
         ("customers", "مشتریان"),
+        ("team", "تیم"),
         ("timeline", "خط زمان کاشان"),
         ("academy", "آکادمی"),
         ("blog", "مقالات"),
@@ -157,7 +161,7 @@ class TimelineEvent(models.Model):
         return f"{self.era} — {self.title}"
 
 
-class Page(models.Model):
+class Page(SEOFields, models.Model):
     """صفحات ایستا: درباره ما، قوانین، حریم خصوصی و ..."""
     title = models.CharField("عنوان", max_length=150)
     slug = models.SlugField("نامک (در آدرس)", unique=True, allow_unicode=True)

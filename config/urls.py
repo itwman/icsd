@@ -6,7 +6,7 @@ from django.urls import include, path
 
 from apps.seo.sitemaps import SITEMAPS
 from apps.academy.views import verify
-from apps.seo.views import robots_txt
+from apps.seo.views import indexnow_key, robots_txt
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -16,12 +16,14 @@ urlpatterns = [
     path("courses/", include("apps.academy.urls", namespace="academy")),
     path("products/", include("apps.products.urls", namespace="products")),
     path("blog/", include("apps.blog.urls", namespace="blog")),
+    path("team/", include("apps.team.urls", namespace="team")),
     path("start-project/", include("apps.leads.urls", namespace="leads")),
     path("pay/", include("apps.payments.urls", namespace="payments")),
     path("api/ac/", include("apps.common.urls", namespace="ac")),
     path("verify/<uuid:code>/", verify, name="verify"),
     path("sitemap.xml", sitemap, {"sitemaps": SITEMAPS}, name="sitemap"),
     path("robots.txt", robots_txt, name="robots"),
+    path("<str:key>.txt", indexnow_key, name="indexnow_key"),
 ]
 
 if settings.DEBUG:

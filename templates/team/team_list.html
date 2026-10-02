@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load fa seo %}
+{% block seo %}{% seo_head None "تیم ما" "با کسانی آشنا شوید که نرم‌افزارهای توسعه هوشمند فرش ایرانیان را طراحی، توسعه و پشتیبانی می‌کنند." %}{% endblock %}
+{% block content %}
+<section class="sec wrap" style="padding-block:28px 70px">
+  {% breadcrumbs None "تیم ما" "/team/" %}
+  <div class="head"><span class="kick">تیم</span><h1>کسانی که ICSD را می‌سازند</h1>
+    <p>مهندسان، طراحان و متخصصانی که از کاشان برای صنعت فرش و نساجی نرم‌افزار می‌نویسند.</p>
+    {% add_btn "team" "teammember" "افزودن عضو" %}</div>
+  <div class="team-grid">
+    {% for m in members %}
+    <article class="tm-card">{% edit_btn m %}
+      <a href="{{ m.get_absolute_url }}" class="tm-card__link">
+        <div class="tm-card__photo">{% if m.photo %}<img src="{{ m.photo.url }}" alt="{{ m.name }}" loading="lazy" width="300" height="300">{% else %}<span>{{ m.name|slice:":1" }}</span>{% endif %}</div>
+        <h2 class="tm-card__name">{{ m.name }}</h2>
+        {% if m.name_en %}<div class="tm-card__en mono">{{ m.name_en }}</div>{% endif %}
+        <div class="tm-card__role">{{ m.role }}</div>
+        {% if m.degree %}<span class="tm-card__deg">{{ m.degree }}</span>{% endif %}
+        <span class="tm-card__more">مشاهده‌ی رزومه ←</span>
+      </a>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

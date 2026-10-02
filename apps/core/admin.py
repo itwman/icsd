@@ -5,6 +5,7 @@ from django.urls import reverse
 from unfold.admin import ModelAdmin
 
 from apps.common.admin import JalaliAdminMixin
+from apps.seo.admin_mixins import SEOAdminMixin
 from .models import Customer, HomeSection, NavLink, Page, SiteSettings, TimelineEvent
 
 
@@ -17,7 +18,8 @@ class SiteSettingsAdmin(JalaliAdminMixin, ModelAdmin):
                                         ("hero_particles", "hero_words_logo"), "hero_words", "hero_words_interval",
                                         ("stat_1_value", "stat_1_label"), ("stat_2_value", "stat_2_label"), ("stat_3_value", "stat_3_label"))}),
         ("تماس و شبکه‌های اجتماعی", {"fields": ("phone", "mobile", "email", "address", "map_embed", "instagram", "telegram", "linkedin", "aparat")}),
-        ("فوتر و سئو", {"fields": ("footer_text", "default_meta_description", "default_og_image", "head_extra_html", "enamad_html")}),
+        ("فوتر و سئو", {"fields": ("footer_text", "default_meta_description", "default_og_image", "head_extra_html", "enamad_html", "indexnow_key"),
+                        "description": "کد تأیید گوگل سرچ‌کنسول/بینگ را در «کد اضافه‌ی head» بگذارید. کلید IndexNow: یک رشته‌ی ۳۲ حرفی دلخواه (حروف و عدد)؛ با هر انتشار، بینگ و یاندکس فوراً خبردار می‌شوند."}),
         ("درگاه پرداخت و پیامک", {"classes": ("collapse",), "fields": ("zarinpal_merchant_id", "zarinpal_sandbox", "kavenegar_api_key", "kavenegar_sender")}),
     )
 
@@ -83,8 +85,9 @@ class TimelineEventAdmin(ModelAdmin):
 
 
 @admin.register(Page)
-class PageAdmin(ModelAdmin):
-    list_display = ("title", "slug", "is_published", "show_in_footer", "updated_at")
+class PageAdmin(SEOAdminMixin, ModelAdmin):
+    seo_url_prefix = "/p/"
+    list_display = ("title", "slug", "is_published", "show_in_footer", "updated_at", "seo_score")
     list_filter = ("is_published", "show_in_footer")
     search_fields = ("title", "body")
     prepopulated_fields = {"slug": ("title",)}

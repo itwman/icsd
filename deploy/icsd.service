@@ -1,0 +1,23 @@
+[Unit]
+Description=ICSD Django (gunicorn) — /srv/icsd
+After=network.target postgresql.service
+
+[Service]
+User=icsd
+Group=www-data
+WorkingDirectory=/srv/icsd/app
+RuntimeDirectory=icsd
+RuntimeDirectoryMode=0755
+# سوکت و فایل‌های آپلودی برای nginx (گروه www-data) قابل دسترس باشند
+UMask=0007
+ExecStart=/srv/icsd/venv/bin/gunicorn config.wsgi:application --bind unix:/run/icsd/gunicorn.sock --workers 3 --timeout 60 --access-logfile - --error-logfile -
+Restart=on-failure
+RestartSec=5
+# محدودیت منابع تا روی سایت‌های دیگر اثر نگذارد
+MemoryMax=900M
+CPUQuota=150%
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

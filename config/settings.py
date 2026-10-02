@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sitemaps",
+    "django.contrib.syndication",
     "django.contrib.humanize",
     "django_ckeditor_5",
     # اپ‌های پروژه
@@ -57,6 +58,7 @@ INSTALLED_APPS = [
     "apps.academy",
     "apps.products",
     "apps.blog",
+    "apps.team",
     "apps.leads",
     "apps.payments",
     "apps.analytics",
@@ -138,6 +140,7 @@ USE_I18N = True
 USE_TZ = True
 
 # ── استاتیک و مدیا (همه محلی) ───────────────────────────────────────
+WHITENOISE_MAX_AGE = 60 * 60 * 24 * 7  # یک هفته کش مرورگر برای css/js/فونت
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
@@ -161,43 +164,75 @@ ZARINPAL_SANDBOX = env_bool("ZARINPAL_SANDBOX", True)
 
 # ── امنیت روی سرور ──────────────────────────────────────────────────
 if not DEBUG:
+    # تا وقتی گواهی SSL نگرفته‌اید HTTPS_ENABLED=False بماند؛ بعد از certbot روی True بگذارید.
+    HTTPS = env_bool("HTTPS_ENABLED", False)
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_SSL_REDIRECT = env_bool("SECURE_SSL_REDIRECT", True)
-    SECURE_HSTS_SECONDS = 31536000
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SESSION_COOKIE_SECURE = HTTPS
+    CSRF_COOKIE_SECURE = HTTPS
+    SECURE_SSL_REDIRECT = HTTPS and env_bool("SECURE_SSL_REDIRECT", True)
+    # HSTS پیش‌فرض خاموش؛ includeSubDomains روی دامنه‌ی اصلی می‌تواند زیردامنه‌های دیگرِ همین سرور را بشکند.
+    SECURE_HSTS_SECONDS = int(env("HSTS_SECONDS", "0"))
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = env_bool("HSTS_INCLUDE_SUBDOMAINS", False)
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+    X_FRAME_OPTIONS = "SAMEORIGIN"
 
 # ── ویرایشگر متن (محلی، بدون CDN) ───────────────────────────────────
 CKEDITOR_5_CUSTOM_CSS = "css/ckeditor-rtl.css"
 CKEDITOR_5_FILE_UPLOAD_PERMISSION = "staff"
 CKEDITOR_5_CONFIGS = {
+    # ویرایشگر کامل، شبیه ویرایشگر کلاسیک وردپرس: تیتر، قالب‌بندی، لینک، تصویر با متن جایگزین و زیرنویس،
+    # جدول، ویدیو (آپارات/یوتیوب با «کد HTML»)، کد، نقل‌قول، جست‌وجو و جایگزینی، شمارش کلمات و نمایش کد HTML.
     "default": {
-        "language": "fa",
-        "toolbar": [
-            "heading", "|", "bold", "italic", "link", "bulletedList", "numberedList",
-            "blockQuote", "insertTable", "codeBlock", "imageUpload", "|", "undo", "redo",
-        ],
+        "language": {"ui": "fa", "content": "fa"},
+        "toolbar": {
+            "items": [
+                "heading", "|", "bold", "italic", "underline", "strikethrough", "link", "highlight", "fontColor", "removeFormat", "|",
+                "alignment", "bulletedList", "numberedList", "todoList", "outdent", "indent", "|",
+                "insertImage", "insertTable", "mediaEmbed", "htmlEmbed", "blockQuote", "codeBlock", "horizontalLine", "specialCharacters", "|",
+                "findAndReplace", "sourceEditing", "showBlocks", "undo", "redo",
+            ],
+            "shouldNotGroupWhenFull": True,
+        },
         "heading": {
             "options": [
                 {"model": "paragraph", "title": "پاراگراف", "class": "ck-heading_paragraph"},
-                {"model": "heading2", "view": "h2", "title": "تیتر ۲", "class": "ck-heading_heading2"},
-                {"model": "heading3", "view": "h3", "title": "تیتر ۳", "class": "ck-heading_heading3"},
+                {"model": "heading2", "view": "h2", "title": "تیتر ۲ (بخش اصلی)", "class": "ck-heading_heading2"},
+                {"model": "heading3", "view": "h3", "title": "تیتر ۳ (زیربخش)", "class": "ck-heading_heading3"},
+                {"model": "heading4", "view": "h4", "title": "تیتر ۴", "class": "ck-heading_heading4"},
             ]
         },
+        "image": {
+            "toolbar": ["imageTextAlternative", "toggleImageCaption", "|", "imageStyle:inline", "imageStyle:alignRight",
+                        "imageStyle:alignCenter", "imageStyle:alignLeft", "|", "resizeImage", "linkImage"],
+            "resizeUnit": "%",
+        },
+        "table": {"contentToolbar": ["tableColumn", "tableRow", "mergeTableCells", "tableProperties", "tableCellProperties", "toggleTableCaption"]},
+        "list": {"properties": {"styles": True, "startIndex": True, "reversed": True}},
+        "link": {"addTargetToExternalLinks": True, "defaultProtocol": "https://",
+                 "decorators": {"nofollow": {"mode": "manual", "label": "nofollow (لینک تبلیغاتی/غیرقابل اعتماد)", "attributes": {"rel": "nofollow"}}}},
+        "mediaEmbed": {"previewsInData": True},
+        "htmlEmbed": {"showPreviews": False},
+        "wordCount": {"displayWords": True, "displayCharacters": False},
         "codeBlock": {
             "languages": [
                 {"language": "python", "label": "Python"},
                 {"language": "bash", "label": "Bash"},
+                {"language": "powershell", "label": "PowerShell"},
                 {"language": "sql", "label": "SQL"},
                 {"language": "php", "label": "PHP"},
                 {"language": "javascript", "label": "JavaScript"},
                 {"language": "html", "label": "HTML"},
+                {"language": "css", "label": "CSS"},
+                {"language": "json", "label": "JSON"},
                 {"language": "plaintext", "label": "متن ساده"},
             ]
         },
+        "htmlSupport": {"allow": [{"name": "iframe", "attributes": True}, {"name": "/^(div|span|p|h[2-4]|a|img|figure|table|td|th)$/", "attributes": ["id", "dir", "lang"], "classes": True}]},
     }
 }
+CKEDITOR_5_UPLOAD_FILE_TYPES = ["jpeg", "jpg", "png", "gif", "webp"]
+CKEDITOR_5_MAX_FILE_SIZE = 3  # مگابایت
 
 # ── پنل مدیریت ──────────────────────────────────────────────────────
 from config.unfold import UNFOLD  # noqa: E402,F401

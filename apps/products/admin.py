@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.utils.html import format_html
 from unfold.admin import ModelAdmin, StackedInline, TabularInline
 
+from apps.seo.admin_mixins import SEOAdminMixin
+
 from .models import Product, ProductFeature, ProductImage, ProductTutorial
 
 
@@ -32,8 +34,11 @@ def logo_thumb(obj, size=40):
 
 
 @admin.register(Product)
-class ProductAdmin(ModelAdmin):
-    list_display = ("thumb", "name", "latin_name", "status", "version", "is_active", "is_featured", "order")
+class ProductAdmin(SEOAdminMixin, ModelAdmin):
+    seo_body_field = "description"
+    seo_title_field = "name"
+    seo_url_prefix = "/products/"
+    list_display = ("thumb", "name", "latin_name", "status", "version", "is_active", "is_featured", "order", "seo_score")
     list_display_links = ("thumb", "name")
     list_editable = ("is_active", "is_featured", "order")
     list_filter = ("is_active", "is_featured", "status")

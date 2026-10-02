@@ -121,6 +121,27 @@
     {% add_btn "core" "customer" "افزودن مشتری" %}
   </section>
 
+  {% elif s.key == "team" %}
+  {% if s.items %}
+  <section class="sec wrap" id="team" style="padding-top:0">
+    <div class="head rise head--row">{% edit_btn s %}
+      <div><span class="kick">{{ s.kicker }}</span><h2>{{ s.title }}</h2>{% if s.subtitle %}<p>{{ s.subtitle }}</p>{% endif %}</div>
+      <a class="btn btn--line btn--sm" href="{{ s.button_url|default:'/team/' }}">{{ s.button_text|default:"آشنایی با تیم ←" }}</a>
+    </div>
+    <div class="team-grid rise">
+      {% for m in s.items %}
+      <article class="tm-card">{% edit_btn m %}
+        <a href="{{ m.get_absolute_url }}" class="tm-card__link">
+          <div class="tm-card__photo">{% if m.photo %}<img src="{{ m.photo.url }}" alt="{{ m.name }}" loading="lazy" width="300" height="300">{% else %}<span>{{ m.name|slice:":1" }}</span>{% endif %}</div>
+          <h3 class="tm-card__name">{{ m.name }}</h3>
+          <div class="tm-card__role">{{ m.role }}</div>
+        </a>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
   {% elif s.key == "timeline" %}
   <section class="sec wrap" id="kashan" style="padding-top:0">
     <div class="head rise">{% edit_btn s %}

@@ -17,6 +17,8 @@ python manage.py makemigrations
 python manage.py migrate
 python manage.py seed_site
 python manage.py seed_products
+python manage.py seed_team
+python manage.py import_wp_posts
 python manage.py seed_geo
 python manage.py seed_courses
 python manage.py seed_quizzes
@@ -88,6 +90,13 @@ python manage.py seed_quizzes --overwrite
 - لوگوها روی کاشی روشن نمایش داده می‌شوند تا در حالت شب هم دیده شوند. لوگوی مشتریان خاکستری است و با هاور رنگی می‌شود؛ بیش از ۴ لوگو = نوار متحرک.
 - صفحه‌ی `/customers/` همه‌ی مشتریان را با توضیح، شهر، حوزه و محصولات استفاده‌شده نشان می‌دهد.
 
+## تیم، مقاله‌ها، ویرایشگر و سئو
+
+- **تیم** (`/team/` و `/team/<نامک>/`): رزومه‌ی کامل هر عضو — تصویر، تحصیلات، سوابق، مقالات، مهارت‌ها و شبکه‌ها؛ نمایش تلفن/ایمیل و سال تولد قابل خاموش کردن است. `seed_team` پنج عضو فعلی را از icsd.ir می‌سازد.
+- **مقاله‌ها**: `import_wp_posts` نه مقاله‌ی وردپرس را با تصاویر، دسته، برچسب و عنوان/توضیح Rank Math منتقل می‌کند و آدرس قدیمی هر مقاله را ۳۰۱ به `/blog/<نامک>/` می‌برد. فید: `/blog/feed/` (و `/feed/` ریدایرکت می‌شود).
+- **ویرایشگر** (CKEditor 5، محلی): تیتر ۲ تا ۴، قالب‌بندی، رنگ و هایلایت، چینش، فهرست‌ها، تصویر با متن جایگزین/زیرنویس/اندازه، جدول، ویدیو و کد HTML (آپارات)، کد، نقل‌قول، جست‌وجو و جایگزینی، نمایش HTML و شمارش کلمات.
+- **سئو**: برای نوشته، محصول، دوره، صفحه و عضو تیم: کلیدواژه‌ی کانونی، عنوان سئو، توضیح متا، کانونیکال، noindex + **پنل زنده‌ی امتیاز و پیش‌نمایش گوگل** (مثل Rank Math) و ستون امتیاز در فهرست‌ها. خودکار: title/description، Open Graph و Twitter، JSON-LD (Organization، WebSite+جست‌وجو، BlogPosting، SoftwareApplication، Course، ProfilePage، BreadcrumbList)، مسیر صفحه (breadcrumb)، فهرست مطالب خودکار مقاله‌ها، sitemap.xml، robots.txt، noindex صفحات خصوصی و جست‌وجو، تصاویر lazy، **نمایشگر ۴۰۴** (ثبت آدرس‌های شکسته + ساخت ریدایرکت با یک کلیک) و **IndexNow** برای بینگ/یاندکس.
+
 ## صفحه‌ی اصلی
 
 همه‌ی بخش‌ها (سیلک، نوار سفال، محصولات، مشتریان، خط زمان، آکادمی، مقالات، فراخوان و هر تعداد «بخش سفارشی») در پنل ← «بخش‌های صفحه اصلی» هستند: ترتیب، روشن/خاموش، حذف، تیتر و زیرتیتر، **تعداد آیتم** و **متن/آدرس دکمه**. محصولاتی که «نمایش در صفحه اصلی» دارند به ترتیب خودشان می‌آیند. مدیر وارد شده در پایین صفحه‌ی اصلی دکمه‌ی «افزودن بخش» و «چینش بخش‌ها» را می‌بیند.
@@ -111,6 +120,10 @@ git push -u origin main
 
 ## استقرار روی سرور (اوبونتو)
 
+روش امن و ایزوله برای سرورِ دارای سایت‌های دیگر: `deploy/DEPLOY.md`.
+
+### روش دستی قدیمی
+
 ```bash
 sudo apt install python3-venv python3-pip nginx postgresql nodejs npm
 git clone https://github.com/USER/icsd-django.git /srv/icsd
@@ -126,6 +139,8 @@ python manage.py migrate
 python manage.py collectstatic --noinput
 python manage.py seed_site
 python manage.py seed_products
+python manage.py seed_team
+python manage.py import_wp_posts
 python manage.py seed_geo
 python manage.py seed_courses
 python manage.py seed_quizzes

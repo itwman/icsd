@@ -46,6 +46,8 @@ UNFOLD = {
                      "link": reverse_lazy("admin:core_sitesettings_changelist")},
                     {"title": "بخش‌های صفحه اصلی", "icon": "view_quilt",
                      "link": reverse_lazy("admin:core_homesection_changelist")},
+                    {"title": "تیم و رزومه‌ها", "icon": "groups",
+                     "link": reverse_lazy("admin:team_teammember_changelist")},
                     {"title": "مشتریان (لوگوها)", "icon": "handshake",
                      "link": reverse_lazy("admin:core_customer_changelist")},
                     {"title": "خط زمان کاشان", "icon": "timeline",
@@ -100,6 +102,7 @@ UNFOLD = {
                 "items": [
                     {"title": "متادیتای صفحات", "icon": "travel_explore", "link": reverse_lazy("admin:seo_seometa_changelist")},
                     {"title": "ریدایرکت‌ها", "icon": "alt_route", "link": reverse_lazy("admin:seo_redirect_changelist")},
+                    {"title": "نمایشگر ۴۰۴", "icon": "report", "link": reverse_lazy("admin:seo_notfoundlog_changelist")},
                 ],
             },
         ],

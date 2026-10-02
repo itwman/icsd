@@ -2,6 +2,7 @@ from django.core.paginator import Paginator
 from django.db.models import F, Q
 from django.shortcuts import get_object_or_404, render
 
+from apps.common.html import add_heading_ids, lazy_images
 from .models import BlogCategory, Post, Tag
 
 
@@ -26,4 +27,7 @@ def post_detail(request, slug):
     post = get_object_or_404(Post.objects.select_related("category", "author"), slug=slug, is_published=True)
     Post.objects.filter(pk=post.pk).update(views=F("views") + 1)
     related = Post.objects.filter(is_published=True, category=post.category).exclude(pk=post.pk)[:3]
-    return render(request, "blog/post_detail.html", {"post": post, "related": related, "seo_obj": post})
+    body, toc = add_heading_ids(lazy_images(post.body))
+    return render(request, "blog/post_detail.html", {
+        "post": post, "related": related, "seo_obj": post, "body": body, "toc": toc if len(toc) >= 3 else [],
+    })

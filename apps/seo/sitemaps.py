@@ -5,6 +5,7 @@ from apps.academy.models import Course
 from apps.blog.models import Post
 from apps.core.models import Page
 from apps.products.models import Product
+from apps.team.models import TeamMember
 
 
 class StaticSitemap(Sitemap):
@@ -12,7 +13,7 @@ class StaticSitemap(Sitemap):
     changefreq = "weekly"
 
     def items(self):
-        return ["core:home", "academy:course_list", "products:list", "blog:post_list", "leads:start", "core:customers"]
+        return ["core:home", "academy:course_list", "products:list", "blog:post_list", "leads:start", "core:customers", "team:list"]
 
     def location(self, item):
         return reverse(item)
@@ -23,7 +24,7 @@ class CourseSitemap(Sitemap):
     priority = 0.9
 
     def items(self):
-        return Course.objects.filter(is_published=True)
+        return Course.objects.filter(is_published=True, noindex=False)
 
     def lastmod(self, obj):
         return obj.updated_at
@@ -34,7 +35,7 @@ class ProductSitemap(Sitemap):
     priority = 0.8
 
     def items(self):
-        return Product.objects.filter(is_active=True)
+        return Product.objects.filter(is_active=True, noindex=False)
 
     def lastmod(self, obj):
         return obj.updated_at
@@ -45,7 +46,7 @@ class PostSitemap(Sitemap):
     priority = 0.7
 
     def items(self):
-        return Post.objects.filter(is_published=True)
+        return Post.objects.filter(is_published=True, noindex=False)
 
     def lastmod(self, obj):
         return obj.updated_at
@@ -56,11 +57,22 @@ class PageSitemap(Sitemap):
     priority = 0.4
 
     def items(self):
-        return Page.objects.filter(is_published=True)
+        return Page.objects.filter(is_published=True, noindex=False)
+
+    def lastmod(self, obj):
+        return obj.updated_at
+
+
+class TeamSitemap(Sitemap):
+    changefreq = "monthly"
+    priority = 0.5
+
+    def items(self):
+        return TeamMember.objects.filter(is_active=True, noindex=False)
 
     def lastmod(self, obj):
         return obj.updated_at
 
 
 SITEMAPS = {"static": StaticSitemap, "courses": CourseSitemap, "products": ProductSitemap,
-            "posts": PostSitemap, "pages": PageSitemap}
+            "posts": PostSitemap, "pages": PageSitemap, "team": TeamSitemap}

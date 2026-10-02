@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django_ckeditor_5.fields import CKEditor5Field
+from apps.seo.models import SEOFields
 
 
 class Category(models.Model):
@@ -19,7 +20,7 @@ class Category(models.Model):
         return self.title
 
 
-class Course(models.Model):
+class Course(SEOFields, models.Model):
     LEVELS = [("beginner", "مقدماتی"), ("intermediate", "متوسط"), ("advanced", "پیشرفته")]
 
     title = models.CharField("عنوان", max_length=150)

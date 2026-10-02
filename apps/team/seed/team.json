@@ -1,0 +1,592 @@
+[
+ {
+  "slug": "itwman",
+  "name": "محمدعلی ناظری",
+  "name_en": "Mohammad Ali Nazeri",
+  "role": "مدیرعامل / توسعه‌دهنده ارشد",
+  "role_en": "CEO / Senior Developer",
+  "degree": "کارشناسی ارشد",
+  "photo": "https://icsd.ir/wp-content/uploads/2026/04/nazeri.jpg",
+  "birth_year": "1364",
+  "city": "کاشان",
+  "info_other": {},
+  "email": "nazeri.it@gmail.com",
+  "phone": "09125347596",
+  "website": "https://manix.ir",
+  "socials": [
+   [
+    "LinkedIn",
+    "https://www.linkedin.com/in/itwman/"
+   ],
+   [
+    "GitHub",
+    "https://github.com/itwman"
+   ],
+   [
+    "Twitter / X",
+    "https://x.com/nazeri"
+   ],
+   [
+    "Telegram",
+    "https://t.me/itwman"
+   ],
+   [
+    "Instagram",
+    "https://www.instagram.com/nazeri_org"
+   ],
+   [
+    "CIVILICA",
+    "https://civilica.com/p/16348/"
+   ]
+  ],
+  "about": "<p class=\"icsd-about-lead\">دارای علاقه و تجربه در حوزه‌های مختلف کسب‌وکار و فناوری، به‌ویژه در صنعت فرش هستم. از سال‌ها پیش در زمینه طراحی سایت، سئو، بهینه‌سازی و فروش اینترنتی فرش فعالیت می‌کنم و همواره در تلاش برای ارائه راه‌های نوآورانه به منظور بهبود فرآیندها و خدمات جدید به مشتریانم بوده‌ام. علاوه بر این، همواره به توسعه فردی و یادگیری در زمینه‌های تکنولوژی، مدیریت و استراتژی‌های کسب‌وکار علاقه‌مند هستم.</p>",
+  "education": [
+   {
+    "title": "کاردانی - نرم افزار کامپیوتر",
+    "start": "1384",
+    "end": "1385",
+    "org": "دانشگاه آزاد اسلامی واحد نراق",
+    "desc": ""
+   },
+   {
+    "title": "کارشناسی - مهندسی کامپیوتر - نرم افزار",
+    "start": "1387",
+    "end": "1391",
+    "org": "دانشگاه آزاد اسلامی واحد کاشان",
+    "desc": "فلسفه علم کامپیوتر"
+   },
+   {
+    "title": "کارشناسی ارشد - مهندسی کامپیوتر - نرم افزار",
+    "start": "1391",
+    "end": "1395",
+    "org": "دانشگاه آزاد اسلامی واحد علوم و تحقیقات",
+    "desc": "ارایه سرویس GTaaS جهت رانندگی ایمن و سالم در بستر رایانش ابر خودرویی"
+   }
+  ],
+  "experience": [
+   {
+    "title": "مدیر فناوری اطلاعات",
+    "start": "1388",
+    "end": "1392",
+    "org": "موسسه اندیشه سازان مصنوع • کاشان",
+    "desc": ""
+   },
+   {
+    "title": "مدیر فناوری اطلاعات",
+    "start": "1392",
+    "end": "1394",
+    "org": "گروه فرش نگین مشهد هلال • آران و بیدگل",
+    "desc": ""
+   },
+   {
+    "title": "عضو تیم فضای مجازی",
+    "start": "1394",
+    "end": "1398",
+    "org": "مجمع تشخیص مصلحت نظام • تهران",
+    "desc": ""
+   },
+   {
+    "title": "مدیرعامل",
+    "start": "1404",
+    "end": "تاکنون",
+    "org": "توسعه هوشمند فرش ایرانیان • کاشان",
+    "desc": ""
+   }
+  ],
+  "projects": [],
+  "publications": [
+   {
+    "title": "بررسی معماری شبکه ادهاک خودرویی با تکیه بر پیاده سازی و چالش های پیاده سازی آن ارائه شده در کنفرانس ملی دانش و فناوری علوم مهندسی ایران",
+    "url": "https://civilica.com/doc/627925/",
+    "authors": "مرتضی رموزی , حمیده بابایی",
+    "venue": "کنفرانس ملی دانش و فناوری علوم مهندسی ایران",
+    "year": "1395"
+   },
+   {
+    "title": "مقایسه و ارزیابی پروتکل های مسیریابی DSR, AODV و DSDV در شبکه ادهاک خودرویی VANET",
+    "url": "https://civilica.com/doc/680825/",
+    "authors": "مرتضی رموزی , حمیده بابایی , معین سروی",
+    "venue": "دومین همایش ملی کامپیوتر، فناوری اطلاعات و ارتباطات اسلامی ایران",
+    "year": "1395"
+   },
+   {
+    "title": "ارایه سرویس GTaaS جهت رانندگی ایمن و سالم در بستر رایانش ابر خودرویی",
+    "url": "https://civilica.com/doc/627926/",
+    "authors": "مرتضی رموزی , حمیده بابایی",
+    "venue": "کنفرانس ملی دانش و فناوری علوم مهندسی ایران",
+    "year": "1395"
+   },
+   {
+    "title": "A Distributed Approach for Spam Collection and Detection Using Honeypots",
+    "url": "https://civilica.com/doc/344814/",
+    "authors": "معین سروی , علی یزدیان ورجانی",
+    "venue": "اولین کنفرانس بین المللی مهندسی دانش،اطلاعات و نرم افزار",
+    "year": "1393"
+   }
+  ],
+  "skills": [
+   {
+    "group": "CMS",
+    "name": "Wordpress",
+    "level": 90
+   },
+   {
+    "group": "Network",
+    "name": "Passive",
+    "level": 80
+   },
+   {
+    "group": "AI",
+    "name": "Prompt Engineering",
+    "level": 90
+   },
+   {
+    "group": "Programming",
+    "name": "Python",
+    "level": 72
+   }
+  ],
+  "other_sections": [],
+  "photo_file": "itwman.jpg"
+ },
+ {
+  "slug": "arvix",
+  "name": "علیرضا وهاب",
+  "name_en": "Alireza Vahab",
+  "role": "مدیر فناوری اطلاعات",
+  "role_en": "",
+  "degree": "کارشناسی ارشد",
+  "photo": "https://icsd.ir/wp-content/uploads/2026/04/vahab-1.jpg",
+  "birth_year": "1364",
+  "city": "کاشان",
+  "info_other": {},
+  "email": "",
+  "phone": "09135949083",
+  "website": "",
+  "socials": [],
+  "about": "<p class=\"icsd-about-lead\">دارای علاقه و تجربه در حوزه‌های مختلف کسب‌وکار، فناوری و گرافیک هستم. سال‌ها در زمینه های فناوری اطلاعات، طراحی سایت، سئو، بهینه‌سازی و زمینه های طراحی گرافیک و روابط عمومی فعالیت می کنم و همواره در تلاش برای ارائه راه‌های نوآورانه به منظور بهبود فعالیت های خود بوده‌ام. علاوه بر این، همواره به توسعه فردی و یادگیری در زمینه‌های تکنولوژی، گرافیک و استراتژی‌های کسب‌وکار علاقه‌مند هستم.</p>",
+  "education": [
+   {
+    "title": "کارشناسی ارشد - مهندسی معماری",
+    "start": "1398",
+    "end": "1400",
+    "org": "تبریز",
+    "desc": ""
+   },
+   {
+    "title": "کارشناسی - سخت افزار",
+    "start": "1388",
+    "end": "1391",
+    "org": "آزاد اسلامی واحد نراق",
+    "desc": ""
+   },
+   {
+    "title": "کاردانی - الکترونیک - مخابرات",
+    "start": "1385",
+    "end": "1387",
+    "org": "مخابرات تبریز",
+    "desc": ""
+   }
+  ],
+  "experience": [
+   {
+    "title": "مدیر فناوری اطلاعات",
+    "start": "1404",
+    "end": "",
+    "org": "توسعه هوشمند فرش ایرانیان • کاشان",
+    "desc": ""
+   },
+   {
+    "title": "مدیر فناوری اطلاعات",
+    "start": "1400",
+    "end": "1404",
+    "org": "هلدینگ فولادگستر کوثر • تبریز",
+    "desc": ""
+   },
+   {
+    "title": "مدیر فناوری اطلاعات و روابط عمومی",
+    "start": "1397",
+    "end": "1400",
+    "org": "صنایع مس سهند آذران • تبریز",
+    "desc": ""
+   },
+   {
+    "title": "مدیر فناوری اطلاعات و روابط عمومی",
+    "start": "1393",
+    "end": "1397",
+    "org": "گروه صنعتی توانگران سهند • تبریز",
+    "desc": ""
+   },
+   {
+    "title": "رییس شبکه و امنیت",
+    "start": "1388",
+    "end": "1392",
+    "org": "اندیشه سازان مصنوع • کاشان",
+    "desc": ""
+   }
+  ],
+  "projects": [],
+  "publications": [],
+  "skills": [
+   {
+    "group": "CMS",
+    "name": "Wordpress",
+    "level": 70
+   },
+   {
+    "group": "CMS",
+    "name": "Joomla",
+    "level": 70
+   },
+   {
+    "group": "Network",
+    "name": "Passive",
+    "level": 70
+   },
+   {
+    "group": "AI",
+    "name": "Prompt Engineering",
+    "level": 70
+   },
+   {
+    "group": "Graphic",
+    "name": "Premire",
+    "level": 70
+   },
+   {
+    "group": "Graphic",
+    "name": "InDesign",
+    "level": 70
+   },
+   {
+    "group": "Graphic",
+    "name": "After Effects",
+    "level": 70
+   },
+   {
+    "group": "Graphic",
+    "name": "Photoshop",
+    "level": 70
+   },
+   {
+    "group": "Graphic",
+    "name": "lllustrator",
+    "level": 70
+   },
+   {
+    "group": "Graphic",
+    "name": "Cinema 4D",
+    "level": 71
+   },
+   {
+    "group": "3D",
+    "name": "3dmax",
+    "level": 70
+   },
+   {
+    "group": "3D",
+    "name": "Lumion",
+    "level": 70
+   },
+   {
+    "group": "3D",
+    "name": "Autocad",
+    "level": 70
+   },
+   {
+    "group": "3D",
+    "name": "Sketchup",
+    "level": 70
+   }
+  ],
+  "other_sections": [],
+  "photo_file": "arvix.jpg"
+ },
+ {
+  "slug": "nazeri",
+  "name": "معصومه ناظری",
+  "name_en": "Masoumeh Nazeri",
+  "role": "مدیر حقوقی",
+  "role_en": "Head of Legal",
+  "degree": "دکتری",
+  "photo": "https://icsd.ir/wp-content/uploads/2026/05/nazeri1.jpg",
+  "birth_year": "",
+  "city": "تهران",
+  "info_other": {},
+  "email": "m.nazeri@ut.ac.ir",
+  "phone": "",
+  "website": "",
+  "socials": [],
+  "about": "",
+  "education": [
+   {
+    "title": "حقوق خصوصی",
+    "start": "1397",
+    "end": "مرحله دفاع",
+    "org": "دانشگاه علامه طباطبایی(ره)",
+    "desc": "مطالعه تطبیقی بطلان و انحلال عقد بیمه در حقوق ایران و انگلستان"
+   }
+  ],
+  "experience": [
+   {
+    "title": "وکیل دادگستری",
+    "start": "1394",
+    "end": "تاکنون",
+    "org": "کانون وکلای مرکز • تهران",
+    "desc": ""
+   },
+   {
+    "title": "مدیر حقوقی",
+    "start": "1404",
+    "end": "تاکنون",
+    "org": "شرکت توسعه هوشمند فرش ایرانیان • کاشان",
+    "desc": ""
+   }
+  ],
+  "projects": [],
+  "publications": [
+   {
+    "title": "بررسی تهاتر در فقه",
+    "url": "https://civilica.com/doc/555275/",
+    "authors": "",
+    "venue": "1395",
+    "year": ""
+   }
+  ],
+  "skills": [
+   {
+    "group": "زبان‌های خارجی",
+    "name": "عربی",
+    "level": 0
+   },
+   {
+    "group": "زبان‌های خارجی",
+    "name": "انگلیسی",
+    "level": 0
+   },
+   {
+    "group": "زبان‌های خارجی",
+    "name": "فرانسوی",
+    "level": 0
+   }
+  ],
+  "other_sections": [],
+  "photo_file": "nazeri.jpg"
+ },
+ {
+  "slug": "rasool-ghanna",
+  "name": "رسول قنا",
+  "name_en": "Rasool Ghanna",
+  "role": "مدیر پروژه",
+  "role_en": "Project Manager",
+  "degree": "کارشناسی ارشد",
+  "photo": "https://icsd.ir/wp-content/uploads/2026/05/rasool-ghanna-400x400.jpg",
+  "birth_year": "1371",
+  "city": "کاشان - اصفهان",
+  "info_other": {},
+  "email": "rasoolghanna@gmail.com",
+  "phone": "09367260485",
+  "website": "",
+  "socials": [
+   [
+    "LinkedIn",
+    "https://www.linkedin.com/in/rasool-ghanna-503721174/"
+   ],
+   [
+    "GitHub",
+    "https://github.com/rasoolgh71"
+   ]
+  ],
+  "about": "<p class=\"icsd-about-lead\">بیش از 9 سال است که در زمینه‌های مختلف برنامه‌نویسی و مهندسی نرم‌افزار فعالیت دارم. یعنی از زمانی که دانشجوی کارشناسی مهندسی نرم‌افزار شدم. در طول دوره کارشناسی و کارشناسی ارشد، با زبان‌های برنامه‌نویسی C، C++، C#، پایتون و MATLAB کار کرده‌ام. همچنین در این مدت با ابزارهای مدیریت پایگاه داده مانند MySQL و کمی SQL Server آشنا شده‌ام.از سال ۲۰۱۸ که با فریم‌ورک جنگو آشنا شدم، زندگی کاری‌ام تغییر کرد. از آن زمان، از این فریم‌ورک در چندین پروژه استفاده کرده‌ام و از آن لذت برده‌ام. شروع کار من با شرکت پارس پویش بود.</p>",
+  "education": [
+   {
+    "title": "کارشناسی",
+    "start": "1391",
+    "end": "1396",
+    "org": "دانشگاه کاشان",
+    "desc": ""
+   },
+   {
+    "title": "کارشناسی ارشد - مدیریت کسب و کار mba",
+    "start": "1399",
+    "end": "1403",
+    "org": "دانشگاه کاشان",
+    "desc": "شناسایی چالش ها -محرک ها -موانع -الزامات-استراتژی ها و عوامل کلیدی موفقیت برای پیاده سازی بلاکچین در زنجیره تامین کشاورزی"
+   }
+  ],
+  "experience": [
+   {
+    "title": "توسعه دهنده ارشد بک اند",
+    "start": "1397",
+    "end": "1399",
+    "org": "پارس پویش فناور • کاشان",
+    "desc": "توسعه پروژه های rebin-ibsng"
+   },
+   {
+    "title": "توسعه دهنده ارشد بک اند",
+    "start": "1399",
+    "end": "1400",
+    "org": "بهکو • کاشان",
+    "desc": "توسعه پروژه های جمع اوری اطلاعات و سامانه های داشبوردی"
+   },
+   {
+    "title": "توسعه دهنده ارشد بک اند",
+    "start": "1400",
+    "end": "1401",
+    "org": "داده پرداز تدبیر فردا • کاشان",
+    "desc": "توسعه پروژه های جمع اوری اطلاعات و سامانه های داشبوردی"
+   },
+   {
+    "title": "توسعه دهنده ارشد بک اند",
+    "start": "1401",
+    "end": "",
+    "org": "دانشگاه کاشان • کاشان",
+    "desc": "توسعه سیستم های اموزشی -پژوهشی- فرهنگی و دانشجویی"
+   }
+  ],
+  "projects": [],
+  "publications": [],
+  "skills": [
+   {
+    "group": "Backend",
+    "name": "Django",
+    "level": 90
+   },
+   {
+    "group": "Backend",
+    "name": "Python",
+    "level": 90
+   },
+   {
+    "group": "Devops",
+    "name": "Git",
+    "level": 80
+   },
+   {
+    "group": "Devops",
+    "name": "Linux",
+    "level": 60
+   },
+   {
+    "group": "Frontend",
+    "name": "Javascript",
+    "level": 70
+   },
+   {
+    "group": "Frontend",
+    "name": "Html",
+    "level": 80
+   },
+   {
+    "group": "Frontend",
+    "name": "CSS",
+    "level": 80
+   },
+   {
+    "group": "Frontend",
+    "name": "Bootstrap",
+    "level": 80
+   },
+   {
+    "group": "Database",
+    "name": "Mysql",
+    "level": 70
+   },
+   {
+    "group": "Database",
+    "name": "Posgresql",
+    "level": 70
+   },
+   {
+    "group": "Database",
+    "name": "Redis",
+    "level": 70
+   },
+   {
+    "group": "Database",
+    "name": "Mongodb",
+    "level": 70
+   },
+   {
+    "group": "Api",
+    "name": "Api Restframework",
+    "level": 70
+   },
+   {
+    "group": "Message Broker",
+    "name": "Rabbitmq",
+    "level": 60
+   },
+   {
+    "group": "Message Broker",
+    "name": "Kafka",
+    "level": 60
+   }
+  ],
+  "other_sections": [],
+  "photo_file": "rasool-ghanna.jpg"
+ },
+ {
+  "slug": "zahra-nadimi",
+  "name": "زهرا ندیمی",
+  "name_en": "Zahra Nadimi",
+  "role": "کارشناس پشتیبانی",
+  "role_en": "Support",
+  "degree": "کارشناسی",
+  "photo": "https://icsd.ir/wp-content/uploads/2026/05/nadimi.jpg",
+  "birth_year": "1382",
+  "city": "کاشان",
+  "info_other": {},
+  "email": "",
+  "phone": "",
+  "website": "",
+  "socials": [],
+  "about": "",
+  "education": [
+   {
+    "title": "کاردانی - مهندسی نرم افزار",
+    "start": "1400",
+    "end": "1402",
+    "org": "دانشگاه میبد",
+    "desc": ""
+   },
+   {
+    "title": "کارشناسی - مهندسی نرم افزار",
+    "start": "1402",
+    "end": "1405",
+    "org": "",
+    "desc": ""
+   }
+  ],
+  "experience": [
+   {
+    "title": "پشتیبانی",
+    "start": "1404",
+    "end": "",
+    "org": "شرکت توسعه هوشمند فرش ایرانیان",
+    "desc": ""
+   }
+  ],
+  "projects": [],
+  "publications": [],
+  "skills": [
+   {
+    "group": "CMS",
+    "name": "Wordpress",
+    "level": 50
+   },
+   {
+    "group": "Programming",
+    "name": "Python",
+    "level": 50
+   },
+   {
+    "group": "Programming",
+    "name": "Photoshop",
+    "level": 60
+   }
+  ],
+  "other_sections": [],
+  "photo_file": "zahra-nadimi.jpg"
+ }
+]

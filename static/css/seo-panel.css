@@ -1,0 +1,22 @@
+.seo-panel { margin: 4px 0 18px; font-family: Vazirmatn, Tahoma, sans-serif; }
+.seo-grid { display: grid; grid-template-columns: 1fr 150px; gap: 18px; align-items: center; }
+@media (max-width: 760px) { .seo-grid { grid-template-columns: 1fr; } }
+.seo-snip small { display: block; color: #6b7280; margin-bottom: 6px; font-size: 12px; }
+.seo-snip__card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px 16px; direction: rtl; font-family: arial, Vazirmatn, sans-serif; }
+.seo-snip__url { color: #4d5156; font-size: 12.5px; direction: ltr; text-align: right; unicode-bidi: plaintext; }
+.seo-snip__t { color: #1a0dab; font-size: 19px; line-height: 1.4; margin: 4px 0; }
+.seo-snip__d { color: #4d5156; font-size: 13.5px; line-height: 1.6; }
+.seo-ring { --p: 0; --c: #dc2626; width: 120px; height: 120px; border-radius: 50%; margin: auto; display: grid; place-content: center; text-align: center;
+            background: radial-gradient(closest-side, #fff 78%, transparent 79% 100%), conic-gradient(var(--c) calc(var(--p) * 1%), #e5e7eb 0); }
+.seo-ring b { font-size: 30px; color: var(--c); line-height: 1; } .seo-ring span { font-size: 11px; color: #6b7280; }
+.seo-ring.is-ok { --c: #16a34a; } .seo-ring.is-warn { --c: #d97706; }
+.seo-checks { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 4px; }
+.seo-checks li { position: relative; padding: 5px 30px 5px 10px; border-radius: 8px; font-size: 13px; background: #f9fafb; color: #374151; }
+.seo-checks li::before { content: ""; position: absolute; right: 10px; top: 50%; width: 10px; height: 10px; margin-top: -5px; border-radius: 50%; background: #16a34a; }
+.seo-checks li.is-warn::before { background: #d97706; } .seo-checks li.is-bad::before { background: #dc2626; }
+.seo-counter { height: 18px; position: relative; margin-top: 4px; font-size: 11px; color: #6b7280; }
+.seo-counter i { position: absolute; bottom: 0; right: 0; height: 3px; border-radius: 3px; background: #9ca3af; transition: width .2s; }
+.seo-counter.is-ok i { background: #16a34a; } .seo-counter.is-warn i { background: #d97706; }
+.dark .seo-snip__card, .dark .seo-checks li { background: #1f2937; border-color: #374151; color: #e5e7eb; }
+.dark .seo-snip__t { color: #8ab4f8; } .dark .seo-snip__d, .dark .seo-snip__url { color: #bdc1c6; }
+.dark .seo-ring { background: radial-gradient(closest-side, #111827 78%, transparent 79% 100%), conic-gradient(var(--c) calc(var(--p) * 1%), #374151 0); }
